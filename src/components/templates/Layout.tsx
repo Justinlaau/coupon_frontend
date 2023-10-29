@@ -2,7 +2,6 @@ import React from 'react';
 import TabBar from './TabBar';
 import {View, StyleSheet, Text, Image, Dimensions} from 'react-native';
 import Background from './Background';
-import { Dimensions, ScrollView } from 'react-native';
 const { height } = Dimensions.get('window');
 export default function Layout(props: any) {
   

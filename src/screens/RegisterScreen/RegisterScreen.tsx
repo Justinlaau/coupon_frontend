@@ -22,7 +22,7 @@ const RegisterScreen = ({ navigation }) => {
         )
     }
     return (
-        <Background>
+        <Background main={true} contentHeight="76%" tabBarSpace={false}>
             <View style={RegisterStyle.layout}>
                 <Text style={[RegisterStyle.text, FontStyles.medium, FontStyles.bold, { color:"#DC2B37"}]}>Create account</Text>
                 <View style={RegisterStyle.InputGroups}>
@@ -49,6 +49,8 @@ const RegisterStyle = StyleSheet.create({
         height: "80%",
         width: "80%",
         alignItems: "center",
+        marginLeft: "auto",
+        marginRight: "auto"
     },
     text: {
         height: "20%",

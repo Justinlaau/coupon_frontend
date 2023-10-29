@@ -50,7 +50,7 @@ const Background = props => {
             </>
           ) : null
         }
-        <View h={props.contentHeight} style={BackgroundStyle.whiteView}>{props.children}</View>
+        <View h={props.contentHeight} style={BackgroundStyle.whiteView} bottom={props.tabBarSpace ? "8%" : "0%"}>{props.children}</View>
       </View>
     </NativeBaseProvider>
   );
@@ -74,7 +74,6 @@ const BackgroundStyle = StyleSheet.create({
     borderTopRightRadius: 50,
     borderTopLeftRadius: 50,
     width: '100%',
-    bottom: '8%',
     backgroundColor: '#FBFBFC',
     zIndex: 3,
   },

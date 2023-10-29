@@ -56,7 +56,7 @@ const LoginScreen = ({navigation}) => {
     setLoading(false);
   };
   return (
-    <Background>
+    <Background main={true} contentHeight="76%">
       <View style={LoginStyle.Layout}>
         <View style={LoginStyle.Container}>
           <Text style={[LoginStyle.Title,
@@ -139,6 +139,8 @@ const LoginStyle = StyleSheet.create({
     height: "100%",
     width: "80%",
     top: "5%",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
   Container: {
     height: "100%",

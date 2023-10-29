@@ -29,7 +29,7 @@ import {SvgXml} from 'react-native-svg';
 const MainScreen = ({navigation}) => {
   return (
     <Layout>
-      <Background main={true} contentHeight="68%">
+      <Background main={true} contentHeight="68%" tabBarSpace={true}>
         <NativeBaseProvider>
           <Stack space={4} alignItems="center" h="100%">
             <Stack

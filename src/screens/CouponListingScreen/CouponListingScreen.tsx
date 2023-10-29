@@ -40,28 +40,31 @@ const CouponListingScreen = ({navigation}) => {
   const [selectedSubMenu, setSelectedSubMenu] = useState(0)
   const [addressCategory, setAddressCategory] = useState({})
   const [selectedSubMenuItem, setSelectedSubMenuItem] = useState(0)
+  const [selectedTypeCategory, setSelectedTypeCategory] = useState({})
+  const [selectedAddressCategory, setSelectedAddressCategory] = useState("")
+  const [TypeCategory, setTypeCategory] = useState({})
   // const dispatch = useDispatch();
 
   const addFunc = () => {
     console.log("Helo World Adding Coupon")
   }
 
-  // dispatch addressCategoryTree 
-
-  const AddressSubMenu = (props) => {
-    return (
-      <Box w="100%" py="3%" display="flex" flexWrap="wrap" flexDirection="row">
-          {props.subMenu?.map((value) => (
-            <Pressable borderColor="indigo.800" p="1" px="4" m="2" borderRadius={20} borderWidth={1.5} >
-              <Text fontWeight="black" fontSize="10" color="indigo.800">{value.addressCategoryName}</Text>
-            </Pressable>
-            // <Box key={value.addressCategoryId}>
-            //   {value.addressCategoryName}
-            // </Box>
-          ))}
-      </Box>
-    );
+  //TODO: Fake Category Type (Back End Not Ready)
+  const fetchTypeCategory = () => {
+    let ss = {}
+    let fakeTypeCategory = ["全選", "飲食", "超市", "便利店", "百貨公司", "美容", "化妝品", "服裝", "潮流", "電子", "電器", "家居", "傢俬", "寵物", "玩具", "運動", "戶外", "汽車", "零售"]
+    let ret = fakeTypeCategory.map((value, index) => {
+      ss[value] = false;
+      return {
+        typeCategoryId: index,
+        typeCategoryName: value
+      }
+    })
+    setTypeCategory(ret)
+    setSelectedTypeCategory(ss);
+    console.log(ss);
   }
+
   const showDropDownMenu = (menu) => {
     if (selectedMenu === menu) {
       setSelectedMenu(0)
@@ -138,12 +141,13 @@ const CouponListingScreen = ({navigation}) => {
 
   useEffect(() => {
     fetchAddressCategory()
+    fetchTypeCategory()
   }, [])
 
   return (
     <NativeBaseProvider>
       <Layout>
-        <Background listing={true} contentHeight="78%">
+        <Background listing={true} contentHeight="78%" tabBarSpace={true}>
           <Box position="relative" h="100%" w="100%">
             <View style={{position:"absolute" ,top: "-8%", width: "70%", height:"8%", left:"4%"}}>
               <Stack direction="row" w="100%" h="78%">
@@ -168,55 +172,24 @@ const CouponListingScreen = ({navigation}) => {
                 </Box>
               </Stack>
             </Box>
-            <Box position="absolute" zIndex="10000" w="100%">
-              {/* <ListingPageDropDownMenu 
-                topD="0"
-                showDropDownMenu={showDropDownMenu} 
-                showSubMenu={showSubMenu}
-                selectedMenu={selectedMenu}
-                selectedSubMenu={selectedSubMenu}
-                addressCategory={addressCategory}
-                selectedSubMenuItem={selectedSubMenuItem}
-              /> */}
-              {
-        selectedMenu === 1 ? (
-          <Box minH="80" maxH="160" pb="3%" w="100%" bg="white" position="absolute" shadow={2} top={0} borderBottomRadius="50" zIndex={10000}>
-            <ScrollView nestedScrollEnabled>
-              <Pressable w="100%" h="60" onPress={() => showSubMenu(0, 0)} alignItems="center">
-                <Box w="85%" h="100%" display="flex" justifyContent="center" borderBottomWidth={0.2} borderBottomColor="grey"><Text>不限</Text></Box>
-              </Pressable>
-              <Pressable w="100%" h="60" onPress={() => {showSubMenu(0, 1); console.log("asds")}} alignItems="center">
-                <Box w="85%" h="100%" display="flex" justifyContent="center" borderBottomWidth={0.2} borderBottomColor="grey"><Text>香港</Text></Box>
-              </Pressable>
-              { selectedSubMenu == 1 ? (
-                <Box w="85%" display="flex" alignSelf="center" minH="20" borderBottomWidth={0.2} borderBottomColor="grey">
-                  <AddressSubMenu subMenu={addressCategory["HongKong"]}/>
-                </Box>
-              ) : null}
-              <Pressable w="100%" h="60" onPress={() => showSubMenu(0, 2)} alignItems="center">
-                <Box w="85%" h="100%" display="flex" justifyContent="center" borderBottomWidth={0.2} borderBottomColor="grey"><Text>九龍</Text></Box>
-              </Pressable>
-              { selectedSubMenu == 2 ? (
-                <Box w="85%" display="flex" alignSelf="center" minH="20" borderBottomWidth={0.2} borderBottomColor="grey">
-                  <AddressSubMenu subMenu={addressCategory["Kowloon"]}/>
-                </Box>
-              ) : null}
-              <Pressable w="100%" h="60" onPress={() => showSubMenu(0, 3)} alignItems="center">
-                <Box w="85%" h="100%" display="flex" justifyContent="center" borderBottomWidth={0.2} borderBottomColor="grey"><Text>新界</Text></Box>
-              </Pressable>
-              { selectedSubMenu == 3 ? (
-                <Box w="85%" display="flex" alignSelf="center" minH="20" borderBottomWidth={0.2} borderBottomColor="grey">
-                  <AddressSubMenu subMenu={addressCategory["NewTerritories"]}/>
-                </Box>
-              ) : null}
-            </ScrollView>
-          </Box>
-        ) : 
-        (
-          <Box></Box>
-        )
-      }
-            </Box>
+            { selectedMenu != 0 ? (
+                <Box position="absolute" zIndex="1000" w="100%" h="86%" top="14%">
+                  <ListingPageDropDownMenu 
+                    topD="0"
+                    showDropDownMenu={showDropDownMenu} 
+                    showSubMenu={showSubMenu}
+                    setSelectedTypeCategory={setSelectedTypeCategory}
+                    setSelectedAddressCategory={setSelectedAddressCategory}
+                    selectedMenu={selectedMenu}
+                    selectedSubMenu={selectedSubMenu}
+                    addressCategory={addressCategory}
+                    selectedSubMenuItem={selectedSubMenuItem}
+                    typeCategory={TypeCategory}
+                    selectedTypeCategory={selectedTypeCategory}
+                  />
+              </Box>
+              ): null
+            }
             <Box>
               <ScrollView>
                 <VStack px="4%">

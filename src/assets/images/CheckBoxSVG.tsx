@@ -1,0 +1,5 @@
+const CheckBox = `
+<svg width="64px" height="64px" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0" transform="translate(2.040000000000001,2.040000000000001), scale(0.83)"><rect x="-2.4" y="-2.4" width="28.80" height="28.80" rx="5.184" fill="#ffffff" strokewidth="0"></rect></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.096"></g><g id="SVGRepo_iconCarrier"> <rect x="3" y="3" width="18" height="18" rx="2" stroke="#000000" stroke-width="1.248" stroke-linecap="round" stroke-linejoin="round"></rect> <path d="M7 13L10 16L17 9" stroke="#000000" stroke-width="1.248" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>`
+
+
+export default CheckBox;
