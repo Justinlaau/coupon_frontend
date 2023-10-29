@@ -6,6 +6,7 @@ import {Trans, useTranslation} from 'react-i18next';
 import LanguageButton from '../atoms/LanguageButton';
 import FontStyles from '../../styles/GlobalFontStyle';
 
+
 class TabItem {
   constructor(image: any, text: any) {
     this.image = image;

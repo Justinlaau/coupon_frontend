@@ -104,6 +104,7 @@ const BackgroundStyle = StyleSheet.create({
     resizeMode: 'contain',
     zIndex: 3,
   },
+
 });
 
 export default Background;

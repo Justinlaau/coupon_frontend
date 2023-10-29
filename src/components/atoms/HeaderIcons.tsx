@@ -11,9 +11,8 @@ const HeaderIcons = () => {
   return (
     <View style={HeaderIconsStyle.container}>
       <View style={HeaderIconsStyle.header}>
-        <SvgXml xml={SelectionSVG} height={'100%'} />
+        <SvgXml xml={SelectionSVG} height={'100%'} fill="white"/>
         <SvgXml xml={CouponGoSVG} height={'100%'} />
-        <Text>Hello</Text>
         <SvgXml xml={NotificationSVG} height={'100%'} />
       </View>
     </View>
@@ -30,9 +29,10 @@ const HeaderIconsStyle = StyleSheet.create({
     justifyContent: 'space-between',
   },
   container: {
-    backgroundColor: '#DC2B37',
+    backgroundColor: 'white',
     paddingTop: '7%',
     alignContent: 'center',
+    zIndex:10,
   },
 });
 
