@@ -1,34 +1,41 @@
 import React, {useState} from 'react';
-import {View, TextInput, Button, StyleSheet, Text, SearchIcon} from 'react-native';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+} from 'react-native';
 import Background from '../../components/templates/Background';
 import Layout from '../../components/templates/Layout';
 import {ProfileSVG} from '../../assets/images/ProfileSVG';
-import SearchSVG from '../../assets/images/SearchSVG';
+import {MagnifierSVG} from '../../assets/images/MagnifierSVG';
+import MainPageMenu from '../../components/templates/MainPageMenu';
+import MainPageListing from '../../components/templates/MainPageListing';
 import {
   NativeBaseProvider,
   VStack,
   Center,
   Stack,
   Box,
-  ScrollView,
-  Input,
   Icon,
+  Input,
+  ScrollView,
+  Container,
+  Text,
+  Button,
 } from 'native-base';
 import {SvgXml} from 'react-native-svg';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
-
 const MainScreen = ({navigation}) => {
   return (
     <Layout>
-      <Background>
+      <Background main={true} contentHeight="68%">
         <NativeBaseProvider>
           <Stack space={4} alignItems="center" h="100%">
             <Stack
               direction="row"
               h="15%"
               w="100%"
-              bg="rose.50"
               style={MainStyle.header}>
               <Box
                 style={{flex: 1, justifyContent: 'center', paddingLeft: '7%'}}
@@ -41,56 +48,25 @@ const MainScreen = ({navigation}) => {
                 <SvgXml width="45%" xml={ProfileSVG} />
               </Center>
             </Stack>
-            <VStack h="85%" w="100%" px="6">
-              <ScrollView>
-                <Center h="15%">
-                  <Input
-                        placeholder="Search Coupon?"
-                        InputLeftElement={<SvgXml width="10%" xml={SearchIcon} />}
-                    />
-                </Center>
-                <Center
-                  w="80"
-                  h="10"
-                  bg="indigo.700"
-                  rounded="md"
-                  shadow={3}
-                  mb="4"
-                />
-                <Center
-                  w="80"
-                  h="10"
-                  bg="indigo.700"
-                  rounded="md"
-                  shadow={3}
-                  mb="4"
-                />
-                <Center
-                  w="80"
-                  h="10"
-                  bg="indigo.700"
-                  rounded="md"
-                  shadow={3}
-                  mb="4"
-                />
-                <Center
-                  w="80"
-                  h="10"
-                  bg="indigo.700"
-                  rounded="md"
-                  shadow={3}
-                  mb="4"
-                />
-                <Center
-                  w="80"
-                  h="10"
-                  bg="indigo.700"
-                  rounded="md"
-                  shadow={3}
-                  mb="4"
-                />
+              <ScrollView h="100" w="100%" px="6" py="5">
+                <Stack h="50" w="100%" direction="row" mb="9%">
+                  <Center height="100%" width="15%">
+                    <SvgXml height="40%" xml={MagnifierSVG} />
+                  </Center>
+                  <Box w="85%">
+                    <TextInput placeholder="search coupon ?" />
+                  </Box>
+                </Stack>
+                <Box h="75" mb="9"><MainPageMenu/></Box>
+                <View style={{ borderBottomColor: 'grey', borderBottomWidth: StyleSheet.hairlineWidth,}}/>
+                <Box h="30" mt="2">
+                  <Stack direction="row">
+                    <Text fontWeight="bold" fontSize="15" w="84%">Popuplar Coupon</Text>
+                    <Text fontWeight="light" color="grey" fontSize="15" onPress={() => navigation.navigate("CouponListing")}>View All</Text>
+                  </Stack>
+                </Box>
+                <Box><MainPageListing /></Box>
               </ScrollView>
-            </VStack>
           </Stack>
         </NativeBaseProvider>
       </Background>
