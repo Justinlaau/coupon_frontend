@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {View, TextInput, Button, StyleSheet, Text, SearchIcon} from 'react-native';
+import {View, TextInput, Button, StyleSheet, Text} from 'react-native';
 import Background from '../../components/templates/Background';
 import Layout from '../../components/templates/Layout';
-import {ProfileSVG} from '../../assets/images/ProfileSVG';
+import { MagnifierSVG } from '../../assets/images/MagnifierSVG';
+import { ProfileSVG } from '../../assets/images/ProfileSVG';
 import SearchSVG from '../../assets/images/SearchSVG';
 import {
   NativeBaseProvider,
@@ -46,7 +47,7 @@ const MainScreen = ({navigation}) => {
                 <Center h="15%">
                   <Input
                         placeholder="Search Coupon?"
-                        InputLeftElement={<SvgXml width="10%" xml={SearchIcon} />}
+                    InputLeftElement={<SvgXml width="10%" xml={MagnifierSVG} />}
                     />
                 </Center>
                 <Center

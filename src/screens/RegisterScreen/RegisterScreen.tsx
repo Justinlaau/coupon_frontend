@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text , SafeAreaView} from 'react-native';
 import Background from '../../components/templates/Background';
 import Layout from '../../components/templates/Layout';
 import { MagnifierSVG } from '../../assets/images/MagnifierSVG';
@@ -25,21 +25,22 @@ const RegisterScreen = ({ navigation }) => {
         <Background>
             <View style={RegisterStyle.layout}>
                 <Text style={[RegisterStyle.text, FontStyles.medium, FontStyles.bold, { color:"#DC2B37"}]}>Create account</Text>
+                
                 <View style={RegisterStyle.InputGroups}>
-                    <InputRe Text="username" />
-                    <View style={{ height: "10%" }}></View>
-                    <InputRe Text="password" />
-                    <View style={{ height: "10%" }}></View>
-                    <InputRe Text="comfirm password"/>
-                    <View style={{ height: "10%" }}></View>
-                    <InputRe Text="email" />
-                    <View style={RegisterStyle.ButtonContainer}>
-                        <ButtonBox text="Submit"
-                            borderStyle={{ borderRadius: 10 }}
-                            color="#DC2B37"
-                            textStyle={{ color: "white" }} action={() => { console.log("creatttttingg.....") }} />
+                        <InputRe Text="username" />
+                        <View style={{ height: "10%" }}></View>
+                        <InputRe Text="password" />
+                        <View style={{ height: "10%" }}></View>
+                        <InputRe Text="comfirm password"/>
+                        <View style={{ height: "10%" }}></View>
+                        <InputRe Text="email" />
+                        <View style={RegisterStyle.ButtonContainer}>
+                            <ButtonBox text="Submit"
+                                borderStyle={{ borderRadius: 10 }}
+                                color="#DC2B37"
+                                textStyle={{ color: "white" }} action={() => { console.log("creatttttingg.....") }} />
+                        </View>
                     </View>
-                </View>
             </View>
         </Background>
     )
