@@ -28,20 +28,24 @@ const Background = props => {
     <NativeBaseProvider>
       <View style={[BackgroundStyle.container, {height}]}>
         { props.main ? (
-          <><Heading
+          <>
+          <Heading
             w="100%"
             style={BackgroundStyle.Heading}
             size="xl"
             textAlign={'center'}
             color="light.50">
             COUPON GO!
-          </Heading><View style={BackgroundStyle.CatView}>
-              <SvgXml width="100%" xml={CatSVG} />
-            </View><View style={BackgroundStyle.BaseLeftSVG}>
-              <SvgXml width="100%" xml={BaseLeftSVG} />
-            </View><View style={BackgroundStyle.BaseRightSVG}>
-              <SvgXml width="100%" height="270" xml={BaseRightSVG} />
-            </View></>
+          </Heading>
+          <View style={BackgroundStyle.CatView}>
+            <SvgXml width="100%" xml={CatSVG} />
+          </View>
+          <View style={BackgroundStyle.BaseLeftSVG}>
+            <SvgXml width="100%" xml={BaseLeftSVG} />
+          </View><View style={BackgroundStyle.BaseRightSVG}>
+            <SvgXml width="100%" height="270" xml={BaseRightSVG} />
+          </View>
+        </>
          ) : null        
         }
         {
@@ -50,7 +54,11 @@ const Background = props => {
             </>
           ) : null
         }
-        <View h={props.contentHeight} style={BackgroundStyle.whiteView} bottom={props.tabBarSpace ? "8%" : "0%"}>{props.children}</View>
+        <View h={props.contentHeight} style={BackgroundStyle.whiteView} bottom={props.tabBarSpace ? "8%" : "0%"}>
+          <Box position="relative" h="100%" w="100%">
+            {props.children}
+          </Box>
+        </View>
       </View>
     </NativeBaseProvider>
   );

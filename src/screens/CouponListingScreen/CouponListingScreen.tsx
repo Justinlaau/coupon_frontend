@@ -35,12 +35,14 @@ import {
   Pressable
 } from 'native-base';
 
+const initialObjectState: {[key: string]: boolean} = {}
+
 const CouponListingScreen = ({navigation}) => {
   const [selectedMenu, setSelectedMenu] = useState(0)
   const [selectedSubMenu, setSelectedSubMenu] = useState(0)
   const [addressCategory, setAddressCategory] = useState({})
   const [selectedSubMenuItem, setSelectedSubMenuItem] = useState(0)
-  const [selectedTypeCategory, setSelectedTypeCategory] = useState({})
+  const [selectedTypeCategory, setSelectedTypeCategory] = useState(initialObjectState)
   const [selectedAddressCategory, setSelectedAddressCategory] = useState("")
   const [TypeCategory, setTypeCategory] = useState({})
   // const dispatch = useDispatch();
@@ -51,7 +53,7 @@ const CouponListingScreen = ({navigation}) => {
 
   //TODO: Fake Category Type (Back End Not Ready)
   const fetchTypeCategory = () => {
-    let ss = {}
+    let ss : {[key: string]: boolean} = {}
     let fakeTypeCategory = ["全選", "飲食", "超市", "便利店", "百貨公司", "美容", "化妝品", "服裝", "潮流", "電子", "電器", "家居", "傢俬", "寵物", "玩具", "運動", "戶外", "汽車", "零售"]
     let ret = fakeTypeCategory.map((value, index) => {
       ss[value] = false;
@@ -61,8 +63,7 @@ const CouponListingScreen = ({navigation}) => {
       }
     })
     setTypeCategory(ret)
-    setSelectedTypeCategory(ss);
-    console.log(ss);
+    setSelectedTypeCategory({...ss});
   }
 
   const showDropDownMenu = (menu) => {
@@ -148,7 +149,6 @@ const CouponListingScreen = ({navigation}) => {
     <NativeBaseProvider>
       <Layout>
         <Background listing={true} contentHeight="78%" tabBarSpace={true}>
-          <Box position="relative" h="100%" w="100%">
             <View style={{position:"absolute" ,top: "-8%", width: "70%", height:"8%", left:"4%"}}>
               <Stack direction="row" w="100%" h="78%">
                 <Box w="10%" mr="3%"><SvgXml width="100%" height="100%" xml={LeftArrow} /></Box>
@@ -190,7 +190,7 @@ const CouponListingScreen = ({navigation}) => {
               </Box>
               ): null
             }
-            <Box>
+            <Box w="100%" h="86%">
               <ScrollView>
                 <VStack px="4%">
                   {
@@ -204,7 +204,6 @@ const CouponListingScreen = ({navigation}) => {
                 </VStack>
               </ScrollView>
             </Box>
-          </Box>
         </Background>
       </Layout>
     </NativeBaseProvider>
