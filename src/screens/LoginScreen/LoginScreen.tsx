@@ -36,7 +36,7 @@ const LoginScreen = ({navigation}) => {
     }
     else {
       try {
-        const { data } = await axios.post('http://192.168.31.13:8000/user/login/', payload)
+        const { data } = await axios.post('http://192.168.1.85:8000/user/login/', payload)
         let token = data.token;
         await AsyncStorage.setItem('jwt', token);
         console.log('Login successful');
@@ -53,6 +53,7 @@ const LoginScreen = ({navigation}) => {
       // console.log(data);
       // setLoading(false);
     }
+    navigation.navigate('Main')
     setLoading(false);
   };
   return (
