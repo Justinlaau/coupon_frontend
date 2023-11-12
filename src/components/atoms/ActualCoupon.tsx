@@ -5,21 +5,21 @@ import GiftIcon from 'react-native-vector-icons/FontAwesome'
 
 
 const chin_subtitle ={
-    one_thousand: "港幣千元現金券",
-    twenty: "港幣二十元現金券",
-    hundred: "港幣一百元現金券"
+    1000: "港幣千元現金券",
+    20: "港幣二十元現金券",
+    100: "港幣一百元現金券"
 }
 
 const eng_subtitle = {
-    one_thousand: "ONE THOUSAND",
-    twenty: "TWENTY",
-    one_hundred: "ONE HUNDRED",
+    1000: "ONE THOUSAND",
+    20: "TWENTY",
+    100: "ONE HUNDRED",
 }
 
 const backgroundColor = {
-    one_thousand: "#ff5733",
-    twenty: "#ff7e15",
-    one_hundred: "#FFC300",
+    1000: "#ff5733",
+    20: "#ff7e15",
+    100: "#FFC300",
 }
 
 
@@ -30,7 +30,7 @@ const ActualCoupon = props =>{
             <View style={{
                 width: deviceWidth - 20,
                 flexDirection: "row",
-                backgroundColor: backgroundColor[props.valueDescription],
+                backgroundColor: backgroundColor[props.value],
                 height: 200,
                 borderRadius: radius,
 
@@ -59,14 +59,14 @@ const ActualCoupon = props =>{
                             fontSize: 13,
                             fontWeight: 'bold',
                             color: 'white'}}>
-                            {chin_subtitle[props.valueDescription]}
+                            {chin_subtitle[props.value]}
                         </Text >
 
                         <Text style={{
                             fontSize: 13,
                             fontWeight: 'bold',
                             color: 'white'}}>
-                            {eng_subtitle[props.valueDescription]}
+                            {eng_subtitle[props.value]}
                         </Text >
 
                         <Text style={{
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     container:{
         alignItems: 'center',
         marginTop: '5%',
-        marginBottom: '5%',
+        marginBottom: '7%',
     },
     imageStyle:{
         height: 200,

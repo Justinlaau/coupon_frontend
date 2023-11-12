@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, StyleSheet, Text, Image, Button} from 'react-native';
+import {View, StyleSheet, Text, Image, Button, TouchableOpacity} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import * as bottomIcon from '../../assets/images/BottomIcon';
 import {Trans, useTranslation} from 'react-i18next';
 import LanguageButton from '../atoms/LanguageButton';
 import FontStyles from '../../styles/GlobalFontStyle';
+import { useNavigation } from '@react-navigation/native';
 
 
 class TabItem {
@@ -15,7 +16,7 @@ class TabItem {
   getTabItem() {
     const {t, i18n} = useTranslation();
     return (
-      <View style={TabBarStyle.TabItems}>
+      <View style={TabBarStyle.TabItems} >
         <View style={TabBarStyle.TabBarIcon}>
           <SvgXml width={'20'} xml={this.image} />
         </View>
@@ -49,6 +50,7 @@ class TabItem {
     );
   }
 }
+
 const TabBar = () => {
   const TabItem1JSX = new TabItem(
     bottomIcon.bottom_icon_1,
@@ -71,13 +73,34 @@ const TabBar = () => {
     'Q wallet',
   ).getTabItem();
   const {t, i18n} = useTranslation();
+  const navigation = useNavigation();
   return (
+    
     <View style={TabBarStyle.TabBar}>
-      <View style={TabBarStyle.ItemContainer}>{TabItem1JSX}</View>
-      <View style={TabBarStyle.ItemContainer}>{TabItem2JSX}</View>
+ 
+        <View style={TabBarStyle.ItemContainer}>
+
+        <TouchableOpacity onPress={() => navigation.navigate('Main')}>
+            {TabItem1JSX}
+        </TouchableOpacity>
+        </View>
+
+        <View style={TabBarStyle.ItemContainer}>
+          <TouchableOpacity >
+            {TabItem2JSX}
+          </TouchableOpacity>
+        </View>
+
+      
       <View style={TabBarStyle.ItemContainer}>{TabItem3JSX}</View>
       <View style={TabBarStyle.ItemContainer}>{TabItem4JSX}</View>
-      <View style={TabBarStyle.ItemContainer}>{TabItem5JSX}</View>
+
+      <View style={TabBarStyle.ItemContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate('Wallet')}>
+          {TabItem5JSX}
+        </TouchableOpacity>
+        
+      </View>
     </View>
   );
 };

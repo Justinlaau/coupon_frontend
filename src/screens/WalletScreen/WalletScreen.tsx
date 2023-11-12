@@ -13,23 +13,10 @@ import axios from 'axios';
 import DateIconSVG from "../../assets/images/DateIconSVG";
 import WalletBackground from '../../components/templates/WalletBackground';
 
-
-import {
-    NativeBaseProvider,
-    VStack,
-    Center,
-    Stack,
-    Box,
-    Icon,
-    Input,
-    Container,
-    Button,
-  } from 'native-base';
 import ActualCoupon from '../../components/atoms/ActualCoupon';
 
-const WalletScreen = ({ navigation }) => {
+const WalletScreen = () => {
     const [buttonState, setButtonState] = useState(1);
-
 
     const pressHandler = (button_id)=>{
         setButtonState(button_id)
@@ -95,25 +82,19 @@ const WalletScreen = ({ navigation }) => {
                 <ActualCoupon 
                     Company_name="Sushi Saito" 
                     value={1000} 
-                    valueDescription="one_thousand"
                     image={require('../../assets/images/trial/Sushi.jpeg')}
                 />
                 <ActualCoupon 
                     Company_name="Ikea" 
                     value={20} 
-                    valueDescription="twenty"
                     image={require('../../assets/images/trial/furniture.webp')}
                 />
 
                 <ActualCoupon 
                     Company_name="Ikea" 
                     value={20} 
-                    valueDescription="twenty"
                     image={require('../../assets/images/trial/furniture.webp')}
                 />
-
-
-
             </ScrollView>
         </WalletBackground>
     </Layout>       
