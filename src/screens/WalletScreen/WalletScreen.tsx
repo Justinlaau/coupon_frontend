@@ -91,15 +91,32 @@ const WalletScreen = ({ navigation }) => {
                 <Text style={{marginRight: "5%"}}>Arrange with Date</Text>
             </View>
 
-            <ScrollView>
-                <ActualCoupon />
+            <ScrollView style={{height: "80%"}}>
+                <ActualCoupon 
+                    Company_name="Sushi Saito" 
+                    value={1000} 
+                    valueDescription="one_thousand"
+                    image={require('../../assets/images/trial/Sushi.jpeg')}
+                />
+                <ActualCoupon 
+                    Company_name="Ikea" 
+                    value={20} 
+                    valueDescription="twenty"
+                    image={require('../../assets/images/trial/furniture.webp')}
+                />
+
+                <ActualCoupon 
+                    Company_name="Ikea" 
+                    value={20} 
+                    valueDescription="twenty"
+                    image={require('../../assets/images/trial/furniture.webp')}
+                />
+
+
 
             </ScrollView>
-
-
         </WalletBackground>
-    </Layout>
-       
+    </Layout>       
     )
 }
 
