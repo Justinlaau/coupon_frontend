@@ -79,7 +79,7 @@ const WalletScreen = () => {
             </View>
 
             <ScrollView style={{height: "80%"}}>
-                <ActualCoupon 
+                {/* <ActualCoupon 
                     Company_name="Sushi Saito" 
                     value={1000} 
                     image={require('../../assets/images/trial/Sushi.jpeg')}
@@ -94,7 +94,7 @@ const WalletScreen = () => {
                     Company_name="Ikea" 
                     value={20} 
                     image={require('../../assets/images/trial/furniture.webp')}
-                />
+                /> */}
             </ScrollView>
         </WalletBackground>
     </Layout>       
