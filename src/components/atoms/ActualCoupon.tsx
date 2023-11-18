@@ -1,6 +1,6 @@
 import { color } from "@rneui/base";
 import React from "react";
-import {StyleSheet, View, Text, Image, Dimensions} from "react-native";
+import {StyleSheet, View, Text, Image, Dimensions, TouchableOpacity} from "react-native";
 import GiftIcon from 'react-native-vector-icons/FontAwesome'
 
 
@@ -25,12 +25,11 @@ const backgroundColor = {
 
 const ActualCoupon = props =>{
     return (
-        <View style={styles.container}>
-
+        <View style={styles.container} >
             <View style={{
                 width: deviceWidth - 20,
                 flexDirection: "row",
-                backgroundColor: backgroundColor[props.value],
+                backgroundColor: "#ff5733",
                 height: 200,
                 borderRadius: radius,
 
@@ -53,7 +52,7 @@ const ActualCoupon = props =>{
                             fontWeight: 'bold',
                             color: 'white',
                             marginTop:'20%'}}>
-                            {props.Company_name}
+                            {props.companyName}
                         </Text>
                         <Text style={{
                             fontSize: 13,
@@ -79,7 +78,6 @@ const ActualCoupon = props =>{
                         <Text style={{fontSize: 45, color: 'white'}}><Text style={{fontSize: 35}}>$</Text>{props.value}</Text>
                 </View>
             </View>
-
         </View>
 
 

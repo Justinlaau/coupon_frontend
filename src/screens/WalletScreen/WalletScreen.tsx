@@ -1,29 +1,48 @@
-import React, { useState } from 'react';
-import { View, 
-         TextInput,
-         StyleSheet,
-         Text,
-         SafeAreaView, 
-         ScrollView, 
-         Alert,
-         TouchableOpacity} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { 
+    View, 
+    TextInput,
+    StyleSheet,
+    Text,
+    SafeAreaView, 
+    ScrollView, 
+    Alert,
+    TouchableOpacity
+} from 'react-native';
 import Layout from '../../components/templates/Layout';
 import {SvgXml} from 'react-native-svg';
 import axios from 'axios';
 import DateIconSVG from "../../assets/images/DateIconSVG";
 import WalletBackground from '../../components/templates/WalletBackground';
-
 import ActualCoupon from '../../components/atoms/ActualCoupon';
+import CouponListingScreen from '../CouponListingScreen/CouponListingScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BASE_URL, BASE_S3_IMG_URL } from '../../config/config';
 
-const WalletScreen = () => {
+const WalletScreen = ({navigation: { navigate }}) => {
     const [buttonState, setButtonState] = useState(1);
+    const [couponList, setCouponList] = useState([]);
 
     const pressHandler = (button_id)=>{
         setButtonState(button_id)
     };
 
+    const fetchWallet = async () => {
+        // let token = await AsyncStorage.getItem('jwt');
+        console.log("fetching")
+        let {data} = await axios.post(BASE_URL + "coupon/clientWallet", {
+            "clientId": "1",
+            "sorted": true
+        });
+        setCouponList(data);
+    }
+
+    useEffect(() => {
+        fetchWallet();
+    }, []);
+
     return(
-    <Layout>
+    <Layout showTabBar={true}>
         <WalletBackground main={true} contentHeight="82%" tabBarSpace={true} >
             <View style={{ flexDirection: 'row', justifyContent: "space-between"}}>  
                 <View style={{ width:"35%", marginTop: "5%" , marginLeft: "10%"}}>
@@ -79,22 +98,19 @@ const WalletScreen = () => {
             </View>
 
             <ScrollView style={{height: "80%"}}>
-                <ActualCoupon 
-                    Company_name="Sushi Saito" 
-                    value={1000} 
-                    image={require('../../assets/images/trial/Sushi.jpeg')}
-                />
-                <ActualCoupon 
-                    Company_name="Ikea" 
-                    value={20} 
-                    image={require('../../assets/images/trial/furniture.webp')}
-                />
-
-                <ActualCoupon 
-                    Company_name="Ikea" 
-                    value={20} 
-                    image={require('../../assets/images/trial/furniture.webp')}
-                />
+                {
+                    couponList.map((coupon, index) => {
+                        return (
+                            <TouchableOpacity key={coupon.coupon_id} onPress={() => navigate("CouponItem", {coupon: coupon})}>
+                            <ActualCoupon
+                                companyName={coupon.owner_name} 
+                                value={coupon.value} 
+                                image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                            />
+                            </TouchableOpacity>
+                        )
+                    })
+                }
             </ScrollView>
         </WalletBackground>
     </Layout>       

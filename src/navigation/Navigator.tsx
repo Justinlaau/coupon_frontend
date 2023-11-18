@@ -6,6 +6,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import CouponListingScreen from '../screens/CouponListingScreen/CouponListingScreen';
 import RegisterScreen from '../screens/RegisterScreen/RegisterScreen';
 import WalletScreen from '../screens/WalletScreen/WalletScreen';
+import CouponItemScreen from '../screens/CouponItemScreen/CouponItemScreen';
+import CouponQRCodeScreen from '../screens/QRCode/CouponQRCodeScreen';
 const Stack = createNativeStackNavigator();
 
 const MyStack = () => {
@@ -19,6 +21,8 @@ const MyStack = () => {
         <Stack.Screen name="Main" component={MainScreen} />
         <Stack.Screen name="CouponListing" component={CouponListingScreen} />
         <Stack.Screen name="Register" component={RegisterScreen}/>
+        <Stack.Screen name="CouponItem" component={CouponItemScreen} />
+        <Stack.Screen name="CouponQRCode" component={CouponQRCodeScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

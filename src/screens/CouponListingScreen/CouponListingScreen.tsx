@@ -147,11 +147,15 @@ const CouponListingScreen = ({navigation}) => {
 
   return (
     <NativeBaseProvider>
-      <Layout>
+      <Layout showTabBar={true}>
         <Background listing={true} contentHeight="78%" tabBarSpace={true}>
             <View style={{position:"absolute" ,top: "-8%", width: "70%", height:"8%", left:"4%"}}>
               <Stack direction="row" w="100%" h="78%">
-                <Box w="10%" mr="3%"><SvgXml width="100%" height="100%" xml={LeftArrow} /></Box>
+                <Box w="10%" mr="3%">
+                  <Pressable onPress={() => navigation.goBack()}>
+                    <SvgXml width="100%" height="100%" xml={LeftArrow} />
+                  </Pressable>
+                </Box>
                 <VStack direction="row" w="76%" borderRadius="10" bg="white" alignItems="left">
                   <Center height="100%" width="15%">
                     <SvgXml height="40%" xml={MagnifierSVG} />
