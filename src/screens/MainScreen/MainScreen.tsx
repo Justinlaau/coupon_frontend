@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TextInput,
@@ -24,9 +24,30 @@ import {
   Button,
 } from 'native-base';
 import {SvgXml} from 'react-native-svg';
+import axios from 'axios';
+import { BASE_S3_IMG_URL, BASE_URL } from '../../config/config';
+import { use } from 'i18next';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 const MainScreen = ({navigation}) => {
+  const [couponGroups, setCouponGroups] = useState([])
+
+  const fetchCouponGroups = async () => {
+    try {
+      let {data} = await axios.post(BASE_URL + "coupon/getAllCouponGroups")
+      console.log("data")
+      console.log(data)
+      setCouponGroups(data)
+    } catch (error) {
+      console.log("error")
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchCouponGroups()
+  }, [])
+
   return (
     <Layout showTabBar={true}>
       <Background main={true} contentHeight="68%" tabBarSpace={true}>
@@ -65,7 +86,7 @@ const MainScreen = ({navigation}) => {
                     <Text fontWeight="light" color="grey" fontSize="15" onPress={() => navigation.navigate("CouponListing")}>View All</Text>
                   </Stack>
                 </Box>
-                <Box><MainPageListing /></Box>
+                <Box><MainPageListing couponGroups={couponGroups}/></Box>
               </ScrollView>
           </Stack>
         </NativeBaseProvider>

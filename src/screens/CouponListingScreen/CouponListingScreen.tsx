@@ -34,6 +34,7 @@ import {
   HStack,
   Pressable
 } from 'native-base';
+import { BASE_S3_IMG_URL, BASE_URL } from '../../config/config';
 
 const initialObjectState: {[key: string]: boolean} = {}
 
@@ -44,26 +45,70 @@ const CouponListingScreen = ({navigation}) => {
   const [selectedSubMenuItem, setSelectedSubMenuItem] = useState(0)
   const [selectedTypeCategory, setSelectedTypeCategory] = useState(initialObjectState)
   const [selectedAddressCategory, setSelectedAddressCategory] = useState("")
-  const [TypeCategory, setTypeCategory] = useState({})
+  const [TypeCategory, setTypeCategory] = useState([])
+  const [couponGroups, setCouponGroups] = useState([])
   // const dispatch = useDispatch();
 
-  const addFunc = () => {
-    console.log("Helo World Adding Coupon")
+  const addFunc = async (couponGroupId, expireDate) => {
+    let {data} = await axios.post(BASE_URL + "coupon/addCoupon", {
+      "coupon_group_id": couponGroupId,
+      "total": 1,
+      "client_id": "1", // fake client id
+      "expire_date": expireDate
+    })
+    console.log("Adding Coupon")
   }
 
   //TODO: Fake Category Type (Back End Not Ready)
-  const fetchTypeCategory = () => {
+  const fetchTypeCategory = async () => {
+    let {data} = await axios.post(BASE_URL + "coupon/AllCouponCategories") || []
     let ss : {[key: string]: boolean} = {}
-    let fakeTypeCategory = ["全選", "飲食", "超市", "便利店", "百貨公司", "美容", "化妝品", "服裝", "潮流", "電子", "電器", "家居", "傢俬", "寵物", "玩具", "運動", "戶外", "汽車", "零售"]
-    let ret = fakeTypeCategory.map((value, index) => {
-      ss[value] = false;
-      return {
-        typeCategoryId: index,
-        typeCategoryName: value
-      }
+    let ret = [{typeCategoryId: 0, typeCategoryName: "ALL"}]
+    data.map(value => {
+      ss[value["couponCategoryName"]] = false;
+      ret.push({
+        typeCategoryId: value["couponCategoryId"],
+        typeCategoryName: value["couponCategoryName"]
+      })
     })
+    ss["ALL"] = true;
     setTypeCategory(ret)
     setSelectedTypeCategory({...ss});
+  }
+
+  const fetchCouponGroups = async () => {
+    try {
+      let {data} = await axios.post(BASE_URL + "coupon/getAllCouponGroups")
+      console.log("data")
+      console.log(data)
+      setCouponGroups(data)
+    } catch (error) {
+      console.log("error")
+      console.log(error)
+    }
+  }
+
+  // TODO: allow filter by address category
+  const filterCouponGroups = async () => {
+    try {
+      let filterList = []
+      for (let category of TypeCategory) {
+        if (selectedTypeCategory[category.typeCategoryName]) {
+          filterList.push(category.typeCategoryId)
+        }
+      }
+      console.log("filterList")
+      console.log(filterList)
+      let {data} = await axios.post(BASE_URL + "coupon/filterCouponGroups", {
+        "categories": filterList,
+      })
+      console.log("data")
+      console.log(data)
+      setCouponGroups(data)
+    } catch (error) {
+      console.log("error")
+      console.log(error)
+    }
   }
 
   const showDropDownMenu = (menu) => {
@@ -143,6 +188,7 @@ const CouponListingScreen = ({navigation}) => {
   useEffect(() => {
     fetchAddressCategory()
     fetchTypeCategory()
+    fetchCouponGroups()
   }, [])
 
   return (
@@ -190,22 +236,24 @@ const CouponListingScreen = ({navigation}) => {
                     selectedSubMenuItem={selectedSubMenuItem}
                     typeCategory={TypeCategory}
                     selectedTypeCategory={selectedTypeCategory}
+                    filterCouponGroups={() => filterCouponGroups()}
+                    fetchCouponGroups={() => fetchCouponGroups()}
                   />
               </Box>
               ): null
             }
             <Box w="100%" h="86%">
               <ScrollView>
-                <VStack px="4%">
+                <Stack px="4%" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
                   {
-                    Array(20).fill(1).map((el, i) =>
-                      <HStack  w="100%" mb="4" py="4" key={i}>
-                        <CouponCard useYellowAdd={true} marb="0" imgSource="https://picsum.photos/200" imgAlt="test" merchantName="木作坊家品有限公司" couponDetail="$100現金卷" addFunc={() => addFunc()}/>
-                        <CouponCard useYellowAdd={true} marb="0" imgSource="https://picsum.photos/200" imgAlt="test" merchantName="木作坊家品有限公司" couponDetail="$100現金卷" addFunc={() => addFunc()}/>
-                      </HStack>
+                    couponGroups.map((el, i) => 
+                      <Box w="50%" mb="4" py="4" key={i}>
+                        <CouponCard useYellowAdd={true} marb="0" imgSource={BASE_S3_IMG_URL + el["image"]} imgAlt={el["title"]} merchantName={el["owner_name"]} couponDetail={el["title"]} 
+                                    addFunc={() => addFunc(el["coupon_group_id"], el["expire_date"])}/>
+                      </Box>
                     )
                   }
-                </VStack>
+                </Stack>
               </ScrollView>
             </Box>
         </Background>

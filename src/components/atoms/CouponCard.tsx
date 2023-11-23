@@ -27,9 +27,9 @@ import {
 const CouponCard = (props) => {
   return (
     <NativeBaseProvider>
-      <Box w="90%" h="200" mb={props.marb} borderRadius={15} bg="black" mx="4%">
+      <Box w="90%" h="220" mb={props.marb} borderRadius={15} bg="white" mx="4%" style={{shadowOffset:  {width: 1, height: 1}, shadowColor: "#000", shadowOpacity: 0.8, shadowRadius: 2, elevation: 2}}>
         <Box>
-          <AspectRatio w="100%" bg="black" ratio={16/14} borderRadius={15}>
+          <AspectRatio w="100%" bg="white" ratio={16/14} borderRadius={15}>
             <Image source={{
               uri: props.imgSource,
             }} alt={props.imgAlt} borderRadius={15} w="100%" h="100%" />

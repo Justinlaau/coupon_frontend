@@ -26,22 +26,30 @@ import {
   Text,
   HStack,
 } from 'native-base';
+import { BASE_S3_IMG_URL, BASE_URL } from '../../config/config';
+
 
 const MainPageListing = (props) => {
-  // image source should from parent
-  const addFunc = () => {
+  
+  const addFunc = async (couponGroupId, expireDate) => {
+    let {data} = await axios.post(BASE_URL + "coupon/addCoupon", {
+      "coupon_group_id": couponGroupId,
+      "total": 1,
+      "client_id": "1", // fake client id
+      "expire_date": expireDate
+    })
     console.log("Helo World Adding Coupon")
   }
 
   return (
     <NativeBaseProvider>
-      <VStack >
+      <VStack style={{ display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
         {
-          Array(20).fill(1).map((el, i) =>
-            <HStack  w="100%" mb="4" py="4" key={i}>
-              <CouponCard marb="0" imgSource="https://picsum.photos/200" imgAlt="test" merchantName="木作坊家品有限公司" couponDetail="$100現金卷" addFunc={() => addFunc()}/>
-              <CouponCard marb="0" imgSource="https://picsum.photos/200" imgAlt="test" merchantName="木作坊家品有限公司" couponDetail="$100現金卷" addFunc={() => addFunc()}/>
-            </HStack>
+          props.couponGroups.map((el, i) => 
+            <Box w="50%" mb="4" py="4" key={i}>
+              <CouponCard useYellowAdd={true} marb="0" imgSource={BASE_S3_IMG_URL + el["image"]} imgAlt={el["title"]} merchantName={el["owner_name"]} couponDetail={el["title"]} 
+                          addFunc={() => addFunc(el["coupon_group_id"], el["expire_date"])}/>
+            </Box>
           )
         }
       </VStack>

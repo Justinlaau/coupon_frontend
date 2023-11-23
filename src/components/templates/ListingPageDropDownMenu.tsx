@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import PopularSVG from '../../assets/images/PopularSVG';
@@ -82,25 +82,26 @@ const TypeCategorySubMenu = (props) => {
     </Box>
   )
 }
+
 const initialObjectState: {[key: string]: boolean} = {}
 
 const ListingMainPageDropDownMenu = (props) => {
-  const originSelectedTypeCategory: {[key: string]: boolean} = props.selectedTypeCategory;
-  const [localSelectedStates, setLocalSelectedStates] = useState({initialObjectState})
-  console.log("originSelectedTypeCategory: " + originSelectedTypeCategory)
+  const [localSelectedStates, setLocalSelectedStates] = useState(initialObjectState)
   
   const onCancel = () => {
     console.log("cancel selection");
-    props.setSelectedTypeCategory({...originSelectedTypeCategory});
-    setLocalSelectedStates({initialObjectState});
+    props.setSelectedTypeCategory({...localSelectedStates});
     props.showDropDownMenu(0);
   }
 
-  const onConfirm = () => {
-    console.log("confirm selection");
-    props.setSelectedTypeCategory({...localSelectedStates})
+  const onConfirm = async () => {
+    setLocalSelectedStates({...props.selectedTypeCategory});
     props.showDropDownMenu(0);
-    // Todo: call fetch filter api
+    if (props.selectedTypeCategory['ALL'] == true) {
+      props.fetchCouponGroups();
+    } else {
+      props.filterCouponGroups();
+    }
   }
 
   const updateState = (value: string) => {
@@ -109,14 +110,28 @@ const ListingMainPageDropDownMenu = (props) => {
     let prevSelectedTypeCategory: {[key: string]: boolean} = props.selectedTypeCategory;
     if (props.selectedTypeCategory[value] == true) {
       prevSelectedTypeCategory[value] = false;
-      props.setSelectedTypeCategory(prevSelectedTypeCategory)
+      props.setSelectedTypeCategory({...prevSelectedTypeCategory})
     } else {
+      if (value == 'ALL') {
+        for (let key in prevSelectedTypeCategory) {
+          prevSelectedTypeCategory[key] = false;
+        }
+      } else {
+        prevSelectedTypeCategory['ALL'] = false;
+      }
       prevSelectedTypeCategory[value] = true;
-      props.setSelectedTypeCategory(prevSelectedTypeCategory)
+      props.setSelectedTypeCategory({...prevSelectedTypeCategory})
     }
-    console.log("updated selected Category")
-    console.log(props.selectedTypeCategory)
   }
+
+
+  useEffect(() => {
+    let originalState: {[key: string]: boolean} = {};
+    props.typeCategory?.map((value) => {
+      originalState[value.typeCategoryName] = props.selectedTypeCategory[value.typeCategoryName];
+    })
+    setLocalSelectedStates({...originalState});
+  }, [])
 
   return (
     <NativeBaseProvider>
@@ -155,7 +170,7 @@ const ListingMainPageDropDownMenu = (props) => {
           </Box>
         ) : 
         (
-          <Box minH="30%" maxH="470" w="100%" bg="white" position="absolute" shadow={2} top={0} borderBottomRadius="50" zIndex="1000">
+          <Box minh="30%" maxH="470" w="100%" bg="white" position="absolute" shadow={2} top={0} borderBottomRadius="50" zIndex="1000">
             <ScrollView>
               <Box w="85%" display="flex" alignSelf="center" minH="20">
                 {/* <TypeCategorySubMenu typeCategory={props.typeCategory} setSelectedTypeCategory={props.setSelectedTypeCategory} selectedTypeCategory={props.selectedTypeCategory} /> */}
@@ -164,7 +179,7 @@ const ListingMainPageDropDownMenu = (props) => {
                     <Box key={value.typeCategoryName} p="1" m="2" borderBottomWidth={0.2} borderBottomColor="grey" marginTop="auto" marginBottom="auto" py="5%" display="flex" flexDirection="row">
                       <Text fontSize="12" w="92%">{value.typeCategoryName}</Text>
                         {/* <Checkbox onChange={() => {updateState(value.typeCategoryName)}}><Box/></Checkbox> */}
-                        { localSelectedStates[value.typeCategoryName] == true ? (
+                        { props.selectedTypeCategory[value.typeCategoryName] == true ? (
                             <Pressable onPress={() => updateState(value.typeCategoryName)}><SvgXml height="25" width="25" xml={CheckBoxSVG} /></Pressable>
                           ) : (
                             <Pressable onPress={() => updateState(value.typeCategoryName)}><SvgXml height="25" width="25" xml={CheckBoxEmptySVG} /></Pressable>
@@ -175,7 +190,7 @@ const ListingMainPageDropDownMenu = (props) => {
                 </Box>
               </Box>
             </ScrollView>
-            <Box w="100%" h="15%" pt="3%" borderBottomRadius="50">
+            <Box w="100%" h="90" pt="3%" borderBottomRadius="50">
                 <Box w="100%" h="100%" display="flex" flexDirection="row" justifyContent="space-evenly">
                   <Box h="65%" w="30%" borderColor="red.500" borderWidth="2" borderRadius="50" alignItems="center" justifyContent="center"><Text onPress={() => onCancel()} color="red.500" fontWeight="bold">取消</Text></Box>
                   <Box h="65%" w="30%" bg="red.500" borderRadius="50" alignItems="center" justifyContent="center"><Text onPress={() => onConfirm()} fontWeight="bold" color="white">確定</Text></Box>

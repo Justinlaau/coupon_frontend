@@ -100,15 +100,28 @@ const WalletScreen = ({navigation: { navigate }}) => {
             <ScrollView style={{height: "80%"}}>
                 {
                     couponList.map((coupon, index) => {
-                        return (
-                            <TouchableOpacity key={coupon.coupon_id} onPress={() => navigate("CouponItem", {coupon: coupon})}>
-                            <ActualCoupon
-                                companyName={coupon.owner_name} 
-                                value={coupon.value} 
-                                image={{uri: BASE_S3_IMG_URL + coupon.image}}
-                            />
-                            </TouchableOpacity>
-                        )
+                        if (coupon.used < coupon.total && buttonState == 1) {
+                            return (
+                                <TouchableOpacity key={coupon.coupon_id} onPress={() => navigate("CouponItem", {coupon: coupon})}>
+                                <ActualCoupon
+                                    companyName={coupon.owner_name} 
+                                    value={coupon.value} 
+                                    image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                                />
+                                </TouchableOpacity>
+                            )
+                        } else if (coupon.used >= coupon.total && buttonState == 2) {
+                            return (
+                                <ActualCoupon
+                                    key={coupon.coupon_id}
+                                    companyName={coupon.owner_name} 
+                                    value={coupon.value} 
+                                    image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                                />
+                            )
+                        } else {
+                            return null;
+                        }
                     })
                 }
             </ScrollView>
