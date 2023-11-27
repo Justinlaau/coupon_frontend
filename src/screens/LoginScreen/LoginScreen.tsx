@@ -10,6 +10,7 @@ import { CheckBoxes } from '../../components/atoms/CheckBoxes';
 import { Divider } from "@rneui/base";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BASE_URL } from '../../config/config';
 
 const LoginScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
@@ -36,7 +37,7 @@ const LoginScreen = ({navigation}) => {
     }
     else {
       try {
-        const { data } = await axios.post('http://192.168.1.85:8000/user/login/', payload)
+        const { data } = await axios.post(BASE_URL + 'user/login/', payload)
         let token = data.token;
         await AsyncStorage.setItem('jwt', token);
         console.log('Login successful');

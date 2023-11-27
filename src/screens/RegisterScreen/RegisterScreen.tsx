@@ -11,6 +11,7 @@ import { ButtonBox } from '../../components/atoms/ButtonBox';
 import axios from 'axios';
 import { background } from 'native-base/lib/typescript/theme/styled-system';
 import { color } from '@rneui/base';
+import {BASE_URL} from '../../config/config';
 
 const RegisterScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
@@ -44,7 +45,7 @@ const RegisterScreen = ({ navigation }) => {
             Alert.alert('Please enter email');
         }
         console.log(email)
-        await axios.post('http://192.168.1.85:8000/user/test_email/', payload)
+        await axios.post(BASE_URL + 'user/test_email/', payload)
           .then(response => {
             console.log('Request sent successfully');
             // Handle the response as needed
@@ -68,7 +69,7 @@ const RegisterScreen = ({ navigation }) => {
         if(username == ''){
             Alert.alert('please enter username');
         }
-        await axios.post('http://192.168.1.85:8000/user/register/', payload)
+        await axios.post(BASE_URL + 'user/register/', payload)
           .then(response => {
             console.log('Request sent successfully');
             // Handle the response as needed

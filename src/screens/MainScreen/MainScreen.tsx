@@ -27,13 +27,17 @@ import {SvgXml} from 'react-native-svg';
 import axios from 'axios';
 import { BASE_S3_IMG_URL, BASE_URL } from '../../config/config';
 import { use } from 'i18next';
+import { useDispatch } from 'react-redux';
+import { toggleLoading } from '../../../Redux/Action/CommonAction';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 const MainScreen = ({navigation}) => {
+  const dispatch = useDispatch();
   const [couponGroups, setCouponGroups] = useState([])
 
   const fetchCouponGroups = async () => {
     try {
+      dispatch(toggleLoading(true));
       let {data} = await axios.post(BASE_URL + "coupon/getAllCouponGroups")
       console.log("data")
       console.log(data)
@@ -41,6 +45,8 @@ const MainScreen = ({navigation}) => {
     } catch (error) {
       console.log("error")
       console.log(error)
+    } finally {
+      dispatch(toggleLoading(false));
     }
   }
 

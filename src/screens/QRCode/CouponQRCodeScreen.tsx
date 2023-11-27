@@ -16,6 +16,9 @@ import MainPageListing from '../../components/templates/MainPageListing';
 import ActualCoupon from '../../components/atoms/ActualCoupon';
 import LeftArrow from '../../assets/images/LeftArrow';
 import {CatSVG} from '../../assets/images/CatSVG';
+import {connectWebSocket} from '../Websocket/Websocket';
+import io from 'socket.io-client';
+import { BASE_WS_URL } from '../../config/config';
 import {
   NativeBaseProvider,
   VStack,
@@ -33,30 +36,47 @@ import {
 import { BASE_URL, BASE_S3_IMG_URL } from '../../config/config';
 import {SvgXml} from 'react-native-svg';
 import { Buffer } from 'buffer'
+import { useDispatch } from 'react-redux';
+import { toggleLoading, toggleMessagePopup, setMessagePopup } from '../../../Redux/Action/CommonAction';
+import { TOGGLE_SUCCESS_POPUP, SET_SUCCESS_MESSAGE } from '../../../Redux/Action/ActionType';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 const CouponQRCodeScreen = ({navigation, route}) => {
+  const dispatch = useDispatch();
   const params = route.params;
   const coupon = params.coupon
   const [qrCode, setQRCode] = useState("https://reactnative.dev/img/tiny_logo.png");
+  const [ws, setWs] = useState(null);
 
   const fetchCouponQRCode = async (expireDate, clientId, couponId, nums) => {
-    let {data} = await axios.post(BASE_URL + "coupon/genUsageCouponQRCode", {
-      "expire_date": expireDate,
-      "client_id": clientId,
-      "coupon_id": couponId,
-      "nums": nums
-    }, {
-      responseType: 'arraybuffer',
-    }); 
-    
-    const base64Image = `data:image/png;base64,${Buffer.from(data, 'binary').toString('base64')}`;
-    setQRCode(base64Image);
+    try {
+      dispatch(toggleLoading(true));
+      let {data} = await axios.post(BASE_URL + "coupon/genUsageCouponQRCode", {
+        "expire_date": expireDate,
+        "client_id": clientId,
+        "coupon_id": couponId,
+        "nums": nums
+      }, {
+        responseType: 'arraybuffer',
+      }); 
+      
+      const base64Image = `data:image/png;base64,${Buffer.from(data, 'binary').toString('base64')}`;
+      setQRCode(base64Image);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(toggleLoading(false));
+    }
   }
-  
+
+  // useEffect(() => {
+    
+  // }, [ws])
+
   useEffect(() => {
     fetchCouponQRCode(coupon.expire_date, coupon.client_id, coupon.coupon_id, 1);
+    // connectWebSocket();
   }, []);
 
   return (

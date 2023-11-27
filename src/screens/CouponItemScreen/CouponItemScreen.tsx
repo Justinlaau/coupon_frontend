@@ -13,6 +13,8 @@ import MainPageMenu from '../../components/templates/MainPageMenu';
 import MainPageListing from '../../components/templates/MainPageListing';
 import ActualCoupon from '../../components/atoms/ActualCoupon';
 import MerchantIconSVG from '../../assets/images/MerchantIconSVG';
+import { useDispatch } from 'react-redux';
+import { toggleLoading } from '../../../Redux/Action/CommonAction';
 import {
   NativeBaseProvider,
   VStack,
@@ -35,13 +37,25 @@ const CouponItemScreen = ({navigation, route}) => {
   const params = route.params;
   const coupon = params.coupon
   const [dayLeft, setDayLeft] = useState(0);
+  const dispatch = useDispatch();
+
+  const initFetch = () => {
+    try {
+      dispatch(toggleLoading(true));
+      let expireDate = new Date(coupon.expire_date);
+      let today = new Date();
+      let diff = expireDate.getTime() - today.getTime();
+      let days = Math.ceil(diff / (1000 * 3600 * 24));
+      setDayLeft(days);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(toggleLoading(false));
+    }
+  }
 
   useEffect(() => {
-    let expireDate = new Date(coupon.expire_date);
-    let today = new Date();
-    let diff = expireDate.getTime() - today.getTime();
-    let days = Math.ceil(diff / (1000 * 3600 * 24));
-    setDayLeft(days);
+    initFetch();
   }, [])
   
 

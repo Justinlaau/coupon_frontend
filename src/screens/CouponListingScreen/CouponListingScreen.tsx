@@ -11,7 +11,8 @@ import TypeCategorySVG from '../../assets/images/TypeCategorySVG';
 import CouponCard from '../../components/atoms/CouponCard';
 import ListingPageDropDownMenu from '../../components/templates/ListingPageDropDownMenu';
 import axios from 'axios';
-
+import { useDispatch } from 'react-redux';
+import { toggleLoading } from '../../../Redux/Action/CommonAction';
 import {
   View,
   TextInput,
@@ -39,6 +40,7 @@ import { BASE_S3_IMG_URL, BASE_URL } from '../../config/config';
 const initialObjectState: {[key: string]: boolean} = {}
 
 const CouponListingScreen = ({navigation}) => {
+  const dispatch = useDispatch();
   const [selectedMenu, setSelectedMenu] = useState(0)
   const [selectedSubMenu, setSelectedSubMenu] = useState(0)
   const [addressCategory, setAddressCategory] = useState({})
@@ -185,10 +187,22 @@ const CouponListingScreen = ({navigation}) => {
     }
   }
 
+  const initFetch = () => {
+    try {
+      dispatch(toggleLoading(true));
+      fetchAddressCategory()
+      fetchTypeCategory()
+      fetchCouponGroups()
+    } catch (error) {
+      console.log("error")
+      console.log(error)
+    } finally {
+      dispatch(toggleLoading(false));
+    }
+  }
+
   useEffect(() => {
-    fetchAddressCategory()
-    fetchTypeCategory()
-    fetchCouponGroups()
+    initFetch()
   }, [])
 
   return (

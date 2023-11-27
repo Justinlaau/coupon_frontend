@@ -18,8 +18,11 @@ import ActualCoupon from '../../components/atoms/ActualCoupon';
 import CouponListingScreen from '../CouponListingScreen/CouponListingScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL, BASE_S3_IMG_URL } from '../../config/config';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleLoading } from '../../../Redux/Action/CommonAction';
 
 const WalletScreen = ({navigation: { navigate }}) => {
+    const dispatch = useDispatch();
     const [buttonState, setButtonState] = useState(1);
     const [couponList, setCouponList] = useState([]);
 
@@ -28,13 +31,20 @@ const WalletScreen = ({navigation: { navigate }}) => {
     };
 
     const fetchWallet = async () => {
-        // let token = await AsyncStorage.getItem('jwt');
-        console.log("fetching")
-        let {data} = await axios.post(BASE_URL + "coupon/clientWallet", {
-            "clientId": "1",
-            "sorted": true
-        });
-        setCouponList(data);
+        try {
+            // let token = await AsyncStorage.getItem('jwt');
+            console.log("fetching")
+            dispatch(toggleLoading(true));
+            let {data} = await axios.post(BASE_URL + "coupon/clientWallet", {
+                "clientId": "1",
+                "sorted": true
+            });
+            setCouponList(data);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            dispatch(toggleLoading(false));
+        }
     }
 
     useEffect(() => {
