@@ -11,19 +11,37 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleLoading } from '../../Redux/Action/CommonAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect } from 'react';
-import { connectWebSocket } from '../screens/Websocket/Websocket';
+import { SET_BASE_USER } from '../../Redux/Action/ActionType';
+import axios from 'axios';
+import { BASE_URL } from '../config/config';
 
 const Stack = createNativeStackNavigator();
 
 const MyStack = () => {
   const dispatch = useDispatch();
 
-  const initFetch = () => {
+  const initFetch = async () => {
     try {
+      console.log("init fetch")
       dispatch(toggleLoading(true));
-      const logonToken = AsyncStorage.getItem('jwt');
+      const logonToken = await AsyncStorage.getItem('jwt');
+      console.log("token: " + logonToken)
       if (logonToken != null) {
-
+        // fetch user info
+        axios.defaults.headers.common['Authorization'] = logonToken;
+        const request_response = await axios.post(BASE_URL + "/user/UserGetUserInfo");
+        let username = "";
+        if (request_response.data["result"] == 0) {
+          username = request_response.data["user"]["username"]
+        }
+        console.log("username: " + username)
+        dispatch({
+          type: SET_BASE_USER,
+          data: {
+            token: logonToken,
+            username: username
+          }
+        })
       }
     } catch (error) {
       console.log(error)
@@ -40,7 +58,7 @@ const MyStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName = "Main"
+        initialRouteName = "Login"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Wallet" component={WalletScreen} />

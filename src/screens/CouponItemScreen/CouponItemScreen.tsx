@@ -116,8 +116,8 @@ const CouponItemScreen = ({navigation, route}) => {
               />
               <Stack h="12%">
                 <TouchableOpacity onPress={() => navigation.navigate('CouponQRCode', {coupon: coupon})}>
-                <Box style={{alignItems: "center"}}>
-                  <Text w="80%" h="100%" fontWeight="600" fontSize="xl" style={{backgroundColor: "#d63838", borderRadius: 20, color:"white", textAlignVertical: "center", textAlign: "center"}}>立即使用</Text>
+                <Box w="80%" h="100%" style={{backgroundColor: "#d63838", borderRadius: 20, alignItems: "center", justifyContent: "center", marginLeft: "auto", marginRight: "auto"}}>
+                  <Text fontWeight="600" fontSize="xl" style={{color:"white", textAlignVertical: "center", textAlign: "center"}}>立即使用</Text>
                 </Box>
                 </TouchableOpacity>
               </Stack>

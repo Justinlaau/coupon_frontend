@@ -1,9 +1,9 @@
 import {combineReducers} from 'redux';
-import {nameReducer} from './NameReducer';
 import { commonReducer } from './CommonReducer';
+import { authenticationReducer } from './AuthenticationReducer';
 
 const rootReducer = combineReducers({
-  nameReducer,
+  authenticationReducer,
   commonReducer,
 });
 export default rootReducer;

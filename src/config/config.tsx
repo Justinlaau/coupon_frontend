@@ -1,4 +1,4 @@
 export const BASE_URL = "http://192.168.31.249:8000/"
-export const BASE_WS_URL = "ws://192.169.31.249:8000/"
+// export const BASE_URL = "http://192.168.1.62:8000/"
 
 export const BASE_S3_IMG_URL = "https://coupongo-bucket.s3.ap-east-1.amazonaws.com/"

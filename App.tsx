@@ -5,9 +5,24 @@ import { NavigationContainer } from '@react-navigation/native';
 import Navigator from './src/navigation/Navigator';
 import {Provider} from 'react-redux';
 import Store from './Redux/Store/Store';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import { useDispatch } from 'react-redux';
+import { SET_BASE_USER } from './Redux/Action/ActionType';
 
 const App = () => {
+  const setToken = async () => {
+    const token = await AsyncStorage.getItem('jwt') || "";
+    console.log(token)
+    axios.defaults.headers.common['Authorization'] = token;
+    return token;
+  }
+
+  useEffect(() => {
+    setToken();
+  }, []);
+
   return (
     <Provider store={Store}>
       <Navigator />

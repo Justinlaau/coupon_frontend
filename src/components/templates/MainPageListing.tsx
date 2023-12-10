@@ -34,9 +34,7 @@ const MainPageListing = (props) => {
   const addFunc = async (couponGroupId, expireDate) => {
     let {data} = await axios.post(BASE_URL + "coupon/addCoupon", {
       "coupon_group_id": couponGroupId,
-      "total": 1,
-      "client_id": "1", // fake client id
-      "expire_date": expireDate
+      "total": 1
     })
     console.log("Helo World Adding Coupon")
   }

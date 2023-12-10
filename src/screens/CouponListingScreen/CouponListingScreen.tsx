@@ -55,7 +55,6 @@ const CouponListingScreen = ({navigation}) => {
     let {data} = await axios.post(BASE_URL + "coupon/addCoupon", {
       "coupon_group_id": couponGroupId,
       "total": 1,
-      "client_id": "1", // fake client id
       "expire_date": expireDate
     })
     console.log("Adding Coupon")
@@ -216,7 +215,7 @@ const CouponListingScreen = ({navigation}) => {
                     <SvgXml width="100%" height="100%" xml={LeftArrow} />
                   </Pressable>
                 </Box>
-                <VStack direction="row" w="76%" borderRadius="10" bg="white" alignItems="left">
+                <VStack direction="row" w="76%" borderRadius="10" bg="white" alignItems="left" style={{alignItems: "center"}}>
                   <Center height="100%" width="15%">
                     <SvgXml height="40%" xml={MagnifierSVG} />
                   </Center>

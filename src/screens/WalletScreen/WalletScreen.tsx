@@ -32,11 +32,8 @@ const WalletScreen = ({navigation: { navigate }}) => {
 
     const fetchWallet = async () => {
         try {
-            // let token = await AsyncStorage.getItem('jwt');
-            console.log("fetching")
             dispatch(toggleLoading(true));
             let {data} = await axios.post(BASE_URL + "coupon/clientWallet", {
-                "clientId": "1",
                 "sorted": true
             });
             setCouponList(data);

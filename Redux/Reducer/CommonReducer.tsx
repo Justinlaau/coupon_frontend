@@ -12,7 +12,7 @@ const initialState = {
   data: {
     commonLoading: false,
     errorPopup: false,
-    successPopup: true,
+    successPopup: false,
     operationPopup: false,
     successPopupMessage: "success",
     errorPopupMessage: "error",

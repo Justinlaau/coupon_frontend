@@ -11,8 +11,11 @@ import { Divider } from "@rneui/base";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../../config/config';
+import { useDispatch } from 'react-redux';
+import { SET_BASE_USER } from '../../../Redux/Action/ActionType';
 
 const LoginScreen = ({navigation}) => {
+  const dispatch = useDispatch();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -37,22 +40,21 @@ const LoginScreen = ({navigation}) => {
     }
     else {
       try {
-        const { data } = await axios.post(BASE_URL + 'user/login/', payload)
+        const { data } = await axios.post(BASE_URL + 'user/LoginRequest', payload)
         let token = data.token;
         await AsyncStorage.setItem('jwt', token);
-        console.log('Login successful');
-        // const jwt = await AsyncStorage.getItem('jwt');
-        // const headers = {
-        //   Authorization: `Bearer ${jwt}`
-        // };
-        // const response = await axios.get('http://192.168.31.13:8000/user/get_user_info/', { headers });
+        axios.defaults.headers.common['Authorization'] = token;
+        dispatch({
+          type: SET_BASE_USER,
+          data: {
+            token: token,
+            username: username
+          }
+        })
         // console.log(response)
       } catch (e) {
         Alert.alert("Username or password is wrong");
       }
-      // const { data } = await axios.post('http://192.168.31.13:8000/user/login/', payload)
-      // console.log(data);
-      // setLoading(false);
     }
     navigation.navigate('Main')
     setLoading(false);
@@ -61,11 +63,14 @@ const LoginScreen = ({navigation}) => {
     <Background main={true} contentHeight="76%">
       <View style={LoginStyle.Layout}>
         <View style={LoginStyle.Container}>
-          <Text style={[LoginStyle.Title,
-          FontStyles.small,
-          FontStyles.bold,
-          ]}>
-            請註冊或登入</Text>
+          <Text style={[
+              LoginStyle.Title,
+              FontStyles.small,
+              FontStyles.bold,
+            ]}
+          >
+            請註冊或登入
+          </Text>
           <View style={LoginStyle.Icon}>
             <SvgXml width={'70'} xml={ProfileSVG} />
           </View>

@@ -76,7 +76,7 @@ const MainScreen = ({navigation}) => {
               </Center>
             </Stack>
               <ScrollView h="100" w="100%" px="6" py="5">
-                <Stack h="50" w="100%" direction="row" mb="9%">
+                <Stack h="50" w="100%" direction="row" mb="9%" style={{alignItems: "center"}}>
                   <Center height="100%" width="15%">
                     <SvgXml height="40%" xml={MagnifierSVG} />
                   </Center>

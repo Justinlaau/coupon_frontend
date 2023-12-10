@@ -19,7 +19,7 @@ export const toggleMessagePopup = (data: any, messageType: String) => ({
   data
 });
 
-export const setMessagePopup = (data: any, messageType: String) => ({
+export const setMessagePopup = (data: any, messageType: string) => ({
   type: messageType,
   data
 });
