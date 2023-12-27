@@ -14,6 +14,7 @@ import React, { useEffect } from 'react';
 import { SET_BASE_USER } from '../../Redux/Action/ActionType';
 import axios from 'axios';
 import { BASE_URL } from '../config/config';
+import MapScreen from '../screens/MapScreen/MapScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,7 +59,7 @@ const MyStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName = "Login"
+        initialRouteName = "Map"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Wallet" component={WalletScreen} />
@@ -67,6 +68,7 @@ const MyStack = () => {
         <Stack.Screen name="Register" component={RegisterScreen}/>
         <Stack.Screen name="CouponItem" component={CouponItemScreen} />
         <Stack.Screen name="CouponQRCode" component={CouponQRCodeScreen} />
+        <Stack.Screen name="Map" component={MapScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
