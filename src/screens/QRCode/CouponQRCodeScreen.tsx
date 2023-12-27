@@ -50,7 +50,7 @@ const CouponQRCodeScreen = ({navigation, route}) => {
   const [qrCode, setQRCode] = useState("https://reactnative.dev/img/tiny_logo.png");
   const token = useSelector((state: any) => state.authenticationReducer.baseUser.token);
   
-  const fetchCouponQRCode = async (expireDate, clientId, couponId, nums) => {
+  const fetchCouponQRCode = async (couponId: any, nums: any) => {
     try {
       dispatch(toggleLoading(true));
       let {data} = await axios.post(BASE_URL + "coupon/genUsageCouponQRCode", {
@@ -70,7 +70,7 @@ const CouponQRCodeScreen = ({navigation, route}) => {
   }
 
   useEffect(() => {
-    fetchCouponQRCode(coupon.expire_date, coupon.client_id, coupon.id, coupon.nums);
+    fetchCouponQRCode(coupon.coupon_id, coupon.total);
     console.log("connecting to socket")
     couponSocket.auth = {token: token};
     couponSocket.connect();
@@ -93,6 +93,7 @@ const CouponQRCodeScreen = ({navigation, route}) => {
   useEffect(() => {
     const handleBackPress = () => {
       couponSocket.disconnect();
+      return true;
     };
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
     return () => {

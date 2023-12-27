@@ -79,11 +79,11 @@ const CouponItemScreen = ({navigation, route}) => {
                   <Box flexDirection={"row"} h="30%" style={{alignItems: "center"}}>
                     <Text fontWeight="500">{coupon.owner_name}</Text>
                   </Box>
-                  <Box flexDirection={"row"} h="30%" style={{alignItems: "center"}}>
+                  <Box flexDirection={"row"} h="50%" style={{alignItems: "center"}}>
                     <SvgXml width="10%" height="80%" xml={AddressSVG}/>
                     <Text fontWeight="300" style={{marginLeft: "2%"}}>{coupon.owner_address}</Text>
                   </Box>
-                  <Box h="25%"/>
+                  <Box h="15%"/>
                 </Stack>
                 <Stack>
                   <Box h="20%"/>

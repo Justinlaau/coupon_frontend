@@ -106,7 +106,7 @@ const WalletScreen = ({navigation: { navigate }}) => {
 
             <ScrollView style={{height: "80%"}}>
                 {
-                    couponList.map((coupon, index) => {
+                    couponList.map((coupon: any, index) => {
                         if (coupon.used < coupon.total && buttonState == 1) {
                             return (
                                 <TouchableOpacity key={coupon.coupon_id} onPress={() => navigate("CouponItem", {coupon: coupon})}>

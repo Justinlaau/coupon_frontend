@@ -30,7 +30,7 @@ const MyStack = () => {
       if (logonToken != null) {
         // fetch user info
         axios.defaults.headers.common['Authorization'] = logonToken;
-        const request_response = await axios.post(BASE_URL + "/user/UserGetUserInfo");
+        const request_response = await axios.post(BASE_URL + "user/UserGetUserInfo");
         let username = "";
         if (request_response.data["result"] == 0) {
           username = request_response.data["user"]["username"]
@@ -55,11 +55,10 @@ const MyStack = () => {
     initFetch();
   }, []);
 
-
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName = "Map"
+        initialRouteName = "Login"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Wallet" component={WalletScreen} />

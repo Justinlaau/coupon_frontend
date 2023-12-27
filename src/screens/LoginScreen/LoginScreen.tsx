@@ -19,11 +19,11 @@ const LoginScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const handleUsernameChange = (text) => {
+  const handleUsernameChange = (text: string) => {
     setUsername(text);
   };
 
-  const handlePasswordChange = (text) => {
+  const handlePasswordChange = (text: string) => {
     setPassword(text);
   }
 
@@ -41,22 +41,30 @@ const LoginScreen = ({navigation}) => {
     else {
       try {
         const { data } = await axios.post(BASE_URL + 'user/LoginRequest', payload)
-        let token = data.token;
-        await AsyncStorage.setItem('jwt', token);
-        axios.defaults.headers.common['Authorization'] = token;
-        dispatch({
-          type: SET_BASE_USER,
-          data: {
-            token: token,
-            username: username
-          }
-        })
+        console.log("data")
+        console.log(data)
+        if (data.result == 0) {
+          let token = data.token;
+          await AsyncStorage.setItem('jwt', token);
+          axios.defaults.headers.common['Authorization'] = token;
+          dispatch({
+            type: SET_BASE_USER,
+            data: {
+              token: token,
+              username: username
+            }
+          })
+          navigation.navigate('Main');
+        } else {
+          Alert.alert("Username or password is wrong");
+        }
         // console.log(response)
       } catch (e) {
+        console.log("error")
+        console.log(e)
         Alert.alert("Username or password is wrong");
       }
     }
-    navigation.navigate('Main')
     setLoading(false);
   };
   return (
