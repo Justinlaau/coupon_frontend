@@ -22,14 +22,14 @@ export default class MapScreen extends Component{
     state = {
         markers: [],
         coordinates: [
-          { name: 'Burger', latitude: 37.8025259, longitude: -122.4351431},
-          { name: 'Pizza', latitude: 37.7946386, longitude: -122.421646},
-          { name: 'Soup', latitude: 37.7665248, longitude: -122.4165628},
+          { name: '7-Eleven 1', latitude: 22.281080, longitude: 114.175590},
+          { name: '7-Eleven 2', latitude: 22.278633638083072, longitude: 114.17193079846916},
+          { name: 'Pacific Coffee', latitude: 22.28108630910841, longitude: 114.17463338202094},
         ],
         initialPosition: {
             latitude: 0,
             longitude: 0,            
-            latitudeDelta: 0.09,
+            latitudeDelta: 0.055,
             longitudeDelta: 0.035
         }
     }
@@ -64,35 +64,38 @@ export default class MapScreen extends Component{
             let initialPosition = {
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
+              latitudeDelta: 0.055,
+              longitudeDelta: 0.035
             }
-    
-            this.setState({ initialPosition });
+            console.log(initialPosition)
+            this.setState({ initialPosition: initialPosition });
+
+            this._map.animateToRegion({
+              latitude: this.state.initialPosition.latitude,
+              longitude: this.state.initialPosition.longitude,
+              latitudeDelta: 0.055,
+              longitudeDelta: 0.035
+            });
           }
-        )
+        );
       }
 
     onCarouselItemChange = (index) => {
         let location = this.state.coordinates[index];
-    
-        this._map.animateToRegion({
-          latitude: location.latitude,
-          longitude: location.longitude,
-          latitudeDelta: 0.09,
-          longitudeDelta: 0.035
-        })
-    
-        this.state.markers[index].showCallout()
+        console.log(location);
+        this.onMarkerPressed(location, index);
+        this.state.markers[index].showCallout();
       }
     
     onMarkerPressed = (location, index) => {
         this._map.animateToRegion({
           latitude: location.latitude,
           longitude: location.longitude,
-          latitudeDelta: 0.09,
+          latitudeDelta: 0.055,
           longitudeDelta: 0.035
         });
-    
         this._carousel.snapToItem(index);
+        this.forceUpdate();
       }
 
     renderCarouselItem = ({ item }) =>(
