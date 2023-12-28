@@ -12,8 +12,11 @@ import axios from 'axios';
 import { background } from 'native-base/lib/typescript/theme/styled-system';
 import { color } from '@rneui/base';
 import {BASE_URL} from '../../config/config';
+import { useDispatch } from 'react-redux';
+import { toggleLoading } from '../../../Redux/Action/CommonAction';
 
 const RegisterScreen = ({ navigation }) => {
+    const dispatch = useDispatch()
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [comfirm_pw, setComfirmPw] = useState('');
@@ -38,22 +41,23 @@ const RegisterScreen = ({ navigation }) => {
         setVerificationcode(text)
     }
     const sendEmailCode = async () => {
-        const payload = {
-            "email": email
-        };
-        if(email == ''){
-            Alert.alert('Please enter email');
+        try {
+            dispatch(toggleLoading(true))
+            const payload = {
+                "email": email
+            };
+            if(email == ''){
+                Alert.alert('Please enter email');
+            }
+            console.log(email)
+            let { data } = await axios.post(BASE_URL + 'user/UserRegistrationVerificationCode', payload)
+            if ( data == null || data.result != 0) console.log("failed")
+            else console.log("success")
+        } catch(e) {
+             console.log(e)
+        } finally {
+            dispatch(toggleLoading(false))
         }
-        console.log(email)
-        await axios.post(BASE_URL + 'user/test_email/', payload)
-          .then(response => {
-            console.log('Request sent successfully');
-            // Handle the response as needed
-          })
-          .catch(error => {
-            console.error('Error sending request:', error);
-            // Handle the error as needed
-          });
     };
     
     const submitHandle = async () =>{
@@ -61,23 +65,20 @@ const RegisterScreen = ({ navigation }) => {
             "email" : email,
             "username" : username,
             "password" : password,
-            "code" : verification_code
+            "verification_code" : verification_code,
+            "nickname": "tony",
+            "phone": "67767329"
         }
+        console.log("payload")
+        console.log(payload)
         if(password == ''){
             Alert.alert('please enter password');
         }
         if(username == ''){
             Alert.alert('please enter username');
         }
-        await axios.post(BASE_URL + 'user/register/', payload)
-          .then(response => {
-            console.log('Request sent successfully');
-            // Handle the response as needed
-          })
-          .catch(error => {
-            console.error('Error sending request:', error);
-            // Handle the error as needed
-          });
+        let {data} = await axios.post(BASE_URL + 'user/RegistrationRequest', payload)
+        console.log(data);
         
         navigation.navigate('Login');
     } 
