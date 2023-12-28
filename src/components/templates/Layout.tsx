@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import TabBar from './TabBar';
 import {View, StyleSheet, Text, Image, Dimensions, ActivityIndicator, TouchableOpacity} from 'react-native';
 import Background from './Background';
@@ -21,7 +21,10 @@ export default function Layout(props: {children: any, showTabBar: Boolean}) {
   const operationPopup = useSelector((state: any) => state.commonReducer.data.operationPopup);
   const operationPopupMessage = useSelector((state: any) => state.commonReducer.data.operationPopupMessage);
 
-  
+  useEffect(() =>{
+    console.log("errorPopupMessage", errorPopupMessage);
+    console.log("errorPopup", errorPopup);
+  })
   return (
     <View style={[LayoutStyle.layout, {height}]}>
       {props.children}
