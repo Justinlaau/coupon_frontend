@@ -131,7 +131,7 @@ const CouponListingScreen = ({navigation}) => {
   const fetchAddressCategory = async () => {
     try {
       // dispatch(toggleField("isLoading"))
-      let {data} = await axios.get("http://13.215.201.145:8000/business/get_all_address_categories")
+      let {data} = await axios.get(BASE_URL + "business/get_all_address_categories")
       // console.log("data")
       // console.log(data)
       let HongKongList = []

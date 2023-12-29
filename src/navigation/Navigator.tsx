@@ -14,6 +14,7 @@ import React, { useEffect } from 'react';
 import { SET_BASE_USER } from '../../Redux/Action/ActionType';
 import axios from 'axios';
 import { BASE_URL } from '../config/config';
+import MapScreen from '../screens/MapScreen/MapScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +30,7 @@ const MyStack = () => {
       if (logonToken != null) {
         // fetch user info
         axios.defaults.headers.common['Authorization'] = logonToken;
-        const request_response = await axios.post(BASE_URL + "/user/UserGetUserInfo");
+        const request_response = await axios.post(BASE_URL + "user/UserGetUserInfo");
         let username = "";
         if (request_response.data["result"] == 0) {
           username = request_response.data["user"]["username"]
@@ -54,7 +55,6 @@ const MyStack = () => {
     initFetch();
   }, []);
 
-
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -67,6 +67,7 @@ const MyStack = () => {
         <Stack.Screen name="Register" component={RegisterScreen}/>
         <Stack.Screen name="CouponItem" component={CouponItemScreen} />
         <Stack.Screen name="CouponQRCode" component={CouponQRCodeScreen} />
+        <Stack.Screen name="Map" component={MapScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

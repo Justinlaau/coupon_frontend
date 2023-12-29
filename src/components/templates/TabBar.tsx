@@ -93,9 +93,9 @@ const TabBar = () => {
 
       
         <View style={TabBarStyle.ItemContainer}>
-          {/* <TouchableOpacity onPress={() => navigation.navigate('QRCodeScanning')}> */}
+          <TouchableOpacity onPress={() => navigation.navigate('Map')}>
             {TabItem3JSX}
-          {/* </TouchableOpacity> */}
+          </TouchableOpacity>
         </View>
       
       <View style={TabBarStyle.ItemContainer}>{TabItem4JSX}</View>

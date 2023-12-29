@@ -11,6 +11,14 @@ import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import { useDispatch } from 'react-redux';
 import { SET_BASE_USER } from './Redux/Action/ActionType';
 
+import Geolocation from '@react-native-community/geolocation';
+const locationConfig = {
+  skipPermissionRequests: true,
+  enableBackgroundLocationUpdates: true,
+}
+
+Geolocation.setRNConfiguration(locationConfig);
+
 const App = () => {
   const setToken = async () => {
     const token = await AsyncStorage.getItem('jwt') || "";
