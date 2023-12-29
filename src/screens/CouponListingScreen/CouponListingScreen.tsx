@@ -131,7 +131,7 @@ const CouponListingScreen = ({navigation}) => {
   const fetchAddressCategory = async () => {
     try {
       // dispatch(toggleField("isLoading"))
-      let {data} = await axios.get("http://192.168.31.249:8000/business/get_all_address_categories")
+      let {data} = await axios.get("http://13.215.201.145:8000/business/get_all_address_categories")
       // console.log("data")
       // console.log(data)
       let HongKongList = []
@@ -160,16 +160,19 @@ const CouponListingScreen = ({navigation}) => {
         })
       })
       Object.entries(data["New Territories"].nodes).map(([key, value]) => {
-        Object.entries(value.nodes).map(([key, value]) => {
+        // Object.entries(value.nodes).map(([key, value]) => {
           NewTerritoriesList.push( {
+            key: value.address_category_id,
             addressCategoryId: value.address_category_id,
             addressCategoryName: value.address_category_name,
             addressCategoryLocode: value.address_category_locode,
             addressType: value.address_type,
             addressCategoryParentId: value.address_parent_id,
           })
-        })
+        // })
       })
+
+      // KowloonList.forEach(item=> console.log(item))
       setAddressCategory({
         "HongKong": HongKongList,
         "Kowloon": KowloonList,
