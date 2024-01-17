@@ -49,7 +49,6 @@ const CouponListingScreen = ({navigation}) => {
   const [selectedAddressCategory, setSelectedAddressCategory] = useState("")
   const [TypeCategory, setTypeCategory] = useState([])
   const [couponGroups, setCouponGroups] = useState([])
-  // const dispatch = useDispatch();
 
   const addFunc = async (couponGroupId, expireDate) => {
     let {data} = await axios.post(BASE_URL + "coupon/addCoupon", {
@@ -62,7 +61,7 @@ const CouponListingScreen = ({navigation}) => {
 
   //TODO: Fake Category Type (Back End Not Ready)
   const fetchTypeCategory = async () => {
-    let {data} = await axios.post(BASE_URL + "coupon/AllCouponCategories") || []
+    let {data} = await axios.get(BASE_URL + "coupon/AllCouponCategories") || []
     let ss : {[key: string]: boolean} = {}
     let ret = [{typeCategoryId: 0, typeCategoryName: "ALL"}]
     data.map(value => {
@@ -79,7 +78,7 @@ const CouponListingScreen = ({navigation}) => {
 
   const fetchCouponGroups = async () => {
     try {
-      let {data} = await axios.post(BASE_URL + "coupon/getAllCouponGroups")
+      let {data} = await axios.post(BASE_URL + "coupon/getAllCouponGroupsAPI")
       console.log("data")
       console.log(data)
       setCouponGroups(data)

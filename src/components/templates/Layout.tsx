@@ -20,6 +20,7 @@ export default function Layout(props: {children: any, showTabBar: Boolean}) {
   const errorPopupMessage = useSelector((state: any) => state.commonReducer.data.errorPopupMessage);
   const operationPopup = useSelector((state: any) => state.commonReducer.data.operationPopup);
   const operationPopupMessage = useSelector((state: any) => state.commonReducer.data.operationPopupMessage);
+  // const errorCallback = useSelector((state: any) => state.commonReducer.data.errorPopupCallback);
 
   // useEffect(() =>{
   //   console.log("errorPopupMessage", errorPopupMessage);
@@ -70,7 +71,10 @@ export default function Layout(props: {children: any, showTabBar: Boolean}) {
                 <View>
                   <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 10}}>{errorPopupMessage}</Text>
                 </View>
-                <TouchableOpacity onPress={() => dispatch(toggleMessagePopup(false, TOGGLE_ERROR_POPUP))}>
+                <TouchableOpacity onPress={() => {
+                    dispatch(toggleMessagePopup(false, TOGGLE_ERROR_POPUP))
+                    // errorCallback();
+                }}>
                   <View style={{width: 60, height: 40, backgroundColor: "#DC2B37", justifyContent: 'center', alignItems: 'center', borderRadius: 10}}>
                     <Text style={{color: "white"}}>確定</Text>
                   </View>

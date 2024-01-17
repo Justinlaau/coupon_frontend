@@ -23,3 +23,9 @@ export const setMessagePopup = (data: any, messageType: string) => ({
   type: messageType,
   data
 });
+
+export const setCallback = (func: () => {}, messageType: string) => ({
+  type: messageType,
+  callback: () => func
+});
+

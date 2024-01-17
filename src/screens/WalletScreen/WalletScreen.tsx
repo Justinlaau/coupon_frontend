@@ -19,14 +19,16 @@ import CouponListingScreen from '../CouponListingScreen/CouponListingScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL, BASE_S3_IMG_URL } from '../../config/config';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleLoading } from '../../../Redux/Action/CommonAction';
+import { toggleLoading, setCallback, setMessagePopup, toggleMessagePopup } from '../../../Redux/Action/CommonAction';
+import { SET_SUCCESS_CALLBACK, SET_ERROR_MESSAGE, TOGGLE_ERROR_POPUP } from '../../../Redux/Action/ActionType';
+import { ErrorCode } from '../../common/ErrorCode';
 
-const WalletScreen = ({navigation: { navigate }}) => {
+const WalletScreen = ({navigation: { navigate }}: any) => {
     const dispatch = useDispatch();
     const [buttonState, setButtonState] = useState(1);
     const [couponList, setCouponList] = useState([]);
 
-    const pressHandler = (button_id)=>{
+    const pressHandler = (button_id: number)=>{
         setButtonState(button_id)
     };
 
@@ -36,8 +38,18 @@ const WalletScreen = ({navigation: { navigate }}) => {
             let {data} = await axios.post(BASE_URL + "coupon/clientWallet", {
                 "sorted": true
             });
-            setCouponList(data);
+            // TODO: popup callback, developing
+            // dispatch(setCallback(() => redirectLogin, SET_SUCCESS_CALLBACK));
+            // dispatch(setMessagePopup("Please login to continue.", SET_ERROR_MESSAGE));
+            // dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
+            // return;
+            if (data.result == 0 && data.result == ErrorCode.INVALID_USER) {
+                // dispatch(setCallback(() => navigate("Login"), SET_SUCCESS_CALLBACK));
+                navigate("Login");
+            }
+            setCouponList(data.couponList);
         } catch (error) {
+            console.log("fetchWallet error");
             console.log(error);
         } finally {
             dispatch(toggleLoading(false));
