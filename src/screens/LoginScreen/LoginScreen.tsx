@@ -49,8 +49,8 @@ const LoginScreen = ({navigation}: any) => {
     }
     else {
       try {
-        // const { data } = await axios.post(BASE_URL + 'user/LoginRequest', payload)
-        const { data } = await axios.post('http://47.129.1.22/user/LoginRequest', payload)
+        const { data } = await axios.post(BASE_URL + 'user/LoginRequest', payload)
+        // const { data } = await axios.post('http://47.129.1.22:8000/user/LoginRequest', payload)
         console.log("data")
         console.log(data)
         if (data.result == 0) {

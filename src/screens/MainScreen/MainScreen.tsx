@@ -73,7 +73,7 @@ const MainScreen = ({navigation}: any) => {
                 _text={{fontSize: '30', fontWeight: '900', textAlign: 'left'}}>
                 揾 Coupon !
               </Box>
-              <Pressable style={{ height:"100%", width:"25%" }}  onPress={async () => { await AsyncStorage.removeItem("jwt"); navigation.navigate("Login") }}>
+              <Pressable style={{ height:"100%", width:"25%" }}  onPress={async () => { await AsyncStorage.removeItem("jwt"); axios.defaults.headers.common['Authorization']=""; navigation.navigate("Login") }}>
                 <Center height="100%" width="100%">
                     <SvgXml width="45%" xml={ProfileSVG} />
                 </Center>
