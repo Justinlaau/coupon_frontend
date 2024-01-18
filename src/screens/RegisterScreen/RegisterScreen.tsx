@@ -11,9 +11,13 @@ import { ButtonBox } from '../../components/atoms/ButtonBox';
 import axios from 'axios';
 import { background } from 'native-base/lib/typescript/theme/styled-system';
 import { color } from '@rneui/base';
+
+import KeyboardAvoidingWrapper from '../../components/templates/';
+
 import {BASE_URL} from '../../config/config';
 import { useDispatch } from 'react-redux';
 import { toggleLoading } from '../../../Redux/Action/CommonAction';
+
 
 const RegisterScreen = ({ navigation }) => {
     const dispatch = useDispatch()
@@ -83,11 +87,15 @@ const RegisterScreen = ({ navigation }) => {
         navigation.navigate('Login');
     } 
     return (
+        <KeyboardAvoidingWrapper>
+
+
         <Background main={true} contentHeight="76%" tabBarSpace={false}>
-        
             <View style={RegisterStyle.layout}>
+
                 <Text style={[RegisterStyle.text, FontStyles.medium, FontStyles.bold, { color:"#DC2B37"}]}>Create account</Text>
                 <View style={RegisterStyle.InputGroups}>
+
                     <View style={{width:"100%"}}>
                         <InputBox text="username"
                             borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
@@ -101,7 +109,6 @@ const RegisterScreen = ({ navigation }) => {
                     </View>
 
                     <View style={{ height: "10%" }}></View>
-
                     <View style={{width:"100%"}}>
                         <InputBox text="password"
                             borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
@@ -113,6 +120,7 @@ const RegisterScreen = ({ navigation }) => {
                             }}
                         />
                     </View>
+
                     <View style={{ height: "10%" }} ></View>
                     <View style={{width:"100%"}}>
                         <InputBox text="comfirm password"
@@ -137,36 +145,37 @@ const RegisterScreen = ({ navigation }) => {
                             }}
                         />
                     </View>
-                        <View style={{ height: "10%" }}></View>
+                    <View style={{ height: "10%" }}></View>
 
-                        <View style={{ height: "20%", width: "100%" ,  flexDirection: 'row'}}>
-                            <View style={{height:"100%", width:"70%"}}>
-                                <InputBox text="verification code" 
-                                    Input={ handlVerificationcodeChange}
-                                    InputRes={verification_code}
-                                    borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
-                                />
-                            </View>
-
-                            <View style={{height:"100%", width: "10%" }}></View>
-
-                            <View style={{height:"100%", width:"20%", justifyContent: "center"}}>
-                                <ButtonBox text="get"
-                                    borderStyle={{ borderRadius: 10 }}
-                                    color="black"
-                                    textStyle={{ color: "gray"} } action={sendEmailCode} />
-                            </View>
+                    <View style={{ height: "20%", width: "100%" ,  flexDirection: 'row'}}>
+                        <View style={{height:"100%", width:"70%"}}>
+                            <InputBox text="verification code" 
+                                Input={ handlVerificationcodeChange}
+                                InputRes={verification_code}
+                                borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
+                            />
                         </View>
 
-                        <View style={RegisterStyle.ButtonContainer}>
-                            <ButtonBox text="Submit"
+                        <View style={{height:"100%", width: "10%" }}></View>
+
+                        <View style={{height:"100%", width:"20%", justifyContent: "center"}}>
+                            <ButtonBox text="get"
                                 borderStyle={{ borderRadius: 10 }}
-                                color="#DC2B37"
-                                textStyle={{ color: "white" }} action={submitHandle} />
+                                color="black"
+                                textStyle={{ color: "gray"} } action={sendEmailCode} />
                         </View>
+                    </View>
+
+                    <View style={RegisterStyle.ButtonContainer}>
+                        <ButtonBox text="Submit"
+                            borderStyle={{ borderRadius: 10 }}
+                            color="#DC2B37"
+                            textStyle={{ color: "white" }} action={submitHandle} />
+                    </View>
                 </View>
             </View>
         </Background>
+        </KeyboardAvoidingWrapper>
     )
 }
 const RegisterStyle = StyleSheet.create({
@@ -178,6 +187,7 @@ const RegisterStyle = StyleSheet.create({
         marginRight: "auto",
     },
     layout:{
+        flex:1,
         height: "80%",
         width: "80%",
         alignItems: "center",

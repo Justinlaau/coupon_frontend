@@ -117,6 +117,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
             </View>
 
             <ScrollView style={{height: "80%"}}>
+
                 {
                     couponList.map((coupon: any, index) => {
                         if (coupon.used < coupon.total && buttonState == 1) {

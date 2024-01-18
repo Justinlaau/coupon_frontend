@@ -1,6 +1,8 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/LoginScreen/LoginScreen';
 import MainScreen from '../screens/MainScreen/MainScreen';
+import forgetPasswordScreen from '../screens/forgetPasswordScreen/forgetPasswordScreen';
+
 import {NavigationContainer} from '@react-navigation/native';
 import CouponListingScreen from '../screens/CouponListingScreen/CouponListingScreen';
 import RegisterScreen from '../screens/RegisterScreen/RegisterScreen';
@@ -64,6 +66,7 @@ const MyStack = () => {
         <Stack.Screen name="Wallet" component={WalletScreen} />
         <Stack.Screen name="Main" component={MainScreen} />
         <Stack.Screen name="CouponListing" component={CouponListingScreen} />
+        <Stack.Screen name="forgetPassword" component={forgetPasswordScreen} />
         <Stack.Screen name="Register" component={RegisterScreen}/>
         <Stack.Screen name="CouponItem" component={CouponItemScreen} />
         <Stack.Screen name="CouponQRCode" component={CouponQRCodeScreen} />
