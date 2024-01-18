@@ -1,29 +1,67 @@
-import React, { useState } from 'react';
-import { View, 
-         TextInput,
-         StyleSheet,
-         Text,
-         SafeAreaView, 
-         ScrollView, 
-         Alert,
-         TouchableOpacity} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { 
+    View, 
+    TextInput,
+    StyleSheet,
+    Text,
+    SafeAreaView, 
+    ScrollView, 
+    Alert,
+    TouchableOpacity
+} from 'react-native';
 import Layout from '../../components/templates/Layout';
 import {SvgXml} from 'react-native-svg';
 import axios from 'axios';
 import DateIconSVG from "../../assets/images/DateIconSVG";
 import WalletBackground from '../../components/templates/WalletBackground';
-
 import ActualCoupon from '../../components/atoms/ActualCoupon';
+import CouponListingScreen from '../CouponListingScreen/CouponListingScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BASE_URL, BASE_S3_IMG_URL } from '../../config/config';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleLoading, setCallback, setMessagePopup, toggleMessagePopup } from '../../../Redux/Action/CommonAction';
+import { SET_SUCCESS_CALLBACK, SET_ERROR_MESSAGE, TOGGLE_ERROR_POPUP } from '../../../Redux/Action/ActionType';
+import { ErrorCode } from '../../common/ErrorCode';
 
-const WalletScreen = () => {
+const WalletScreen = ({navigation: { navigate }}: any) => {
+    const dispatch = useDispatch();
     const [buttonState, setButtonState] = useState(1);
+    const [couponList, setCouponList] = useState([]);
 
-    const pressHandler = (button_id)=>{
+    const pressHandler = (button_id: number)=>{
         setButtonState(button_id)
     };
 
+    const fetchWallet = async () => {
+        try {
+            dispatch(toggleLoading(true));
+            let {data} = await axios.post(BASE_URL + "coupon/clientWallet", {
+                "sorted": true
+            });
+            // TODO: popup callback, developing
+            // dispatch(setCallback(() => redirectLogin, SET_SUCCESS_CALLBACK));
+            // dispatch(setMessagePopup("Please login to continue.", SET_ERROR_MESSAGE));
+            // dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
+            // return;
+            if (data.result == 0 && data.result == ErrorCode.INVALID_USER) {
+                // dispatch(setCallback(() => navigate("Login"), SET_SUCCESS_CALLBACK));
+                navigate("Login");
+            }
+            setCouponList(data.couponList);
+        } catch (error) {
+            console.log("fetchWallet error");
+            console.log(error);
+        } finally {
+            dispatch(toggleLoading(false));
+        }
+    }
+
+    useEffect(() => {
+        fetchWallet();
+    }, []);
+
     return(
-    <Layout>
+    <Layout showTabBar={true}>
         <WalletBackground main={true} contentHeight="82%" tabBarSpace={true} >
             <View style={{ flexDirection: 'row', justifyContent: "space-between"}}>  
                 <View style={{ width:"35%", marginTop: "5%" , marginLeft: "10%"}}>
@@ -79,22 +117,33 @@ const WalletScreen = () => {
             </View>
 
             <ScrollView style={{height: "80%"}}>
-                {/* <ActualCoupon 
-                    Company_name="Sushi Saito" 
-                    value={1000} 
-                    image={require('../../assets/images/trial/Sushi.jpeg')}
-                />
-                <ActualCoupon 
-                    Company_name="Ikea" 
-                    value={20} 
-                    image={require('../../assets/images/trial/furniture.webp')}
-                />
 
-                <ActualCoupon 
-                    Company_name="Ikea" 
-                    value={20} 
-                    image={require('../../assets/images/trial/furniture.webp')}
-                /> */}
+                {
+                    couponList.map((coupon: any, index) => {
+                        if (coupon.used < coupon.total && buttonState == 1) {
+                            return (
+                                <TouchableOpacity key={coupon.coupon_id} onPress={() => navigate("CouponItem", {coupon: coupon})}>
+                                <ActualCoupon
+                                    companyName={coupon.owner_name} 
+                                    value={coupon.value} 
+                                    image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                                />
+                                </TouchableOpacity>
+                            )
+                        } else if (coupon.used >= coupon.total && buttonState == 2) {
+                            return (
+                                <ActualCoupon
+                                    key={coupon.coupon_id}
+                                    companyName={coupon.owner_name} 
+                                    value={coupon.value} 
+                                    image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                                />
+                            )
+                        } else {
+                            return null;
+                        }
+                    })
+                }
             </ScrollView>
         </WalletBackground>
     </Layout>       

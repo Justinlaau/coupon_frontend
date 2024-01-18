@@ -92,7 +92,12 @@ const TabBar = () => {
         </View>
 
       
-      <View style={TabBarStyle.ItemContainer}>{TabItem3JSX}</View>
+        <View style={TabBarStyle.ItemContainer}>
+          <TouchableOpacity onPress={() => navigation.navigate('Map')}>
+            {TabItem3JSX}
+          </TouchableOpacity>
+        </View>
+      
       <View style={TabBarStyle.ItemContainer}>{TabItem4JSX}</View>
 
       <View style={TabBarStyle.ItemContainer}>
