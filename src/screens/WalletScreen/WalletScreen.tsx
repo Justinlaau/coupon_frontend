@@ -47,6 +47,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                 // dispatch(setCallback(() => navigate("Login"), SET_SUCCESS_CALLBACK));
                 navigate("Login");
             }
+            console.log(data.couponList);
             setCouponList(data.couponList);
         } catch (error) {
             console.log("fetchWallet error");

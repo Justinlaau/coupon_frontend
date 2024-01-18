@@ -4,17 +4,64 @@ import {StyleSheet, View, Text, Image, Dimensions, TouchableOpacity} from "react
 import GiftIcon from 'react-native-vector-icons/FontAwesome'
 
 
-const chin_subtitle ={
-    1000: "港幣千元現金券",
-    20: "港幣二十元現金券",
-    100: "港幣一百元現金券"
+const numberToChinese = (number: number) => {
+    const chineseNumbers = {
+        0: '零',
+        1: '一',
+        2: '二',
+        3: '三',
+        4: '四',
+        5: '五',
+        6: '六',
+        7: '七',
+        8: '八',
+        9: '九',
+        10: '十',
+        100: '百',
+        1000: '千',
+        10000: '萬',
+        100000: '十萬'
+      };
+    
+      if (number < 0 || number > 99999) {
+        throw new Error('Number out of range');
+      }
+
+      if (number in chineseNumbers){
+        return "港幣" + chineseNumbers[number] + "元現金卷";
+      }
+    
+      let result = '';
+      const digits = String(number).split('').map(Number);
+      const digitsCount = digits.length;
+    
+      for (let i = 0; i < digitsCount; i++) {
+        const currentDigit = digits[i];
+        const currentPlace = digitsCount - i - 1;
+    
+        if (currentDigit !== 0) {
+            if (currentPlace !== 0){
+                result += chineseNumbers[currentDigit] + chineseNumbers[10 ** currentPlace];
+            }
+            else {
+                result += chineseNumbers[currentDigit];
+                }
+        } else {
+          if (result !== '' && i !== digitsCount - 1 && digits[i + 1] !== 0) {
+            result += chineseNumbers[0];
+          }
+        }
+      }
+    
+      return "港幣" + result + "元現金卷";
 }
 
-const eng_subtitle = {
-    1000: "ONE THOUSAND",
-    20: "TWENTY",
-    100: "ONE HUNDRED",
-}
+const chineseConverter = (str: string) => {
+    if (!isNaN(str)){
+        return numberToChinese(Number(str));
+    }
+    
+};
 
 const backgroundColor = {
     1000: "#ff5733",
@@ -22,8 +69,14 @@ const backgroundColor = {
     100: "#FFC300",
 }
 
+interface ActualCouponType{
+    image: any,
+    companyName: string,
+    value: string,
 
-const ActualCoupon = props =>{
+};
+
+const ActualCoupon = (props: ActualCouponType) =>{
     return (
         <View style={styles.container} >
             <View style={{
@@ -45,7 +98,7 @@ const ActualCoupon = props =>{
 
                 <Image style={styles.imageStyle} source={props.image} />
                 <View style={styles.CouponDescription}>
-                    <GiftIcon name="gift" size={30} style={{color: 'white'}}/>
+                    {/* <GiftIcon name="gift" size={30} style={{color: 'white'}}/> */}
                     {/* props.text */}
                         <Text style={{
                             fontSize: 20,
@@ -58,23 +111,9 @@ const ActualCoupon = props =>{
                             fontSize: 13,
                             fontWeight: 'bold',
                             color: 'white'}}>
-                            {chin_subtitle[props.value]}
+                            {chineseConverter(props.value)}
                         </Text >
 
-                        <Text style={{
-                            fontSize: 13,
-                            fontWeight: 'bold',
-                            color: 'white'}}>
-                            {eng_subtitle[props.value]}
-                        </Text >
-
-                        <Text style={{
-                            fontSize: 6,
-                            fontWeight: 'bold',
-                            color: 'white',
-                            }} >
-                            HONG KONG DOLLARS CASHVOCHER
-                        </Text>
                         <Text style={{fontSize: 45, color: 'white'}}><Text style={{fontSize: 35}}>$</Text>{props.value}</Text>
                 </View>
             </View>
@@ -94,13 +133,14 @@ const styles = StyleSheet.create({
     },
     imageStyle:{
         height: 200,
-        width: "60%",
+        width: "50%",
         borderTopLeftRadius: radius,
         borderBottomLeftRadius: radius,
     },
 
     CouponDescription:{
         padding: 10,
+        width: "50%"
     },
 })
 
