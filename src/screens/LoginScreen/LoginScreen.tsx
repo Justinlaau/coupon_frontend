@@ -94,7 +94,7 @@ const LoginScreen = ({navigation}) => {
             <CheckBoxes text="Remember me" textStyle={{ color: "#DC2B37" }} color="#DC2B37" />
 
             <Text style={LoginStyle.forgetPassword}
-              onPress={() => { console.log("forget password....") }}>
+              onPress={() => { navigation.navigate("forgetPassword") }}>
               Forget password?
             </Text>
           </View>

@@ -7,6 +7,7 @@ import CouponListingScreen from '../screens/CouponListingScreen/CouponListingScr
 import RegisterScreen from '../screens/RegisterScreen/RegisterScreen';
 import WalletScreen from '../screens/WalletScreen/WalletScreen';
 import { BusinessInformationFormScreen } from '../screens/BusinessInformationFormScreen/InformationScreen';
+import forgetPasswordScreen from '../screens/forgetPasswordScreen/forgetPasswordScreen';
 const Stack = createNativeStackNavigator();
 
 const MyStack = () => {
@@ -20,6 +21,7 @@ const MyStack = () => {
         <Stack.Screen name="Main" component={MainScreen} />
         <Stack.Screen name="CouponListing" component={CouponListingScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="forgetPassword" component={forgetPasswordScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
