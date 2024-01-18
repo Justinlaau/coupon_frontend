@@ -133,14 +133,19 @@ const styles = StyleSheet.create({
     },
     imageStyle:{
         height: 200,
-        width: "50%",
+        width: "45%",
         borderTopLeftRadius: radius,
         borderBottomLeftRadius: radius,
     },
 
     CouponDescription:{
+        height: 200,
         padding: 10,
-        width: "50%"
+        width: "50%",
+        borderLeftWidth: 2.2,
+        borderLeftColor: '#FFFFFF',
+        borderStyle: 'dotted',
+        marginLeft: "4%"
     },
 })
 
