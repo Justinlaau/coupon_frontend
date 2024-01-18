@@ -1,11 +1,12 @@
 import { color } from "@rneui/base";
+import { Dict } from "native-base/lib/typescript/theme/tools";
 import React from "react";
 import {StyleSheet, View, Text, Image, Dimensions, TouchableOpacity} from "react-native";
 import GiftIcon from 'react-native-vector-icons/FontAwesome'
 
 
 const numberToChinese = (number: number) => {
-    const chineseNumbers = {
+    const chineseNumbers: Dict = {
         0: '零',
         1: '一',
         2: '二',
@@ -57,23 +58,23 @@ const numberToChinese = (number: number) => {
 }
 
 const chineseConverter = (str: string) => {
-    if (!isNaN(str)){
+    if (!isNaN(Number(str))){
         return numberToChinese(Number(str));
     }
     
 };
 
-const backgroundColor = {
-    1000: "#ff5733",
-    20: "#ff7e15",
-    100: "#FFC300",
+const backgroundColor: Dict = {
+    1: "#ff5733",
+    2: "#ff7e15",
+    3: "#FFC300",
 }
 
 interface ActualCouponType{
     image: any,
     companyName: string,
     value: string,
-
+    couponType: number,
 };
 
 const ActualCoupon = (props: ActualCouponType) =>{
@@ -82,7 +83,7 @@ const ActualCoupon = (props: ActualCouponType) =>{
             <View style={{
                 width: deviceWidth - 20,
                 flexDirection: "row",
-                backgroundColor: "#ff5733",
+                backgroundColor: backgroundColor[props.couponType],
                 height: 200,
                 borderRadius: radius,
 
