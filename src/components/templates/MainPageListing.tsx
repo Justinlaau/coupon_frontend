@@ -26,7 +26,7 @@ import {
   Text,
   HStack,
 } from 'native-base';
-import { BASE_S3_IMG_URL, BASE_URL } from '../../config/config';
+import BASE_S3_IMG_URL, { BASE_URL } from '../../config/config';
 
 
 const MainPageListing = (props) => {

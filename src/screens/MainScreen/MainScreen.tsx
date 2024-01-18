@@ -26,7 +26,7 @@ import {
 } from 'native-base';
 import {SvgXml} from 'react-native-svg';
 import axios from 'axios';
-import { BASE_S3_IMG_URL, BASE_URL } from '../../config/config';
+import BASE_S3_IMG_URL, { BASE_URL } from '../../config/config';
 import { use } from 'i18next';
 import { useDispatch } from 'react-redux';
 import { toggleLoading } from '../../../Redux/Action/CommonAction';

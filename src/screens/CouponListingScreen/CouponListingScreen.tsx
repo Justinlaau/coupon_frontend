@@ -35,7 +35,7 @@ import {
   HStack,
   Pressable
 } from 'native-base';
-import { BASE_S3_IMG_URL, BASE_URL } from '../../config/config';
+import BASE_S3_IMG_URL, { BASE_URL } from '../../config/config';
 
 const initialObjectState: {[key: string]: boolean} = {}
 
