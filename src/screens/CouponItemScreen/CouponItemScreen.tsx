@@ -113,7 +113,14 @@ const CouponItemScreen = ({navigation, route}) => {
                   companyName={coupon.owner_name} 
                   value={coupon.value} 
                   image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                  couponType={coupon.coupon_type}
+                  rollAnimated={true}
               />
+              <View style={{display: "flex", justifyContent:"center", alignItems: "center", marginBottom: "3%"}}>
+                <Text>
+                  請按Coupon查看條款與細則
+                </Text>
+              </View>
               <Stack h="12%">
                 <TouchableOpacity onPress={() => navigation.navigate('CouponQRCode', {coupon: coupon})}>
                 <Box w="80%" h="100%" style={{backgroundColor: "#d63838", borderRadius: 20, alignItems: "center", justifyContent: "center", marginLeft: "auto", marginRight: "auto"}}>

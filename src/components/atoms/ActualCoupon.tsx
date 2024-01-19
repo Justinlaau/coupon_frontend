@@ -1,7 +1,7 @@
 import { color } from "@rneui/base";
 import { Dict } from "native-base/lib/typescript/theme/tools";
-import React from "react";
-import {StyleSheet, View, Text, Image, Dimensions, TouchableOpacity} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import {StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, Animated} from "react-native";
 import GiftIcon from 'react-native-vector-icons/FontAwesome'
 
 
@@ -65,9 +65,9 @@ const chineseConverter = (str: string) => {
 };
 
 const backgroundColor: Dict = {
-    1: "#ff5733",
-    2: "#ff7e15",
-    3: "#FFC300",
+    0: "#ff5733",
+    1: "#ff7e15",
+    2: "#FFC300",
 }
 
 interface ActualCouponType{
@@ -75,9 +75,37 @@ interface ActualCouponType{
     companyName: string,
     value: string,
     couponType: number,
+    rollAnimated: boolean,
 };
 
 const ActualCoupon = (props: ActualCouponType) =>{
+    const [left, setLeft] = useState(true);
+
+    const widthAnimation = useRef(new Animated.Value(0)).current;
+
+    const onClickToLeft = async () => {
+        await Animated.timing(widthAnimation, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: false,
+      }).start();
+      setLeft(true);
+    };
+
+    const onClickToRight = async () => {
+        await Animated.timing(widthAnimation, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: false,
+        }).start();
+        setLeft(false);
+      };
+    
+    const animatedWidth = widthAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0%', '100%'],
+    });
+
     return (
         <View style={styles.container} >
             <View style={{
@@ -94,13 +122,17 @@ const ActualCoupon = (props: ActualCouponType) =>{
                 },
                 shadowRadius: 5,
                 shadowOpacity: 0.75,
-                elevation: 10,}}
+                elevation: 10,
+                overflow: "hidden"
+            }}
             >
-
-                <Image style={styles.imageStyle} source={props.image} />
+                <View style={styles.imageContainer}>
+                    <Image style={styles.imageStyle} source={props.image} />
+                </View>
                 <View style={styles.CouponDescription}>
                     {/* <GiftIcon name="gift" size={30} style={{color: 'white'}}/> */}
                     {/* props.text */}
+                    <View style={[styles.frontWords, {backgroundColor: backgroundColor[props.couponType]}]}>
                         <Text style={{
                             fontSize: 20,
                             fontWeight: 'bold',
@@ -116,6 +148,17 @@ const ActualCoupon = (props: ActualCouponType) =>{
                         </Text >
 
                         <Text style={{fontSize: 45, color: 'white'}}><Text style={{fontSize: 35}}>$</Text>{props.value}</Text>
+                    </View>
+                    { props.rollAnimated? 
+                        <TouchableOpacity style={[styles.basedAbs, {zIndex: 7}]} onPress={left? onClickToRight: onClickToLeft} activeOpacity={1}>
+                            <Animated.View style={[styles.layeredWords, { width: animatedWidth }]}>
+                                <Text numberOfLines={2}>
+                                    哈囉 這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款
+                                </Text>
+                            </Animated.View>
+                        </TouchableOpacity>
+                        : <></>
+                    }
                 </View>
             </View>
         </View>
@@ -129,24 +172,47 @@ const radius = 20;
 const styles = StyleSheet.create({
     container:{
         alignItems: 'center',
-        marginTop: '5%',
-        marginBottom: '7%',
+        marginTop: "5%",
+        marginBottom: '5%',
     },
-    imageStyle:{
+    imageContainer:{
         height: 200,
-        width: "45%",
+        width: "35%",
         borderTopLeftRadius: radius,
         borderBottomLeftRadius: radius,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
     },
-
+    imageStyle: {
+        height: "80%",
+        width: "80%"
+    },
+    basedAbs:{
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+    },
+    frontWords:{
+        zIndex: 5,
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        padding: 10,
+    },
+    layeredWords:{
+        zIndex: 7,
+        backgroundColor: "#F4F4F4",
+        position: "absolute",
+        height: "100%",
+        overflow: "hidden",
+    },
     CouponDescription:{
         height: 200,
-        padding: 10,
-        width: "50%",
+        width: "65%",
         borderLeftWidth: 2.2,
         borderLeftColor: '#FFFFFF',
         borderStyle: 'dotted',
-        marginLeft: "4%"
     },
 })
 
