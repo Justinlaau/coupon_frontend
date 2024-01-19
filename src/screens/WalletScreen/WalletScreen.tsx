@@ -127,6 +127,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                                     companyName={coupon.owner_name} 
                                     value={coupon.value} 
                                     image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                                    couponType={coupon.couponType}
                                 />
                                 </TouchableOpacity>
                             )
