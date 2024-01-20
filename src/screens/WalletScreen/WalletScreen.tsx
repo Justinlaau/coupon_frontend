@@ -79,7 +79,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                     }} >
                     <Text style={{
                         color: buttonState == 1 ? "#FFF" : "#DC2B37",
-                        fontWeight: 'bold'}}> 未使用的優惠卷
+                        fontWeight: 'bold'}}>Reserved Coupon
                     </Text>
                     </TouchableOpacity>
                 </View>
@@ -98,7 +98,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                         
                     <Text style={{
                         color: buttonState == 2 ? "#FFF" : "#DC2B37",
-                        fontWeight: 'bold'}}>已使用的優惠卷
+                        fontWeight: 'bold'}}>Used Coupon
                     </Text>
                     </TouchableOpacity>
                 </View>
@@ -115,7 +115,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                 <TouchableOpacity  style={{flex: 1, marginLeft: "55%", marginTop: 1}}>
                     <SvgXml width="100%" height="20" xml={DateIconSVG} />
                 </TouchableOpacity>
-                <Text style={{marginRight: "5%"}}> 按日期排序 </Text>
+                <Text style={{marginRight: "5%"}}>Arrange with Date</Text>
             </View>
 
             <ScrollView style={{height: "80%"}}
@@ -130,39 +130,32 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                     couponList.map((coupon: any, index) => {
                         if (coupon.used < coupon.total && buttonState == 1) {
                             return (
-                                    <TouchableOpacity key={coupon.coupon_id} onPress={() => navigate("CouponItem", {coupon: coupon})}>
-                                    <ActualCoupon
-                                        title={coupon.title}
-                                        companyName={coupon.owner_name} 
-                                        value={coupon.value} 
-                                        image={{uri: BASE_S3_IMG_URL + coupon.image}}
-                                        couponType={coupon.coupon_type}
-                                        rollAnimated={false}
-                                        rightBar={false}
-                                        availablePercent={0}
-                                        />
-                                    </TouchableOpacity>
+                                <TouchableOpacity key={coupon.coupon_id} onPress={() => navigate("CouponItem", {coupon: coupon})}>
+                                <ActualCoupon
+                                    companyName={coupon.owner_name} 
+                                    value={coupon.value} 
+                                    image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                                    couponType={coupon.coupon_type}
+                                    rollAnimated={false}
+                                />
+                                </TouchableOpacity>
                             )
                         } else if (coupon.used >= coupon.total && buttonState == 2) {
                             return (
                                 <ActualCoupon
-                                title={coupon.title}
-                                key={coupon.coupon_id}
-                                companyName={coupon.owner_name} 
-                                value={coupon.value} 
-                                image={{uri: BASE_S3_IMG_URL + coupon.image}}
-                                couponType={coupon.coupon_type}
-                                rollAnimated={false}
-                                rightBar={false}
-                                availablePercent={0}
+                                    key={coupon.coupon_id}
+                                    companyName={coupon.owner_name} 
+                                    value={coupon.value} 
+                                    image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                                    couponType={coupon.coupon_type}
+                                    rollAnimated={false}
                                 />
-                                )
-                            } else {
-                                return null;
-                            }
-                        })
-                    }
-                </View>
+                            )
+                        } else {
+                            return null;
+                        }
+                    })
+                }
             </ScrollView>
         </WalletBackground>
     </Layout>       
