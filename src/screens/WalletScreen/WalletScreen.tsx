@@ -17,7 +17,7 @@ import WalletBackground from '../../components/templates/WalletBackground';
 import ActualCoupon from '../../components/atoms/ActualCoupon';
 import CouponListingScreen from '../CouponListingScreen/CouponListingScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BASE_URL, BASE_S3_IMG_URL } from '../../config/config';
+import BASE_S3_IMG_URL, { BASE_URL } from '../../config/config';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleLoading, setCallback, setMessagePopup, toggleMessagePopup } from '../../../Redux/Action/CommonAction';
 import { SET_SUCCESS_CALLBACK, SET_ERROR_MESSAGE, TOGGLE_ERROR_POPUP } from '../../../Redux/Action/ActionType';
@@ -47,6 +47,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                 // dispatch(setCallback(() => navigate("Login"), SET_SUCCESS_CALLBACK));
                 navigate("Login");
             }
+            console.log(data.couponList);
             setCouponList(data.couponList);
         } catch (error) {
             console.log("fetchWallet error");
@@ -127,6 +128,8 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                                     companyName={coupon.owner_name} 
                                     value={coupon.value} 
                                     image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                                    couponType={coupon.coupon_type}
+                                    rollAnimated={false}
                                 />
                                 </TouchableOpacity>
                             )
@@ -137,6 +140,8 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                                     companyName={coupon.owner_name} 
                                     value={coupon.value} 
                                     image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                                    couponType={coupon.coupon_type}
+                                    rollAnimated={false}
                                 />
                             )
                         } else {

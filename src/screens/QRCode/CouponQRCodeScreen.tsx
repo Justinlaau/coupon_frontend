@@ -31,7 +31,7 @@ import {
   Button,
   Heading,
 } from 'native-base';
-import { BASE_URL, BASE_S3_IMG_URL } from '../../config/config';
+import BASE_S3_IMG_URL, { BASE_URL } from '../../config/config';
 import {SvgXml} from 'react-native-svg';
 import { Buffer } from 'buffer'
 import { useDispatch } from 'react-redux';
