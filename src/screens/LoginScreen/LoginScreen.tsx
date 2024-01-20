@@ -156,7 +156,7 @@ const LoginScreen = ({navigation}: any) => {
                 />
             </View>
             <View style={LoginStyle.CreateButton}>
-              <ButtonBox text="註冊帳戶"
+              <ButtonBox text="創建帳戶"
                 borderStyle={{ borderColor: "#DC2B37", borderWidth: 2, borderRadius: 25 }}
                 textStyle={{ color: "#DC2B37" }} boxType="outline" action={() => { navigation.navigate('Register') }} />
             </View>
