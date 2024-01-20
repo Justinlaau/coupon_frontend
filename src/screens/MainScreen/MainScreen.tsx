@@ -88,12 +88,12 @@ const MainScreen = ({navigation}: any) => {
                     <TextInput placeholder="search coupon ?" />
                   </Box>
                 </Stack>
-                <Box h="75" mb="9"><MainPageMenu/></Box>
+                {/* <Box h="75" mb="9"><MainPageMenu/></Box> */}
                 <View style={{ borderBottomColor: 'grey', borderBottomWidth: StyleSheet.hairlineWidth,}}/>
                 <Box h="30" mt="2">
                   <Stack direction="row">
-                    <Text fontWeight="bold" fontSize="15" w="84%">Popuplar Coupon</Text>
-                    <Text fontWeight="light" color="grey" fontSize="15" onPress={() => navigation.navigate("CouponListing")}>View All</Text>
+                    <Text fontWeight="bold" fontSize="15" w="84%">最熱門Coupon!</Text>
+                    {/* <Text fontWeight="light" color="grey" fontSize="15" onPress={() => navigation.navigate("CouponListing")}>View All</Text> */}
                   </Stack>
                 </Box>
                 <Box><MainPageListing couponGroups={couponGroups}/></Box>
