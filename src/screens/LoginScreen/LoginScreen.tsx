@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux';
 import { SET_BASE_USER } from '../../../Redux/Action/ActionType';
 import Layout from '../../components/templates/Layout';
 import { setMessagePopup, toggleMessagePopup } from '../../../Redux/Action/CommonAction';
+import KeyboardAvoidingWrapper from '../../components/templates/KeyboardAvoidingWrapper';
 import { 
   TOGGLE_SUCCESS_POPUP,
   SET_SUCCESS_MESSAGE, 
@@ -161,9 +162,9 @@ const LoginScreen = ({navigation}: any) => {
                 textStyle={{ color: "#DC2B37" }} boxType="outline" action={() => { navigation.navigate('Register') }} />
             </View>
           </View>
-        </View>
-      </Background>
-    </Layout>
+        </Background>
+      </Layout>
+    </KeyboardAvoidingWrapper>
   );
 };
 

@@ -11,13 +11,10 @@ import { ButtonBox } from '../../components/atoms/ButtonBox';
 import axios from 'axios';
 import { background } from 'native-base/lib/typescript/theme/styled-system';
 import { color } from '@rneui/base';
-
-import KeyboardAvoidingWrapper from '../../components/templates/KeyboardAvoidingWrapper';
-
 import {BASE_URL} from '../../config/config';
 import { useDispatch } from 'react-redux';
 import { toggleLoading } from '../../../Redux/Action/CommonAction';
-
+import KeyboardAvoidingWrapper from '../../components/templates/KeyboardAvoidingWrapper';
 
 const RegisterScreen = ({ navigation }) => {
     const dispatch = useDispatch()

@@ -62,16 +62,16 @@ const CouponListingScreen = ({ navigation }) => {
 
   //TODO: Fake Category Type (Back End Not Ready)
   const fetchTypeCategory = async () => {
-    let { data } = await axios.get(BASE_URL + "coupon/AllCouponCategories") || []
-    let ss: { [key: string]: boolean } = {}
-    let ret = [{ typeCategoryId: 0, typeCategoryName: "ALL" }]
-    data.map(value => {
-      ss[value["couponCategoryName"]] = false;
-      ret.push({
-        typeCategoryId: value["couponCategoryId"],
-        typeCategoryName: value["couponCategoryName"]
-      })
-    })
+    let {data} = await axios.get(BASE_URL + "coupon/AllCouponCategories") || []
+    let ss : {[key: string]: boolean} = {}
+    let ret: any = [{typeCategoryId: 0, typeCategoryName: "ALL"}, {typeCategoryId: 1, typeCategoryName: "ConvenienceStore"}, {typeCategoryId: 2, typeCategoryName: "FoodAndBeverage"}]
+    // data.map(value => {
+    //   ss[value["couponCategoryName"]] = false;
+    //   ret.push({
+    //     typeCategoryId: value["couponCategoryId"],
+    //     typeCategoryName: value["couponCategoryName"]
+    //   })
+    // })
     ss["ALL"] = true;
     setTypeCategory(ret)
     setSelectedTypeCategory({ ...ss });
@@ -102,6 +102,7 @@ const CouponListingScreen = ({ navigation }) => {
       // console.log(filterList)
       let { data } = await axios.post(BASE_URL + "coupon/filterCouponGroups", {
         "categories": filterList,
+        "address_locode": selectedAddressCategory
       })
       // console.log("data")
       // console.log(data)
