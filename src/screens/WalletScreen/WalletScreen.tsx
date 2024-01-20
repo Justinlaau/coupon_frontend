@@ -78,7 +78,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                     }} >
                     <Text style={{
                         color: buttonState == 1 ? "#FFF" : "#DC2B37",
-                        fontWeight: 'bold'}}>Reserved Coupon
+                        fontWeight: 'bold'}}> 未使用的優惠卷
                     </Text>
                     </TouchableOpacity>
                 </View>
@@ -97,7 +97,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                         
                     <Text style={{
                         color: buttonState == 2 ? "#FFF" : "#DC2B37",
-                        fontWeight: 'bold'}}>Used Coupon
+                        fontWeight: 'bold'}}>已使用的優惠卷
                     </Text>
                     </TouchableOpacity>
                 </View>
@@ -114,7 +114,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                 <TouchableOpacity  style={{flex: 1, marginLeft: "55%", marginTop: 1}}>
                     <SvgXml width="100%" height="20" xml={DateIconSVG} />
                 </TouchableOpacity>
-                <Text style={{marginRight: "5%"}}>Arrange with Date</Text>
+                <Text style={{marginRight: "5%"}}> 按日期排序 </Text>
             </View>
 
             <ScrollView style={{height: "80%"}}>
@@ -130,6 +130,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                                     image={{uri: BASE_S3_IMG_URL + coupon.image}}
                                     couponType={coupon.coupon_type}
                                     rollAnimated={false}
+                                    rightBorder={true}
                                 />
                                 </TouchableOpacity>
                             )
@@ -142,6 +143,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                                     image={{uri: BASE_S3_IMG_URL + coupon.image}}
                                     couponType={coupon.coupon_type}
                                     rollAnimated={false}
+                                    rightBorder={true}
                                 />
                             )
                         } else {

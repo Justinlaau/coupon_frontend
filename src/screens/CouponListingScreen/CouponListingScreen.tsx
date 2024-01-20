@@ -36,6 +36,7 @@ import {
   Pressable
 } from 'native-base';
 import BASE_S3_IMG_URL, { BASE_URL } from '../../config/config';
+import ActualCoupon from '../../components/atoms/ActualCoupon';
 
 const initialObjectState: {[key: string]: boolean} = {}
 
@@ -56,7 +57,7 @@ const CouponListingScreen = ({navigation}) => {
       "total": 1,
       "expire_date": expireDate
     })
-    console.log("Adding Coupon")
+    // console.log("Adding Coupon")
   }
 
   //TODO: Fake Category Type (Back End Not Ready)
@@ -97,13 +98,13 @@ const CouponListingScreen = ({navigation}) => {
           filterList.push(category.typeCategoryId)
         }
       }
-      console.log("filterList")
-      console.log(filterList)
+      // console.log("filterList")
+      // console.log(filterList)
       let {data} = await axios.post(BASE_URL + "coupon/filterCouponGroups", {
         "categories": filterList,
       })
-      console.log("data")
-      console.log(data)
+      // console.log("data")
+      // console.log(data)
       setCouponGroups(data)
     } catch (error) {
       console.log("error")
@@ -262,10 +263,14 @@ const CouponListingScreen = ({navigation}) => {
                 <Stack px="4%" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
                   {
                     couponGroups.map((el, i) => 
-                      <Box w="50%" mb="4" py="4" key={i}>
-                        <CouponCard useYellowAdd={true} marb="0" imgSource={BASE_S3_IMG_URL + el["image"]} imgAlt={el["title"]} merchantName={el["owner_name"]} couponDetail={el["title"]} 
-                                    addFunc={() => addFunc(el["coupon_group_id"], el["expire_date"])}/>
-                      </Box>
+                        <ActualCoupon
+                        companyName={el["title"]} 
+                        value={el["value"]} 
+                        image={{uri: BASE_S3_IMG_URL + el["image"]}}
+                        couponType={el["coupon_type"]}
+                        rollAnimated={false}
+                        rightBorder={false}
+                        />
                     )
                   }
                 </Stack>
