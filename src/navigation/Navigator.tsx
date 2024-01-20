@@ -17,6 +17,7 @@ import { SET_BASE_USER } from '../../Redux/Action/ActionType';
 import axios from 'axios';
 import { BASE_URL } from '../config/config';
 import MapScreen from '../screens/MapScreen/MapScreen';
+import ResetPasswordScreen from '../screens/ResetPasswordScreen/ResetPasswordScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -70,6 +71,7 @@ const MyStack = () => {
         <Stack.Screen name="Register" component={RegisterScreen}/>
         <Stack.Screen name="CouponItem" component={CouponItemScreen} />
         <Stack.Screen name="CouponQRCode" component={CouponQRCodeScreen} />
+        <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         <Stack.Screen name="Map" component={MapScreen} />
       </Stack.Navigator>
     </NavigationContainer>
