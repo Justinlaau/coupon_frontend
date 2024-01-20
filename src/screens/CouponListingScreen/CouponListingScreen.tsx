@@ -81,9 +81,9 @@ const CouponListingScreen = ({ navigation }) => {
   const fetchCouponGroups = async () => {
     try {
       dispatch(toggleLoading(true));
-      let {data} = await axios.post(BASE_URL + "coupon/getAllCouponGroupsAPI")
       setSelectedAddressCategory("");
       setSelectedTypeCategory({...initialObjectState});
+      let {data} = await axios.post(BASE_URL + "coupon/getAllCouponGroupsAPI")
       console.log("data")
       console.log(data)
       setCouponGroups(data)
@@ -244,7 +244,16 @@ const CouponListingScreen = ({ navigation }) => {
 
   return (
     <NativeBaseProvider>
-      <Layout showTabBar={true}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={() => { fetchCouponGroups() }}
+          />
+        }
+        
+      >
+          <Layout showTabBar={true}>
         <Background listing={true} contentHeight="78%" tabBarSpace={true}>
           <View style={{ position: "absolute", top: "-8%", width: "70%", height: "8%", left: "4%" }}>
             <Stack direction="row" w="100%" h="78%">
@@ -271,16 +280,9 @@ const CouponListingScreen = ({ navigation }) => {
                 <SvgXml width="10%" height="50%" xml={TypeCategorySVG} />
                 <Text onPress={() => showDropDownMenu(2)} fontWeight="black" ml="2%">類別</Text>
               </Box>
-              ): null
-            }
             <Box w="100%" h="86%">
               <ScrollView
-                refreshControl={
-                  <RefreshControl
-                    refreshing={false}
-                    onRefresh={() => { fetchCouponGroups() }}
-                  />
-                }
+                
               >
                 <Stack px="4%" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
                   {
@@ -293,6 +295,7 @@ const CouponListingScreen = ({ navigation }) => {
                   }
                 </Stack>
               </ScrollView>
+              </Box>
             </Stack>
           </Box>
           {selectedMenu != 0 ? (
@@ -316,7 +319,7 @@ const CouponListingScreen = ({ navigation }) => {
           ) : null
           }
           <Box w="100%" h="86%">
-            <ScrollView>
+            <ScrollView nestedScrollEnabled={true}>
               <Stack px="4%" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
                 {
                   couponGroups.map((el, i) => 
@@ -337,6 +340,7 @@ const CouponListingScreen = ({ navigation }) => {
           </Box>
         </Background>
       </Layout>
+      </ScrollView>
     </NativeBaseProvider>
   );
 };
