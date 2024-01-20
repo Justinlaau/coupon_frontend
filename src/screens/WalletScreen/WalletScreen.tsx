@@ -119,38 +119,42 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
 
             <ScrollView style={{height: "80%"}}>
 
+                <View style={{width: "92%", marginLeft: "4%"}}>
                 {
                     couponList.map((coupon: any, index) => {
                         if (coupon.used < coupon.total && buttonState == 1) {
                             return (
-                                <TouchableOpacity key={coupon.coupon_id} onPress={() => navigate("CouponItem", {coupon: coupon})}>
-                                <ActualCoupon
-                                    companyName={coupon.owner_name} 
-                                    value={coupon.value} 
-                                    image={{uri: BASE_S3_IMG_URL + coupon.image}}
-                                    couponType={coupon.coupon_type}
-                                    rollAnimated={false}
-                                    rightBorder={true}
-                                />
-                                </TouchableOpacity>
+                                    <TouchableOpacity key={coupon.coupon_id} onPress={() => navigate("CouponItem", {coupon: coupon})}>
+                                    <ActualCoupon
+                                        title={coupon.title}
+                                        companyName={coupon.owner_name} 
+                                        value={coupon.value} 
+                                        image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                                        couponType={coupon.coupon_type}
+                                        rollAnimated={false}
+                                        rightBorder={true}
+                                        />
+                                    </TouchableOpacity>
                             )
                         } else if (coupon.used >= coupon.total && buttonState == 2) {
                             return (
                                 <ActualCoupon
-                                    key={coupon.coupon_id}
-                                    companyName={coupon.owner_name} 
-                                    value={coupon.value} 
-                                    image={{uri: BASE_S3_IMG_URL + coupon.image}}
-                                    couponType={coupon.coupon_type}
-                                    rollAnimated={false}
-                                    rightBorder={true}
+                                title={coupon.title}
+                                key={coupon.coupon_id}
+                                companyName={coupon.owner_name} 
+                                value={coupon.value} 
+                                image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                                couponType={coupon.coupon_type}
+                                rollAnimated={false}
+                                rightBorder={true}
                                 />
-                            )
-                        } else {
-                            return null;
-                        }
-                    })
-                }
+                                )
+                            } else {
+                                return null;
+                            }
+                        })
+                    }
+                </View>
             </ScrollView>
         </WalletBackground>
     </Layout>       

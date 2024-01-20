@@ -111,6 +111,7 @@ const CouponItemScreen = ({navigation, route}) => {
               <Text fontWeight="600">{coupon.owner_name} {coupon.title}</Text>
               <View style={{width: "90%"}}>
                 <ActualCoupon
+                    title={coupon.title}
                     companyName={coupon.owner_name} 
                     value={coupon.value} 
                     image={{uri: BASE_S3_IMG_URL + coupon.image}}

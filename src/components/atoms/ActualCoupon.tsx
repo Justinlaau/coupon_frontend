@@ -73,6 +73,7 @@ const backgroundColor: Dict = {
 
 interface ActualCouponType{
     image: any,
+    title: string,
     companyName: string,
     value: string,
     couponType: number,
@@ -112,14 +113,18 @@ const ActualCoupon = (props: ActualCouponType) =>{
 
     return (
         <View style={styles.container} >
+            <View style={{width: "100%"}}>
+                <Text style={{fontWeight: "bold", color: "#4C4C4C"}}>
+                    {props.companyName}
+                </Text>
+            </View>
             <View style={[{
                 width: "100%",
                 flexDirection: "row",
                 backgroundColor: backgroundColor[props.couponType],
                 height: couponHeight,
                 borderRadius: radius,
-                overflow: "hidden"
-            }, styles.shadow, props.rightBorder? {borderTopRightRadius: radius, borderBottomRightRadius: radius}: {}]}
+            }, styles.shadow, props.rightBorder? {overflow: "hidden"}: {}]}
             >
                 <View style={[styles.imageContainer]}>
                     <Image style={styles.imageStyle} source={props.image} />
@@ -134,7 +139,7 @@ const ActualCoupon = (props: ActualCouponType) =>{
                                 fontWeight: 'bold',
                                 color: 'white',
                             }}>
-                                {props.companyName}
+                                {props.title}
                             </Text>
                             <Text style={{
                                 fontSize: 13,

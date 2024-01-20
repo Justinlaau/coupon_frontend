@@ -263,14 +263,16 @@ const CouponListingScreen = ({navigation}) => {
                 <Stack px="4%" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
                   {
                     couponGroups.map((el, i) => 
-                        <ActualCoupon
-                        companyName={el["title"]} 
+                      <ActualCoupon
+                        companyName={el["owner_name"]} 
+                        title={el["title"]}
                         value={el["value"]} 
                         image={{uri: BASE_S3_IMG_URL + el["image"]}}
                         couponType={el["coupon_type"]}
                         rollAnimated={false}
                         rightBorder={false}
-                        />
+                      />
+                    
                     )
                   }
                 </Stack>
