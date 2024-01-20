@@ -17,6 +17,7 @@ import {
   View,
   TextInput,
   ScrollView,
+  RefreshControl,
 } from 'react-native';
 import {
   NativeBaseProvider,
@@ -79,25 +80,55 @@ const CouponListingScreen = ({ navigation }) => {
 
   const fetchCouponGroups = async () => {
     try {
-      let { data } = await axios.post(BASE_URL + "coupon/getAllCouponGroupsAPI")
+      dispatch(toggleLoading(true));
+      let {data} = await axios.post(BASE_URL + "coupon/getAllCouponGroupsAPI")
+      setSelectedAddressCategory("");
+      setSelectedTypeCategory({...initialObjectState});
       console.log("data")
       console.log(data)
       setCouponGroups(data)
     } catch (error) {
       console.log("error")
       console.log(error)
+    } finally {
+      dispatch(toggleLoading(false));
     }
   }
 
   // TODO: allow filter by address category
   const filterCouponGroups = async () => {
     try {
+      dispatch(toggleLoading(true));
       let filterList = []
       for (let category of TypeCategory) {
         if (selectedTypeCategory[category.typeCategoryName]) {
           filterList.push(category.typeCategoryId)
         }
       }
+
+      console.log("filterList")
+      console.log(filterList)
+      console.log("selectedAddressCategory")
+      console.log(selectedAddressCategory)
+
+      if (filterList.length == 0 &&  (selectedAddressCategory == "" || selectedAddressCategory == "0")) {
+
+        dispatch(toggleLoading(true));
+        let {data} = await axios.post(BASE_URL + "coupon/getAllCouponGroupsAPI")
+        console.log("data")
+        console.log(data)
+        setCouponGroups(data)
+
+      } else {
+        let {data} = await axios.post(BASE_URL + "coupon/filterCouponGroups", {
+          "categories": filterList,
+          "address_locode": selectedAddressCategory
+        })
+        console.log("data")
+        console.log(data)
+        setCouponGroups(data)
+      }       
+
       // console.log("filterList")
       // console.log(filterList)
       let { data } = await axios.post(BASE_URL + "coupon/filterCouponGroups", {
@@ -107,9 +138,12 @@ const CouponListingScreen = ({ navigation }) => {
       // console.log("data")
       // console.log(data)
       setCouponGroups(data)
+
     } catch (error) {
       console.log("error")
       console.log(error)
+    } finally {
+      dispatch(toggleLoading(false));
     }
   }
 
@@ -237,6 +271,28 @@ const CouponListingScreen = ({ navigation }) => {
                 <SvgXml width="10%" height="50%" xml={TypeCategorySVG} />
                 <Text onPress={() => showDropDownMenu(2)} fontWeight="black" ml="2%">類別</Text>
               </Box>
+              ): null
+            }
+            <Box w="100%" h="86%">
+              <ScrollView
+                refreshControl={
+                  <RefreshControl
+                    refreshing={false}
+                    onRefresh={() => { fetchCouponGroups() }}
+                  />
+                }
+              >
+                <Stack px="4%" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
+                  {
+                    couponGroups.map((el, i) => 
+                      <Box w="50%" mb="4" py="4" key={i}>
+                        <CouponCard useYellowAdd={true} marb="0" imgSource={BASE_S3_IMG_URL + el["image"]} imgAlt={el["title"]} merchantName={el["owner_name"]} couponDetail={el["title"]} 
+                                    addFunc={() => addFunc(el["coupon_group_id"], el["expire_date"])}/>
+                      </Box>
+                    )
+                  }
+                </Stack>
+              </ScrollView>
             </Stack>
           </Box>
           {selectedMenu != 0 ? (
