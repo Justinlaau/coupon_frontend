@@ -145,6 +145,7 @@ const TabBarStyle = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     flexDirection: 'column',
+    overflow: "hidden"
   },
   TabBarIcon: {
     height: '50%',
