@@ -17,6 +17,7 @@ import {
   View,
   TextInput,
   ScrollView,
+  RefreshControl,
 } from 'react-native';
 import {
   NativeBaseProvider,
@@ -78,19 +79,25 @@ const CouponListingScreen = ({navigation}) => {
 
   const fetchCouponGroups = async () => {
     try {
+      dispatch(toggleLoading(true));
       let {data} = await axios.post(BASE_URL + "coupon/getAllCouponGroupsAPI")
+      setSelectedAddressCategory("");
+      setSelectedTypeCategory({...initialObjectState});
       console.log("data")
       console.log(data)
       setCouponGroups(data)
     } catch (error) {
       console.log("error")
       console.log(error)
+    } finally {
+      dispatch(toggleLoading(false));
     }
   }
 
   // TODO: allow filter by address category
   const filterCouponGroups = async () => {
     try {
+      dispatch(toggleLoading(true));
       let filterList = []
       for (let category of TypeCategory) {
         if (selectedTypeCategory[category.typeCategoryName]) {
@@ -99,16 +106,31 @@ const CouponListingScreen = ({navigation}) => {
       }
       console.log("filterList")
       console.log(filterList)
-      let {data} = await axios.post(BASE_URL + "coupon/filterCouponGroups", {
-        "categories": filterList,
-        "address_locode": selectedAddressCategory
-      })
-      console.log("data")
-      console.log(data)
-      setCouponGroups(data)
+      console.log("selectedAddressCategory")
+      console.log(selectedAddressCategory)
+
+      if (filterList.length == 0 &&  (selectedAddressCategory == "" || selectedAddressCategory == "0")) {
+
+        dispatch(toggleLoading(true));
+        let {data} = await axios.post(BASE_URL + "coupon/getAllCouponGroupsAPI")
+        console.log("data")
+        console.log(data)
+        setCouponGroups(data)
+
+      } else {
+        let {data} = await axios.post(BASE_URL + "coupon/filterCouponGroups", {
+          "categories": filterList,
+          "address_locode": selectedAddressCategory
+        })
+        console.log("data")
+        console.log(data)
+        setCouponGroups(data)
+      }       
     } catch (error) {
       console.log("error")
       console.log(error)
+    } finally {
+      dispatch(toggleLoading(false));
     }
   }
 
@@ -259,7 +281,14 @@ const CouponListingScreen = ({navigation}) => {
               ): null
             }
             <Box w="100%" h="86%">
-              <ScrollView>
+              <ScrollView
+                refreshControl={
+                  <RefreshControl
+                    refreshing={false}
+                    onRefresh={() => { fetchCouponGroups() }}
+                  />
+                }
+              >
                 <Stack px="4%" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
                   {
                     couponGroups.map((el, i) => 
