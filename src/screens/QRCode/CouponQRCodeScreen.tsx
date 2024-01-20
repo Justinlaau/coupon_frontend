@@ -46,7 +46,6 @@ const CouponQRCodeScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const params = route.params;
   const coupon = params.coupon
-  const [isConnected, setIsConnected] = useState(couponSocket.connected);
   const [qrCode, setQRCode] = useState("https://reactnative.dev/img/tiny_logo.png");
   const token = useSelector((state: any) => state.authenticationReducer.baseUser.token);
   
@@ -71,19 +70,18 @@ const CouponQRCodeScreen = ({navigation, route}) => {
 
   useEffect(() => {
     fetchCouponQRCode(coupon.coupon_id, coupon.total);
-    console.log("connecting to socket")
     couponSocket.auth = {token: token};
     couponSocket.connect();
   }, []);
 
+  couponSocket.on('connect', () => {
+    console.log("connected");
+  });
+
   useEffect(() => {
-    couponSocket.on('connect', () => {
-      setIsConnected(true);
-    })
-    couponSocket.on('disconnect', () => {
-      setIsConnected(false);
-    })
     couponSocket.on('qrcode_scanned_response', (data) => {
+      console.log("qrcode_scanned_response");
+      console.log(data);
       dispatch(setMessagePopup(data.message, SET_SUCCESS_MESSAGE));
       dispatch(toggleMessagePopup(true, TOGGLE_SUCCESS_POPUP));
     })
