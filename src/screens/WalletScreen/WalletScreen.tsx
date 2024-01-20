@@ -132,7 +132,8 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                                         image={{uri: BASE_S3_IMG_URL + coupon.image}}
                                         couponType={coupon.coupon_type}
                                         rollAnimated={false}
-                                        rightBorder={true}
+                                        rightBar={false}
+                                        availablePercent={0}
                                         />
                                     </TouchableOpacity>
                             )
@@ -146,7 +147,8 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                                 image={{uri: BASE_S3_IMG_URL + coupon.image}}
                                 couponType={coupon.coupon_type}
                                 rollAnimated={false}
-                                rightBorder={true}
+                                rightBar={false}
+                                availablePercent={0}
                                 />
                                 )
                             } else {

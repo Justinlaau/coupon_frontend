@@ -66,9 +66,9 @@ const chineseConverter = (str: string) => {
 };
 
 const backgroundColor: Dict = {
-    0: "#ff5733",
-    1: "#ff7e15",
-    2: "#FFC300",
+    0: "#FF6C22",
+    1: "#FFB22C",
+    2: "#DB6144",
 }
 
 interface ActualCouponType{
@@ -78,12 +78,22 @@ interface ActualCouponType{
     value: string,
     couponType: number,
     rollAnimated: boolean,
-    rightBorder: boolean,
+    rightBar: boolean,
+    availablePercent: number
 };
 
-const radius = 20;
+const radius = 10;
 const couponHeight = 150;
 const ActualCoupon = (props: ActualCouponType) =>{
+    const viewRef = useRef<View>(null);
+    const [viewHeight, setViewHeight] = useState<number>(0);
+  
+    const handleLayout = () => {
+        viewRef.current?.measure((x: number, y: number, width: number, height: number) => {
+        setViewHeight(height);
+      });
+    };
+
     const [left, setLeft] = useState(true);
 
     const widthAnimation = useRef(new Animated.Value(0)).current;
@@ -113,23 +123,23 @@ const ActualCoupon = (props: ActualCouponType) =>{
 
     return (
         <View style={styles.container} >
-            <View style={{width: "100%"}}>
-                <Text style={{fontWeight: "bold", color: "#4C4C4C"}}>
+            <TouchableOpacity style={{width: "100%"}}>
+                <Text style={{fontWeight: "bold", color: "#4C4C4C", fontSize: 20}}>
                     {props.companyName}
                 </Text>
-            </View>
+            </TouchableOpacity>
             <View style={[{
                 width: "100%",
                 flexDirection: "row",
                 backgroundColor: backgroundColor[props.couponType],
                 height: couponHeight,
                 borderRadius: radius,
-            }, styles.shadow, props.rightBorder? {overflow: "hidden"}: {}]}
+            }, styles.shadow, props.rightBar? {}: {overflow: "hidden"}]}
             >
                 <View style={[styles.imageContainer]}>
                     <Image style={styles.imageStyle} source={props.image} />
                 </View>
-                <View style={[styles.CouponDescription]}>
+                <View style={[styles.CouponDescription, props.rightBar? {width: "50%"} : {width: "65%"}]}>
                     {/* <GiftIcon name="gift" size={30} style={{color: 'white'}}/> */}
                     {/* props.text */}
                     <View style={[styles.frontWords, {backgroundColor: backgroundColor[props.couponType]}]}>
@@ -160,7 +170,36 @@ const ActualCoupon = (props: ActualCouponType) =>{
                         </TouchableOpacity>
                         : <></>
                     }
+
                 </View>
+                {
+                    props.rightBar ? 
+                    <View style={{width: "15%", backgroundColor: "white", height: "100%"}}>
+                        <View style={{display: "flex", justifyContent: "center", alignItems: "center", height: "70%", width: "100%"}}
+                            ref={viewRef} onLayout={handleLayout}>
+                            <View style={{position: "absolute", width: "50%", height: "90%", backgroundColor: backgroundColor[props.couponType], opacity: 0.3, 
+                            borderRadius: 30, top: 0.1 * viewHeight
+                            }}>
+                            </View>
+                            <View style={{position: "absolute", width: "50%", backgroundColor: backgroundColor[props.couponType], borderRadius: 30,
+                            top: (props.availablePercent) * viewHeight, height: (1 - props.availablePercent) * viewHeight
+                            }}>
+                            </View>
+                            <View style={{position: "absolute", width: 30, height: 30, backgroundColor: backgroundColor[props.couponType], 
+                            borderRadius: 30, borderColor: "white", borderWidth: 3,
+                            top: (props.availablePercent) * viewHeight - 18 }}>
+                            </View>
+                        </View>
+                        <View style={{height: "30%", width: "100%"}}>
+                            <TouchableOpacity style={{height: "100%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                <Text style={{fontSize: 30, color: "orange"}}>
+                                    搶
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    : <></>
+                }
             </View>
         </View>
 
@@ -226,7 +265,6 @@ const styles = StyleSheet.create({
     },
     CouponDescription:{
         height: couponHeight,
-        width: "65%",
         borderLeftWidth: 2.2,
         borderLeftColor: '#FFFFFF',
         borderStyle: 'dotted',
