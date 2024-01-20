@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux';
 import { SET_BASE_USER } from '../../../Redux/Action/ActionType';
 import Layout from '../../components/templates/Layout';
 import { setMessagePopup, toggleMessagePopup } from '../../../Redux/Action/CommonAction';
+import KeyboardAvoidingWrapper from '../../components/templates/KeyboardAvoidingWrapper';
 import { 
   TOGGLE_SUCCESS_POPUP,
   SET_SUCCESS_MESSAGE, 
@@ -49,8 +50,8 @@ const LoginScreen = ({navigation}: any) => {
     }
     else {
       try {
-        const { data } = await axios.post(BASE_URL + 'user/LoginRequest', payload)
-        // const { data } = await axios.post('http://47.129.1.22:8000/user/LoginRequest', payload)
+        // const { data } = await axios.post(BASE_URL + 'user/LoginRequest', payload)
+        const { data } = await axios.post('http://47.129.1.22:8000/user/LoginRequest', payload)
         console.log("data")
         console.log(data)
         if (data.result == 0) {
@@ -82,85 +83,87 @@ const LoginScreen = ({navigation}: any) => {
     setLoading(false);
   };
   return (
-    <Layout showTabBar={false}>
-      <Background main={true} contentHeight="76%">
-        <View style={LoginStyle.Layout}>
-          <View style={LoginStyle.Container}>
-            <Text style={[
-              LoginStyle.Title,
-              FontStyles.small,
-              FontStyles.bold,
-            ]}
-            >
-              請註冊或登入
-            </Text>
-            <View style={LoginStyle.Icon}>
-              <SvgXml width={'70'} xml={ProfileSVG} />
-            </View>
-            <View style={LoginStyle.InputContainer}>
-              <InputBox text="account name/ email"
-                borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
-                Input={handleUsernameChange}
-                InputRes={username}
-                shadowStyle={{
-                  shadowRadius: 20, shadowColor: 'black',
-                  shadowOffset: { width: -100, height: -100 },
-                }}
-                />
-              <View style={{ height: "10%" }}></View>
-              <InputBox text="password"
-                Input={handlePasswordChange}
-                HideText={true}
-                InputRes={password}
-                borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
-                shadowStyle={{
-                  shadowRadius: 20, shadowColor: 'black',
-                  shadowOffset: { width: -100, height: -100 },
-                }}
-                />
-            </View>
-            <View style={LoginStyle.Checkbox}>
-              <CheckBoxes text="Remember me" textStyle={{ color: "#DC2B37" }} color="#DC2B37" />
-
-              <Text style={LoginStyle.forgetPassword}
-                onPress={() => { console.log("forget password....") }}>
-                Forget password?
+    <KeyboardAvoidingWrapper>
+      <Layout showTabBar={false}>
+        <Background main={true} contentHeight="76%">
+          <View style={LoginStyle.Layout}>
+            <View style={LoginStyle.Container}>
+              <Text style={[
+                LoginStyle.Title,
+                FontStyles.small,
+                FontStyles.bold,
+              ]}
+              >
+                請註冊或登入
               </Text>
-            </View>
-            <View style={LoginStyle.ButtonContainer}>
-              <ButtonBox text="Login"
-                color="#DC2B37"
-                borderStyle={{ borderRadius: 10 }}
-                isLoading={loading}
-                action={handleLogin}
-                />
-            </View>
-            <View style={LoginStyle.Divider}>
-              <Divider
-                style={{ width: "30%" }}
-                color="gray"
-                insetType="left"
-                width={1}
-                orientation="horizontal"
-                />
-              <Text>Don't have account?</Text>
-              <Divider
-                style={{ width: "30%" }}
-                color="gray"
-                insetType="right"
-                width={1}
-                orientation="horizontal"
-                />
-            </View>
-            <View style={LoginStyle.CreateButton}>
-              <ButtonBox text="Create account"
-                borderStyle={{ borderColor: "#DC2B37", borderWidth: 2, borderRadius: 25 }}
-                textStyle={{ color: "#DC2B37" }} boxType="outline" action={() => { navigation.navigate('Register') }} />
+              <View style={LoginStyle.Icon}>
+                <SvgXml width={'70'} xml={ProfileSVG} />
+              </View>
+              <View style={LoginStyle.InputContainer}>
+                <InputBox text="account name/ email"
+                  borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
+                  Input={handleUsernameChange}
+                  InputRes={username}
+                  shadowStyle={{
+                    shadowRadius: 20, shadowColor: 'black',
+                    shadowOffset: { width: -100, height: -100 },
+                  }}
+                  />
+                <View style={{ height: "10%" }}></View>
+                <InputBox text="password"
+                  Input={handlePasswordChange}
+                  HideText={true}
+                  InputRes={password}
+                  borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
+                  shadowStyle={{
+                    shadowRadius: 20, shadowColor: 'black',
+                    shadowOffset: { width: -100, height: -100 },
+                  }}
+                  />
+              </View>
+              <View style={LoginStyle.Checkbox}>
+                <CheckBoxes text="Remember me" textStyle={{ color: "#DC2B37" }} color="#DC2B37" />
+
+                <Text style={LoginStyle.forgetPassword}
+                  onPress={() => { console.log("forget password....") }}>
+                  Forget password?
+                </Text>
+              </View>
+              <View style={LoginStyle.ButtonContainer}>
+                <ButtonBox text="Login"
+                  color="#DC2B37"
+                  borderStyle={{ borderRadius: 10 }}
+                  isLoading={loading}
+                  action={handleLogin}
+                  />
+              </View>
+              <View style={LoginStyle.Divider}>
+                <Divider
+                  style={{ width: "30%" }}
+                  color="gray"
+                  insetType="left"
+                  width={1}
+                  orientation="horizontal"
+                  />
+                <Text>Don't have account?</Text>
+                <Divider
+                  style={{ width: "30%" }}
+                  color="gray"
+                  insetType="right"
+                  width={1}
+                  orientation="horizontal"
+                  />
+              </View>
+              <View style={LoginStyle.CreateButton}>
+                <ButtonBox text="Create account"
+                  borderStyle={{ borderColor: "#DC2B37", borderWidth: 2, borderRadius: 25 }}
+                  textStyle={{ color: "#DC2B37" }} boxType="outline" action={() => { navigation.navigate('Register') }} />
+              </View>
             </View>
           </View>
-        </View>
-      </Background>
-    </Layout>
+        </Background>
+      </Layout>
+    </KeyboardAvoidingWrapper>
   );
 };
 
