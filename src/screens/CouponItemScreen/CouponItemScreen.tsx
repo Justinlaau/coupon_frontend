@@ -109,13 +109,18 @@ const CouponItemScreen = ({navigation, route}) => {
               <Box h="5%" />
               <Text fontSize="2xl" fontWeight="600" style={{color: "#db3d3d"}}>憑QR Code即可使用</Text>
               <Text fontWeight="600">{coupon.owner_name} {coupon.title}</Text>
-              <ActualCoupon
-                  companyName={coupon.owner_name} 
-                  value={coupon.value} 
-                  image={{uri: BASE_S3_IMG_URL + coupon.image}}
-                  couponType={coupon.coupon_type}
-                  rollAnimated={true}
-              />
+              <View style={{width: "90%"}}>
+                <ActualCoupon
+                    title={coupon.title}
+                    companyName={coupon.owner_name} 
+                    value={coupon.value} 
+                    image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                    couponType={coupon.coupon_type}
+                    rollAnimated={true}
+                    rightBar={false}
+                    availablePercent={0}
+                    />
+              </View>
               <View style={{display: "flex", justifyContent:"center", alignItems: "center", marginBottom: "3%"}}>
                 <Text>
                   請按Coupon查看條款與細則

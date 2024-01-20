@@ -43,14 +43,14 @@ const LoginScreen = ({navigation}: any) => {
       "password": password
     }
     if (username.trim() === '' || password.trim() === '') {
-      dispatch(setMessagePopup("Please enter username and password.", SET_ERROR_MESSAGE));
+      dispatch(setMessagePopup("請輸入用戶名與密碼", SET_ERROR_MESSAGE));
       dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
       // Alert.alert('Please enter username and password.');
     }
     else {
       try {
-        const { data } = await axios.post(BASE_URL + 'user/LoginRequest', payload)
-        // const { data } = await axios.post('http://47.129.1.22:8000/user/LoginRequest', payload)
+        // const { data } = await axios.post(BASE_URL + 'user/LoginRequest', payload)
+        const { data } = await axios.post('http://47.129.1.22:8000/user/LoginRequest', payload)
         console.log("data")
         console.log(data)
         if (data.result == 0) {
@@ -66,7 +66,7 @@ const LoginScreen = ({navigation}: any) => {
           })
           navigation.navigate('Main');
         } else {  
-          dispatch(setMessagePopup("Username or password is wrong.", SET_ERROR_MESSAGE));
+          dispatch(setMessagePopup("用戶名或密碼錯碼", SET_ERROR_MESSAGE));
           dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
           // Alert.alert("Username or password is wrong");
         }
@@ -74,7 +74,7 @@ const LoginScreen = ({navigation}: any) => {
       } catch (e) {
         console.log("error")
         console.log(e)
-        dispatch(setMessagePopup("Username or password is wrong.", SET_ERROR_MESSAGE));
+        dispatch(setMessagePopup("用戶名或密碼錯碼", SET_ERROR_MESSAGE));
         dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
         // Alert.alert("Username or password is wrong");
       }
@@ -98,7 +98,7 @@ const LoginScreen = ({navigation}: any) => {
               <SvgXml width={'70'} xml={ProfileSVG} />
             </View>
             <View style={LoginStyle.InputContainer}>
-              <InputBox text="account name/ email"
+              <InputBox text="用戶名"
                 borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
                 Input={handleUsernameChange}
                 InputRes={username}
@@ -108,7 +108,7 @@ const LoginScreen = ({navigation}: any) => {
                 }}
                 />
               <View style={{ height: "10%" }}></View>
-              <InputBox text="password"
+              <InputBox text="密碼"
                 Input={handlePasswordChange}
                 HideText={true}
                 InputRes={password}
@@ -120,18 +120,18 @@ const LoginScreen = ({navigation}: any) => {
                 />
             </View>
             <View style={LoginStyle.Checkbox}>
-              <CheckBoxes text="Remember me" textStyle={{ color: "#DC2B37" }} color="#DC2B37" />
+              <CheckBoxes text="記住用戶名與密碼" textStyle={{ color: "#DC2B37" }} color="#DC2B37" />
 
               <Text style={LoginStyle.forgetPassword}
                 onPress={() => { 
                   navigation.navigate("forgetPassword")
                   console.log("forget password....")
                    }}>
-                Forget password?
+                忘記密碼
               </Text>
             </View>
             <View style={LoginStyle.ButtonContainer}>
-              <ButtonBox text="Login"
+              <ButtonBox text="登入"
                 color="#DC2B37"
                 borderStyle={{ borderRadius: 10 }}
                 isLoading={loading}
@@ -146,7 +146,7 @@ const LoginScreen = ({navigation}: any) => {
                 width={1}
                 orientation="horizontal"
                 />
-              <Text>Don't have account?</Text>
+              <Text>  沒有帳戶?  </Text>
               <Divider
                 style={{ width: "30%" }}
                 color="gray"
@@ -156,7 +156,7 @@ const LoginScreen = ({navigation}: any) => {
                 />
             </View>
             <View style={LoginStyle.CreateButton}>
-              <ButtonBox text="Create account"
+              <ButtonBox text="創建帳戶"
                 borderStyle={{ borderColor: "#DC2B37", borderWidth: 2, borderRadius: 25 }}
                 textStyle={{ color: "#DC2B37" }} boxType="outline" action={() => { navigation.navigate('Register') }} />
             </View>
@@ -220,7 +220,8 @@ const LoginStyle = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     height: "13%",
-    width: "100%"
+    width: "100%",
+    justifyContent: "center"
   },
   CreateButton: {
     width: "60%"

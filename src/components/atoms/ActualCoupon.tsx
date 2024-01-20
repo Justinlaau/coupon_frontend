@@ -21,10 +21,11 @@ const numberToChinese = (number: number) => {
         100: '百',
         1000: '千',
         10000: '萬',
-        100000: '十萬'
+        100000: '十萬',
+        1000000: '百萬'
       };
-    
-      if (number < 0 || number > 99999) {
+      
+      if (number < 0 || number > 9999999) {
         throw new Error('Number out of range');
       }
 
@@ -65,20 +66,34 @@ const chineseConverter = (str: string) => {
 };
 
 const backgroundColor: Dict = {
-    0: "#ff5733",
-    1: "#ff7e15",
-    2: "#FFC300",
+    0: "#FF6C22",
+    1: "#FFB22C",
+    2: "#DB6144",
 }
 
 interface ActualCouponType{
     image: any,
+    title: string,
     companyName: string,
     value: string,
     couponType: number,
     rollAnimated: boolean,
+    rightBar: boolean,
+    availablePercent: number
 };
 
+const radius = 10;
+const couponHeight = 150;
 const ActualCoupon = (props: ActualCouponType) =>{
+    const viewRef = useRef<View>(null);
+    const [viewHeight, setViewHeight] = useState<number>(0);
+  
+    const handleLayout = () => {
+        viewRef.current?.measure((x: number, y: number, width: number, height: number) => {
+        setViewHeight(height);
+      });
+    };
+
     const [left, setLeft] = useState(true);
 
     const widthAnimation = useRef(new Animated.Value(0)).current;
@@ -101,53 +116,49 @@ const ActualCoupon = (props: ActualCouponType) =>{
         setLeft(false);
       };
     
-    const animatedWidth = widthAnimation.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['0%', '100%'],
+      const animatedWidth = widthAnimation.interpolate({
+          inputRange: [0, 1],
+          outputRange: ['0%', '100%'],
     });
 
     return (
         <View style={styles.container} >
-            <View style={{
-                width: deviceWidth - 20,
+            <TouchableOpacity style={{width: "100%"}}>
+                <Text style={{fontWeight: "bold", color: "#4C4C4C", fontSize: 20}}>
+                    {props.companyName}
+                </Text>
+            </TouchableOpacity>
+            <View style={[{
+                width: "100%",
                 flexDirection: "row",
                 backgroundColor: backgroundColor[props.couponType],
-                height: 200,
+                height: couponHeight,
                 borderRadius: radius,
-
-                shadowColor: '#000',
-                shadowOffset:{
-                    width: 5,
-                    height: 5
-                },
-                shadowRadius: 5,
-                shadowOpacity: 0.75,
-                elevation: 10,
-                overflow: "hidden"
-            }}
+            }, styles.shadow, props.rightBar? {}: {overflow: "hidden"}]}
             >
-                <View style={styles.imageContainer}>
+                <View style={[styles.imageContainer]}>
                     <Image style={styles.imageStyle} source={props.image} />
                 </View>
-                <View style={styles.CouponDescription}>
+                <View style={[styles.CouponDescription, props.rightBar? {width: "50%"} : {width: "65%"}]}>
                     {/* <GiftIcon name="gift" size={30} style={{color: 'white'}}/> */}
                     {/* props.text */}
                     <View style={[styles.frontWords, {backgroundColor: backgroundColor[props.couponType]}]}>
-                        <Text style={{
-                            fontSize: 20,
-                            fontWeight: 'bold',
-                            color: 'white',
-                            marginTop:'20%'}}>
-                            {props.companyName}
-                        </Text>
-                        <Text style={{
-                            fontSize: 13,
-                            fontWeight: 'bold',
-                            color: 'white'}}>
-                            {chineseConverter(props.value)}
-                        </Text >
-
-                        <Text style={{fontSize: 45, color: 'white'}}><Text style={{fontSize: 35}}>$</Text>{props.value}</Text>
+                        <View style={[styles.frontContainer]}>
+                            <Text style={{
+                                fontSize: 20,
+                                fontWeight: 'bold',
+                                color: 'white',
+                            }}>
+                                {props.title}
+                            </Text>
+                            <Text style={{
+                                fontSize: 13,
+                                fontWeight: 'bold',
+                                color: 'white'}}>
+                                {chineseConverter(props.value)}
+                            </Text >
+                            <Text style={{fontSize: 45, color: 'white'}}><Text style={{fontSize: 35}}>$</Text>{props.value}</Text>
+                        </View>
                     </View>
                     { props.rollAnimated? 
                         <TouchableOpacity style={[styles.basedAbs, {zIndex: 7}]} onPress={left? onClickToRight: onClickToLeft} activeOpacity={1}>
@@ -159,7 +170,36 @@ const ActualCoupon = (props: ActualCouponType) =>{
                         </TouchableOpacity>
                         : <></>
                     }
+
                 </View>
+                {
+                    props.rightBar ? 
+                    <View style={{width: "15%", backgroundColor: "white", height: "100%"}}>
+                        <View style={{display: "flex", justifyContent: "center", alignItems: "center", height: "70%", width: "100%"}}
+                            ref={viewRef} onLayout={handleLayout}>
+                            <View style={{position: "absolute", width: "50%", height: "90%", backgroundColor: backgroundColor[props.couponType], opacity: 0.3, 
+                            borderRadius: 30, top: 0.1 * viewHeight
+                            }}>
+                            </View>
+                            <View style={{position: "absolute", width: "50%", backgroundColor: backgroundColor[props.couponType], borderRadius: 30,
+                            top: (props.availablePercent) * viewHeight, height: (1 - props.availablePercent) * viewHeight
+                            }}>
+                            </View>
+                            <View style={{position: "absolute", width: 30, height: 30, backgroundColor: backgroundColor[props.couponType], 
+                            borderRadius: 30, borderColor: "white", borderWidth: 3,
+                            top: (props.availablePercent) * viewHeight - 18 }}>
+                            </View>
+                        </View>
+                        <View style={{height: "30%", width: "100%"}}>
+                            <TouchableOpacity style={{height: "100%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                <Text style={{fontSize: 30, color: "orange"}}>
+                                    搶
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    : <></>
+                }
             </View>
         </View>
 
@@ -168,7 +208,6 @@ const ActualCoupon = (props: ActualCouponType) =>{
 };
 
 const deviceWidth = Math.round(Dimensions.get('window').width);
-const radius = 20;
 const styles = StyleSheet.create({
     container:{
         alignItems: 'center',
@@ -176,7 +215,7 @@ const styles = StyleSheet.create({
         marginBottom: '5%',
     },
     imageContainer:{
-        height: 200,
+        height: couponHeight,
         width: "35%",
         borderTopLeftRadius: radius,
         borderBottomLeftRadius: radius,
@@ -198,7 +237,24 @@ const styles = StyleSheet.create({
         position: "absolute",
         width: "100%",
         height: "100%",
-        padding: 10,
+    },
+    frontContainer:{
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        marginLeft: "7%",
+        justifyContent: "center",
+        alignContent: "center"
+    },
+    shadow: {
+        shadowColor: '#000000',
+        shadowOffset:{
+            height: 5,
+            width: 9,
+        },
+        shadowRadius: 10,
+        shadowOpacity: 1,
+        elevation: 5,
     },
     layeredWords:{
         zIndex: 7,
@@ -208,11 +264,11 @@ const styles = StyleSheet.create({
         overflow: "hidden",
     },
     CouponDescription:{
-        height: 200,
-        width: "65%",
+        height: couponHeight,
         borderLeftWidth: 2.2,
         borderLeftColor: '#FFFFFF',
         borderStyle: 'dotted',
+        overflow: "hidden"
     },
 })
 

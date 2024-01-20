@@ -54,11 +54,11 @@ class TabItem {
 const TabBar = () => {
   const TabItem1JSX = new TabItem(
     bottomIcon.bottom_icon_1,
-    'Main',
+    '主頁',
   ).getTabItem();
   const TabItem2JSX = new TabItem(
     bottomIcon.bottom_icon_2,
-    'Today',
+    '今日搶',
   ).getTabItem();
   const TabItem3JSX = new TabItem(
     bottomIcon.bottom_icon_cat,
@@ -66,11 +66,11 @@ const TabBar = () => {
   ).getCenterItem();
   const TabItem4JSX = new TabItem(
     bottomIcon.bottom_icon_3,
-    'Clock',
+    '待定',
   ).getTabItem();
   const TabItem5JSX = new TabItem(
     bottomIcon.bottom_icon_4,
-    'Q wallet',
+    '錢包',
   ).getTabItem();
   const {t, i18n} = useTranslation();
   const navigation = useNavigation();
@@ -80,20 +80,20 @@ const TabBar = () => {
  
         <View style={TabBarStyle.ItemContainer}>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Main')}>
+        <TouchableOpacity style={TabBarStyle.TouchableBase} onPress={() => navigation.navigate('Main')}>
             {TabItem1JSX}
         </TouchableOpacity>
         </View>
 
         <View style={TabBarStyle.ItemContainer}>
-          <TouchableOpacity >
+          <TouchableOpacity style={TabBarStyle.TouchableBase} onPress={() => navigation.navigate('CouponListing')}>
             {TabItem2JSX}
           </TouchableOpacity>
         </View>
 
       
         <View style={TabBarStyle.ItemContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Map')}>
+          <TouchableOpacity style={TabBarStyle.TouchableBase} onPress={() => navigation.navigate('Map')}>
             {TabItem3JSX}
           </TouchableOpacity>
         </View>
@@ -101,7 +101,7 @@ const TabBar = () => {
       <View style={TabBarStyle.ItemContainer}>{TabItem4JSX}</View>
 
       <View style={TabBarStyle.ItemContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Wallet')}>
+        <TouchableOpacity style={TabBarStyle.TouchableBase} onPress={() => navigation.navigate('Wallet')}>
           {TabItem5JSX}
         </TouchableOpacity>
         
@@ -133,6 +133,10 @@ const TabBarStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  TouchableBase:{
+    height: "100%",
+    width: "100%"
+  },
   TabItems: {
     height: '100%',
     marginLeft: '5%',
@@ -154,7 +158,7 @@ const TabBarStyle = StyleSheet.create({
     textAlign: 'center',
     color: '#AD3B41',
     // marginTop: 38,
-    aspectRatio: 10,
+    // aspectRatio: 10,
     top: '25%',
   },
   CenterIcon: {
