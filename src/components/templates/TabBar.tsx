@@ -80,20 +80,20 @@ const TabBar = () => {
  
         <View style={TabBarStyle.ItemContainer}>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Main')}>
+        <TouchableOpacity style={TabBarStyle.TouchableBase} onPress={() => navigation.navigate('Main')}>
             {TabItem1JSX}
         </TouchableOpacity>
         </View>
 
         <View style={TabBarStyle.ItemContainer}>
-          <TouchableOpacity >
+          <TouchableOpacity style={TabBarStyle.TouchableBase} onPress={() => navigation.navigate('CouponListing')}>
             {TabItem2JSX}
           </TouchableOpacity>
         </View>
 
       
         <View style={TabBarStyle.ItemContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Map')}>
+          <TouchableOpacity style={TabBarStyle.TouchableBase} onPress={() => navigation.navigate('Map')}>
             {TabItem3JSX}
           </TouchableOpacity>
         </View>
@@ -101,7 +101,7 @@ const TabBar = () => {
       <View style={TabBarStyle.ItemContainer}>{TabItem4JSX}</View>
 
       <View style={TabBarStyle.ItemContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Wallet')}>
+        <TouchableOpacity style={TabBarStyle.TouchableBase} onPress={() => navigation.navigate('Wallet')}>
           {TabItem5JSX}
         </TouchableOpacity>
         
@@ -132,6 +132,10 @@ const TabBarStyle = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  TouchableBase:{
+    height: "100%",
+    width: "100%"
   },
   TabItems: {
     height: '100%',
