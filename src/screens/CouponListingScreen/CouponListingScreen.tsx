@@ -222,7 +222,7 @@ const CouponListingScreen = ({ navigation }) => {
                 <Center height="100%" width="15%">
                   <SvgXml height="40%" xml={MagnifierSVG} />
                 </Center>
-                <TextInput textAlignVertical='center' placeholder="search coupon ?" />
+                <TextInput textAlignVertical='center' placeholder="搜尋優惠卷?" />
               </VStack>
             </Stack>
           </View>

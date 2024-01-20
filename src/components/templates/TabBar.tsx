@@ -54,11 +54,11 @@ class TabItem {
 const TabBar = () => {
   const TabItem1JSX = new TabItem(
     bottomIcon.bottom_icon_1,
-    'Main',
+    '主頁',
   ).getTabItem();
   const TabItem2JSX = new TabItem(
     bottomIcon.bottom_icon_2,
-    'Today',
+    '今日搶',
   ).getTabItem();
   const TabItem3JSX = new TabItem(
     bottomIcon.bottom_icon_cat,
@@ -66,11 +66,11 @@ const TabBar = () => {
   ).getCenterItem();
   const TabItem4JSX = new TabItem(
     bottomIcon.bottom_icon_3,
-    'Clock',
+    '待定',
   ).getTabItem();
   const TabItem5JSX = new TabItem(
     bottomIcon.bottom_icon_4,
-    'Q wallet',
+    '錢包',
   ).getTabItem();
   const {t, i18n} = useTranslation();
   const navigation = useNavigation();

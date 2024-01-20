@@ -85,14 +85,14 @@ const MainScreen = ({navigation}: any) => {
                     <SvgXml height="40%" xml={MagnifierSVG} />
                   </Center>
                   <Box w="85%">
-                    <TextInput placeholder="search coupon ?" />
+                    <TextInput placeholder="搜尋優惠卷?" />
                   </Box>
                 </Stack>
                 {/* <Box h="75" mb="9"><MainPageMenu/></Box> */}
                 <View style={{ borderBottomColor: 'grey', borderBottomWidth: StyleSheet.hairlineWidth,}}/>
                 <Box h="30" mt="2">
                   <Stack direction="row">
-                    <Text fontWeight="bold" fontSize="15" w="84%">最熱門Coupon!</Text>
+                    <Text fontWeight="bold" fontSize="15" w="84%">最熱門優惠卷!</Text>
                     {/* <Text fontWeight="light" color="grey" fontSize="15" onPress={() => navigation.navigate("CouponListing")}>View All</Text> */}
                   </Stack>
                 </Box>
