@@ -32,6 +32,7 @@ import { useDispatch } from 'react-redux';
 import { toggleLoading } from '../../../Redux/Action/CommonAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type {PropsWithChildren} from 'react';
+import { socket } from '../../socket';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 const MainScreen = ({navigation}: any) => {
@@ -121,7 +122,7 @@ const MainScreen = ({navigation}: any) => {
                 _text={{fontSize: '30', fontWeight: '900', textAlign: 'left'}}>
                 揾 Coupon !
               </Box>
-              <Pressable style={{ height:"100%", width:"25%" }}  onPress={async () => { await AsyncStorage.removeItem("jwt"); axios.defaults.headers.common['Authorization']=""; navigation.navigate("Login") }}>
+              <Pressable style={{ height:"100%", width:"25%" }}  onPress={async () => { await AsyncStorage.removeItem("jwt"); axios.defaults.headers.common['Authorization']=""; socket.disconnect(); navigation.navigate("Login") }}>
                 <Center height="100%" width="100%">
                     <SvgXml width="45%" xml={ProfileSVG} />
                 </Center>
