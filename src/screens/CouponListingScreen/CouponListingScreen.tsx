@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import Layout from '../../components/templates/Layout';
 import { SvgXml } from 'react-native-svg';
@@ -12,12 +12,15 @@ import CouponCard from '../../components/atoms/CouponCard';
 import ListingPageDropDownMenu from '../../components/templates/ListingPageDropDownMenu';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { toggleLoading } from '../../../Redux/Action/CommonAction';
+import { toggleLoading, setMessagePopup, toggleMessagePopup } from '../../../Redux/Action/CommonAction';
+import { TOGGLE_ERROR_POPUP, SET_ERROR_MESSAGE } from '../../../Redux/Action/ActionType';
 import {
   View,
   TextInput,
   ScrollView,
   RefreshControl,
+  Animated,
+  ViewStyle,
 } from 'react-native';
 import {
   NativeBaseProvider,
@@ -38,6 +41,7 @@ import {
 } from 'native-base';
 import BASE_S3_IMG_URL, { BASE_URL } from '../../config/config';
 import ActualCoupon from '../../components/atoms/ActualCoupon';
+import type {PropsWithChildren} from 'react';
 
 const initialObjectState: { [key: string]: boolean } = {}
 
@@ -51,15 +55,75 @@ const CouponListingScreen = ({ navigation }) => {
   const [selectedAddressCategory, setSelectedAddressCategory] = useState("")
   const [TypeCategory, setTypeCategory] = useState([])
   const [couponGroups, setCouponGroups] = useState([])
+  const [infoPopup, setInfoPopup] = useState(false);
+  const [message, setMessage] = useState("成功!!");
 
-  const addFunc = async (couponGroupId, expireDate) => {
-    let { data } = await axios.post(BASE_URL + "coupon/addCoupon", {
-      "coupon_group_id": couponGroupId,
-      "total": 1,
-      "expire_date": expireDate
-    })
-    // console.log("Adding Coupon")
+  type FadeInViewProps = PropsWithChildren<{style: ViewStyle}>
+  const FadeInView: React.FC<FadeInViewProps> = (props) => {
+    const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
+
+    useEffect(() => {
+      if (!infoPopup) return;
+      fadeAnim.setValue(1);
+      
+      Animated.timing(fadeAnim,
+        {
+          toValue: 0,
+          duration: 1000,
+          useNativeDriver: true,
+        }
+      ).start();
+
+      setTimeout(() => {
+        setInfoPopup(false);
+      }, 100)
+    }, [infoPopup])
+
+    return (
+      <Animated.View                 // Special animatable View
+        style={{
+          ...props.style,
+          opacity: fadeAnim,         // Bind opacity to animated value
+        }}
+      >
+        {props.children}
+      </Animated.View>
+    );
   }
+
+  const addFunc = async (couponGroupId: string, expireDate: string) => {
+    if (infoPopup) {
+      setInfoPopup(false);
+      return;
+    }
+    setMessage("操作中");
+    setInfoPopup(true);
+    // console.log("adding coupon");
+    let {data} = await axios.post(BASE_URL + "coupon/addCoupon", {
+      "coupon_group_id": couponGroupId,
+      "total": 1
+    })
+
+    if ( data["result"] == 0 ) {
+      setMessage("成功!!");
+      setInfoPopup(true);
+    } else {
+      dispatch(setMessagePopup("Add Coupon Failed: " + data["message"], SET_ERROR_MESSAGE));
+      dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
+    }
+  }
+
+  // const addFunc = async (couponGroupId, expireDate) => {
+  //   console.log("addFunc")
+  //   let { data } = await axios.post(BASE_URL + "coupon/addCoupon", {
+  //     "coupon_group_id": couponGroupId,
+  //     "total": 1,
+  //     "expire_date": expireDate
+  //   })
+  //   console.log("data")
+  //   console.log(data)
+  //   // console.log("Adding Coupon")
+  // }
 
   //TODO: Fake Category Type (Back End Not Ready)
   const fetchTypeCategory = async () => {
@@ -245,101 +309,105 @@ const CouponListingScreen = ({ navigation }) => {
   return (
     <NativeBaseProvider>
       <ScrollView
+        nestedScrollEnabled={true}
         refreshControl={
           <RefreshControl
             refreshing={false}
             onRefresh={() => { fetchCouponGroups() }}
           />
-        }
-        
+        } 
       >
-          <Layout showTabBar={true}>
-        <Background listing={true} contentHeight="78%" tabBarSpace={true}>
-          <View style={{ position: "absolute", top: "-8%", width: "70%", height: "8%", left: "4%" }}>
-            <Stack direction="row" w="100%" h="78%">
-              <Box w="10%" mr="3%">
-                <Pressable onPress={() => navigation.goBack()}>
-                  <SvgXml width="100%" height="100%" xml={LeftArrow} />
-                </Pressable>
+        <Layout showTabBar={true}>
+          <FadeInView style={{position: "absolute", top: "2%", left: "40%", zIndex:999 ,backgroundColor: "#4BB543", borderRadius: 50 }}>
+            <Text style={{paddingHorizontal: "3%", paddingVertical: "1%", color: "white"}}>{ message }</Text>
+          </FadeInView>
+          <Background listing={true} contentHeight="78%" tabBarSpace={true}>
+            <View style={{ position: "absolute", top: "-8%", width: "70%", height: "8%", left: "4%" }}>
+              <Stack direction="row" w="100%" h="78%">
+                <Box w="10%" mr="3%">
+                  <Pressable onPress={() => navigation.goBack()}>
+                    <SvgXml width="100%" height="100%" xml={LeftArrow} />
+                  </Pressable>
+                </Box>
+                <VStack direction="row" w="76%" borderRadius="10" bg="white" alignItems="left" style={{ alignItems: "center" }}>
+                  <Center height="100%" width="15%">
+                    <SvgXml height="40%" xml={MagnifierSVG} />
+                  </Center>
+                  <TextInput textAlignVertical='center' placeholder="搜尋優惠卷?" />
+                </VStack>
+              </Stack>
+            </View>
+            <Box w="100%" h="14%">
+              <Stack direction="row" w="100%" h="100%">
+                <Box w="50%" h="100%" display="flex" flexDirection="row" alignItems="center" justifyContent="center">
+                  <SvgXml width="10%" height="50%" xml={AddressSVG} />
+                  <Text onPress={() => showDropDownMenu(1)} fontWeight="black" ml="1%">地區</Text>
+                </Box>
+                <Box w="50%" h="100%" display="flex" flexDirection="row" alignItems="center" justifyContent="center">
+                  <SvgXml width="10%" height="50%" xml={TypeCategorySVG} />
+                  <Text onPress={() => showDropDownMenu(2)} fontWeight="black" ml="2%">類別</Text>
+                </Box>
+              <Box w="100%" h="86%">
+                <ScrollView
+                  
+                >
+                  <Stack px="4%" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
+                    {
+                      couponGroups.map((el, i) => 
+                        <Box w="50%" mb="4" py="4" key={i}>
+                          <CouponCard useYellowAdd={true} marb="0" imgSource={BASE_S3_IMG_URL + el["image"]} imgAlt={el["title"]} merchantName={el["owner_name"]} couponDetail={el["title"]} 
+                                      addFunc={() => addFunc(el["coupon_group_id"], el["expire_date"])}/>
+                        </Box>
+                      )
+                    }
+                  </Stack>
+                </ScrollView>
+                </Box>
+              </Stack>
+            </Box>
+            {selectedMenu != 0 ? (
+              <Box position="absolute" zIndex="1000" w="100%" h="86%" top="14%">
+                <ListingPageDropDownMenu
+                  topD="0"
+                  showDropDownMenu={showDropDownMenu}
+                  showSubMenu={showSubMenu}
+                  setSelectedTypeCategory={setSelectedTypeCategory}
+                  setSelectedAddressCategory={setSelectedAddressCategory}
+                  selectedMenu={selectedMenu}
+                  selectedSubMenu={selectedSubMenu}
+                  addressCategory={addressCategory}
+                  selectedSubMenuItem={selectedSubMenuItem}
+                  typeCategory={TypeCategory}
+                  selectedTypeCategory={selectedTypeCategory}
+                  filterCouponGroups={() => filterCouponGroups()}
+                  fetchCouponGroups={() => fetchCouponGroups()}
+                />
               </Box>
-              <VStack direction="row" w="76%" borderRadius="10" bg="white" alignItems="left" style={{ alignItems: "center" }}>
-                <Center height="100%" width="15%">
-                  <SvgXml height="40%" xml={MagnifierSVG} />
-                </Center>
-                <TextInput textAlignVertical='center' placeholder="搜尋優惠卷?" />
-              </VStack>
-            </Stack>
-          </View>
-          <Box w="100%" h="14%">
-            <Stack direction="row" w="100%" h="100%">
-              <Box w="50%" h="100%" display="flex" flexDirection="row" alignItems="center" justifyContent="center">
-                <SvgXml width="10%" height="50%" xml={AddressSVG} />
-                <Text onPress={() => showDropDownMenu(1)} fontWeight="black" ml="1%">地區</Text>
-              </Box>
-              <Box w="50%" h="100%" display="flex" flexDirection="row" alignItems="center" justifyContent="center">
-                <SvgXml width="10%" height="50%" xml={TypeCategorySVG} />
-                <Text onPress={() => showDropDownMenu(2)} fontWeight="black" ml="2%">類別</Text>
-              </Box>
+            ) : null
+            }
             <Box w="100%" h="86%">
-              <ScrollView
-                
-              >
-                <Stack px="4%" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
+              <ScrollView nestedScrollEnabled={true}>
+                <Stack px="4%" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
                   {
                     couponGroups.map((el, i) => 
-                      <Box w="50%" mb="4" py="4" key={i}>
-                        <CouponCard useYellowAdd={true} marb="0" imgSource={BASE_S3_IMG_URL + el["image"]} imgAlt={el["title"]} merchantName={el["owner_name"]} couponDetail={el["title"]} 
-                                    addFunc={() => addFunc(el["coupon_group_id"], el["expire_date"])}/>
-                      </Box>
+                      <ActualCoupon
+                        companyName={el["owner_name"]}
+                        title={el["title"]}
+                        value={el["value"]}
+                        image={{ uri: BASE_S3_IMG_URL + el["image"] }}
+                        couponType={el["coupon_type"]}
+                        rollAnimated={false}
+                        rightBar={true}
+                        availablePercent={el["available"]/el["stock"]}
+                        addFunc={() => addFunc(el["coupon_group_id"], el["expire_date"])}
+                      />
                     )
                   }
                 </Stack>
               </ScrollView>
-              </Box>
-            </Stack>
-          </Box>
-          {selectedMenu != 0 ? (
-            <Box position="absolute" zIndex="1000" w="100%" h="86%" top="14%">
-              <ListingPageDropDownMenu
-                topD="0"
-                showDropDownMenu={showDropDownMenu}
-                showSubMenu={showSubMenu}
-                setSelectedTypeCategory={setSelectedTypeCategory}
-                setSelectedAddressCategory={setSelectedAddressCategory}
-                selectedMenu={selectedMenu}
-                selectedSubMenu={selectedSubMenu}
-                addressCategory={addressCategory}
-                selectedSubMenuItem={selectedSubMenuItem}
-                typeCategory={TypeCategory}
-                selectedTypeCategory={selectedTypeCategory}
-                filterCouponGroups={() => filterCouponGroups()}
-                fetchCouponGroups={() => fetchCouponGroups()}
-              />
             </Box>
-          ) : null
-          }
-          <Box w="100%" h="86%">
-            <ScrollView nestedScrollEnabled={true}>
-              <Stack px="4%" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
-                {
-                  couponGroups.map((el, i) => 
-                    <ActualCoupon
-                      companyName={el["owner_name"]}
-                      title={el["title"]}
-                      value={el["value"]}
-                      image={{ uri: BASE_S3_IMG_URL + el["image"] }}
-                      couponType={el["coupon_type"]}
-                      rollAnimated={false}
-                      rightBar={true}
-                      availablePercent={el["available"]/el["stock"]}
-                    />
-                  )
-                }
-              </Stack>
-            </ScrollView>
-          </Box>
-        </Background>
-      </Layout>
+          </Background>
+        </Layout>
       </ScrollView>
     </NativeBaseProvider>
   );

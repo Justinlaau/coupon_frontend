@@ -45,7 +45,7 @@ export default function Layout(props: {children: any, showTabBar: Boolean}) {
             <View style={LayoutStyle.loadingStyle}>
               <View style={LayoutStyle.messageBox}>
                 <View>
-                  <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 10}}>{successPopupMessage}</Text>
+                  <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 10, marginBottom: 10}}>{successPopupMessage}</Text>
                 </View>
                 <TouchableOpacity onPress={() => dispatch(toggleMessagePopup(false, TOGGLE_SUCCESS_POPUP))}>
                   <View style={{width: 60, height: 40, backgroundColor: "#DC2B37", justifyContent: 'center', alignItems: 'center', borderRadius: 10}}>
@@ -86,7 +86,7 @@ export default function Layout(props: {children: any, showTabBar: Boolean}) {
             <View style={LayoutStyle.loadingStyle}>
               <View style={LayoutStyle.messageBox}>
                 <View>
-                  <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 10}}>{operationPopupMessage}</Text>
+                  <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 10, marginBottom: 10}}>{operationPopupMessage}</Text>
                 </View>
                 <TouchableOpacity onPress={() => dispatch(toggleMessagePopup(false, TOGGLE_OPERATION_POPUP))}>
                   <View style={{width: 60, height: 40, backgroundColor: "#DC2B37", justifyContent: 'center', alignItems: 'center', borderRadius: 10}}>

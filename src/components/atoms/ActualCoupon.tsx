@@ -79,7 +79,8 @@ interface ActualCouponType{
     couponType: number,
     rollAnimated: boolean,
     rightBar: boolean,
-    availablePercent: number
+    availablePercent: number,
+    addFunc: any,
 };
 
 const radius = 10;
@@ -191,7 +192,7 @@ const ActualCoupon = (props: ActualCouponType) =>{
                             </View>
                         </View>
                         <View style={{height: "30%", width: "100%"}}>
-                            <TouchableOpacity style={{height: "100%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                            <TouchableOpacity onPress={() => props.addFunc()} style={{height: "100%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                                 <Text style={{fontSize: 30, color: "orange"}}>
                                     搶
                                 </Text>

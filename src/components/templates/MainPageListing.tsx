@@ -40,7 +40,7 @@ const MainPageListing: React.FC<MainPageListingProps> = (props) => {
       props.toggleInfo(false);
       return;
     }
-    props.setInfoMessage("processing");
+    props.setInfoMessage("操作中");
     props.toggleInfo(true);
     // console.log("adding coupon");
     let {data} = await axios.post(BASE_URL + "coupon/addCoupon", {
@@ -49,7 +49,7 @@ const MainPageListing: React.FC<MainPageListingProps> = (props) => {
     })
 
     if ( data["result"] == 0 ) {
-      props.setInfoMessage("success");
+      props.setInfoMessage("成功！！！");
       props.toggleInfo(true);
     } else {
       dispatch(setMessagePopup("Add Coupon Failed: " + data["message"], SET_ERROR_MESSAGE));

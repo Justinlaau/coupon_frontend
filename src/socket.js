@@ -12,8 +12,8 @@ export const couponSocket = io(BASE_URL + 'coupon', {
 
 socket.on('connect', () => {
   console.log('socket connected');
-  token = localStorage.getItem('jwt');
-  couponSocket.auth = { token };
+  token = localStorage.getItem('jwt') || "";
+  couponSocket.auth = {"token": token}; // missing coupon_id
   couponSocket.connect();
 })
 

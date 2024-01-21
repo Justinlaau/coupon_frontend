@@ -38,7 +38,7 @@ const MainScreen = ({navigation}: any) => {
   const dispatch = useDispatch();
   const [couponGroups, setCouponGroups] = useState([]);
   const [infoPopup, setInfoPopup] = useState(false);
-  const [message, setMessage] = useState("success");
+  const [message, setMessage] = useState("成功！！！");
   const [test, setTest] = useState(false);
 
   const fetchCouponGroups = async () => {
@@ -105,7 +105,6 @@ const MainScreen = ({navigation}: any) => {
     <Layout showTabBar={true}>
       <Background main={true} contentHeight="68%" tabBarSpace={true}>
         <NativeBaseProvider>
-          
           <FadeInView style={{position: "absolute", top: "-30%", left: "40%", backgroundColor: "#4BB543", borderRadius: 50 }}>
             <Text style={{paddingHorizontal: "3%", paddingVertical: "1%", color: "white"}}>{ message }</Text>
           </FadeInView>

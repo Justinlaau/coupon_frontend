@@ -70,7 +70,7 @@ const CouponQRCodeScreen = ({navigation, route}) => {
 
   useEffect(() => {
     fetchCouponQRCode(coupon.coupon_id, coupon.total);
-    couponSocket.auth = {token: token};
+    couponSocket.auth = {"token": token, "coupon_id": coupon.coupon_id};
     couponSocket.connect();
   }, []);
 
@@ -78,18 +78,19 @@ const CouponQRCodeScreen = ({navigation, route}) => {
     console.log("connected");
   });
 
-  useEffect(() => {
-    couponSocket.on('qrcode_scanned_response', (data) => {
-      console.log("qrcode_scanned_response");
-      console.log(data);
-      dispatch(setMessagePopup(data.message, SET_SUCCESS_MESSAGE));
-      dispatch(toggleMessagePopup(true, TOGGLE_SUCCESS_POPUP));
-    })
-  }, [couponSocket])
+  couponSocket.on('qrcode_scanned_response', (data) => {
+    console.log("qrcode_scanned_response");
+    console.log(data);
+    dispatch(setMessagePopup("使用成功！", SET_SUCCESS_MESSAGE));
+    dispatch(toggleMessagePopup(true, TOGGLE_SUCCESS_POPUP));
+    couponSocket.disconnect();
+    navigation.goBack();
+  })
 
   // disconnect socket when back button is pressed
   useEffect(() => {
     const handleBackPress = () => {
+      console.log("back pressed");
       couponSocket.disconnect();
       return true;
     };
