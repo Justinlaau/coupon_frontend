@@ -70,35 +70,40 @@ const CouponQRCodeScreen = ({navigation, route}) => {
 
   useEffect(() => {
     fetchCouponQRCode(coupon.coupon_id, coupon.total);
-    couponSocket.auth = {"token": token, "coupon_id": coupon.coupon_id};
-    couponSocket.connect();
+    if (!couponSocket.connected) {
+      console.log("reconnected");
+      couponSocket.auth = {"token": token};
+      couponSocket.connect();
+    }
+    // couponSocket.auth = {"token": token, "coupon_id": coupon.coupon_id};
+    // couponSocket.connect();
   }, []);
 
   couponSocket.on('connect', () => {
     console.log("connected");
   });
 
-  couponSocket.on('qrcode_scanned_response', (data) => {
+  couponSocket.on('qrcode_scanned_response/' + coupon.coupon_id, (data) => {
     console.log("qrcode_scanned_response");
     console.log(data);
     dispatch(setMessagePopup("使用成功！", SET_SUCCESS_MESSAGE));
     dispatch(toggleMessagePopup(true, TOGGLE_SUCCESS_POPUP));
-    couponSocket.disconnect();
+    // couponSocket.disconnect();
     navigation.goBack();
   })
 
   // disconnect socket when back button is pressed
-  useEffect(() => {
-    const handleBackPress = () => {
-      console.log("back pressed");
-      couponSocket.disconnect();
-      return true;
-    };
-    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handleBackPress = () => {
+  //     console.log("back pressed");
+  //     couponSocket.disconnect();
+  //     return true;
+  //   };
+  //   BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+  //   return () => {
+  //     BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+  //   };
+  // }, []);
 
   return (
     <Layout showTabBar={false}>

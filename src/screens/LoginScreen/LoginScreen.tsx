@@ -21,6 +21,7 @@ import {
   SET_SUCCESS_MESSAGE, 
   TOGGLE_ERROR_POPUP, 
   SET_ERROR_MESSAGE } from '../../../Redux/Action/ActionType';
+import { socket } from '../../socket';
 
 const LoginScreen = ({navigation}: any) => {
   const dispatch = useDispatch();
@@ -58,6 +59,8 @@ const LoginScreen = ({navigation}: any) => {
           let token = data.token;
           await AsyncStorage.setItem('jwt', token);
           axios.defaults.headers.common['Authorization'] = token;
+          socket.auth = { token: token };
+          socket.connect();
           dispatch({
             type: SET_BASE_USER,
             data: {
