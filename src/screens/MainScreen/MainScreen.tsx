@@ -40,7 +40,25 @@ const MainScreen = ({navigation}: any) => {
   const [couponGroups, setCouponGroups] = useState([]);
   const [infoPopup, setInfoPopup] = useState(false);
   const [message, setMessage] = useState("成功！！！");
-  const [test, setTest] = useState(false);
+  // const [test, setTest] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    "userName": "",
+    "userID": ""
+  });
+  const [notificationInfo, setNotificationInfo] = useState([""]);
+
+  const fetchUserInfo = async () => {
+    setUserInfo({
+      "userName": "丹",
+      "userID": "123123"
+    })
+  }
+
+  const fetchNotificationInfo = async () => {
+    setNotificationInfo([
+      "歡迎使用Coupon Go!",
+    ])
+  }
 
   const fetchCouponGroups = async () => {
     try {
@@ -58,7 +76,9 @@ const MainScreen = ({navigation}: any) => {
   }
 
   useEffect(() => {
-    fetchCouponGroups()
+    fetchUserInfo();
+    fetchNotificationInfo();
+    fetchCouponGroups();
   }, [])
 
   const toggleInfo = (show: boolean) => {
@@ -103,8 +123,12 @@ const MainScreen = ({navigation}: any) => {
   }
 
   return (
-    <Layout showTabBar={true}>
-      <Background main={true} contentHeight="68%" tabBarSpace={true}>
+  <Layout 
+    showTabBar={true} 
+    isHeading={{"isHeading": true, "userID": userInfo["userID"], "userName": userInfo["userName"]}}
+  >
+    <Background main={true} contentHeight="70%" tabBarSpace={true}>
+
         <NativeBaseProvider>
           <FadeInView style={{position: "absolute", top: "-30%", left: "40%", backgroundColor: "#4BB543", borderRadius: 50 }}>
             <Text style={{paddingHorizontal: "3%", paddingVertical: "1%", color: "white"}}>{ message }</Text>
@@ -144,12 +168,10 @@ const MainScreen = ({navigation}: any) => {
                     <TextInput placeholder="搜尋優惠卷?" />
                   </Box>
                 </Stack>
-                {/* <Box h="75" mb="9"><MainPageMenu/></Box> */}
                 <View style={{ borderBottomColor: 'grey', borderBottomWidth: StyleSheet.hairlineWidth,}}/>
                 <Box h="30" mt="2">
                   <Stack direction="row">
                     <Text fontWeight="bold" fontSize="15" w="84%">最熱門優惠卷!</Text>
-                    {/* <Text fontWeight="light" color="grey" fontSize="15" onPress={() => navigation.navigate("CouponListing")}>View All</Text> */}
                   </Stack>
                 </Box>
                 <Box>

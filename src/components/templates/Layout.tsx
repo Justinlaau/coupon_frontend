@@ -1,6 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import TabBar from './TabBar';
-import {View, StyleSheet, Text, Image, Dimensions, ActivityIndicator, TouchableOpacity, RefreshControl, ViewStyle, Animated} from 'react-native';
+import {
+  View, 
+  StyleSheet,
+  Text, 
+  Image, 
+  Dimensions, 
+  ActivityIndicator, 
+  TouchableOpacity, 
+  RefreshControl, 
+  ViewStyle, 
+  Animated, 
+  TextInput,
+} from 'react-native';
 import Background from './Background';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
@@ -10,8 +22,20 @@ import {
 } from '../../../Redux/Action/ActionType';
 import { toggleMessagePopup } from '../../../Redux/Action/CommonAction';
 const { height } = Dimensions.get('window');
+import {SvgXml} from 'react-native-svg';
+import {MagnifierSVG} from '../../assets/images/MagnifierSVG';
 
-export default function Layout(props: {children: any, showTabBar: Boolean}) {
+interface LayoutType{
+  children: any,
+  showTabBar: Boolean,
+  isHeading: {
+    "isHeading": Boolean,
+    "userName": String,
+    "userID": String,
+  }
+};
+
+export default function Layout(props: LayoutType) {
   const dispatch = useDispatch();
   const commonLoading = useSelector((state: any) => state.commonReducer.data.commonLoading);
   const successPopup = useSelector((state: any) => state.commonReducer.data.successPopup);
@@ -21,11 +45,39 @@ export default function Layout(props: {children: any, showTabBar: Boolean}) {
   const operationPopup = useSelector((state: any) => state.commonReducer.data.operationPopup);
   const operationPopupMessage = useSelector((state: any) => state.commonReducer.data.operationPopupMessage);
 
+  const [isFocused, setFocused] = useState(false);
+
+  const handleFocus = () => {
+    setFocused(true);
+  };
+
+  const handleBlur = () => {
+    setFocused(false);
+  };
+
   return (
     <View style={[LayoutStyle.layout, {height}]}>
       {props.children}
       {
         props.showTabBar ? <TabBar /> : null
+      }
+      {
+        props.isHeading["isHeading"] ? 
+        <View style={{position: "absolute", zIndex: 100, width:"100%", height: "5%"}}>
+          <Text style={{fontSize: 25, color: "white"}}> { isFocused? "" : "哈囉, " + props.isHeading["userName"] + " !"} </Text>
+          
+          <View style={{position: "absolute", right: 10, top: 3, height: "90%", width: isFocused? "95%": "40%", zIndex: 120, 
+            backgroundColor: "white", borderRadius: 7, flexDirection: "row"}}>
+            <View style={{display: "flex", justifyContent: "center", alignContent: "center", height: "100%"}}>
+              <SvgXml height="40%" xml={MagnifierSVG} />
+            </View>
+            <TextInput style={{height: "100%"}} placeholder='搜尋優惠卷?'
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            />
+          </View>
+        </View>
+        : null
       }
       {
         commonLoading ? (

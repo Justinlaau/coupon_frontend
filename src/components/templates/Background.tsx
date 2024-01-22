@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {BaseLeftSVG} from '../../assets/images/BaseLeftSVG';
 import {ProfileSVG} from '../../assets/images/ProfileSVG';

@@ -60,7 +60,7 @@ const CouponItemScreen = ({navigation, route}) => {
   
 
   return (
-    <Layout showTabBar={false}>
+    <Layout showTabBar={false} isHeading={false}>
       <Background main={true} contentHeight="76%" tabBarSpace={false} showGoBack={true} goBack={() => navigation.goBack()}>
         <NativeBaseProvider>
           <Stack space={4} alignItems="center" h="100%">

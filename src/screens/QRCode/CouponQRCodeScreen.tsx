@@ -106,7 +106,10 @@ const CouponQRCodeScreen = ({navigation, route}) => {
   // }, []);
 
   return (
-    <Layout showTabBar={false}>
+    <Layout 
+      showTabBar={false}
+      isHeading={{"isHeading": false, "userID": "", "userName": ""}}
+    >
       <QRCodeBackground goBack={() => {couponSocket.disconnect(); navigation.goBack();}}>
         <NativeBaseProvider>
           <Stack style={MainStyle.imageHolder}>

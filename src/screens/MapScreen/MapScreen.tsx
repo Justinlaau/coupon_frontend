@@ -107,7 +107,10 @@ export default class MapScreen extends Component{
 
     render(){
         return (
-        <Layout showTabBar={true}>
+        <Layout 
+          showTabBar={true} 
+          isHeading={{"isHeading": false, "userID": "", "userName": ""}}
+        >
             <View style={{height: "100%", width: "100%", backgroundColor: "black"}}>
                 <MapView
                     provider={PROVIDER_GOOGLE}

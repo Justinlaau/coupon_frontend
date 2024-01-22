@@ -63,7 +63,10 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
     }, []);
 
     return(
-    <Layout showTabBar={true}>
+    <Layout 
+        showTabBar={true}
+        isHeading={{"isHeading": false, "userID": "", "userName": ""}}
+    >
         <WalletBackground main={true} contentHeight="82%" tabBarSpace={true} >
             <View style={{ flexDirection: 'row', justifyContent: "space-between"}}>  
                 <View style={{ width:"35%", marginTop: "5%" , marginLeft: "10%"}}>

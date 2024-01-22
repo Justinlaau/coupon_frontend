@@ -87,7 +87,10 @@ const LoginScreen = ({navigation}: any) => {
   };
   return (
     <KeyboardAvoidingWrapper>
-      <Layout showTabBar={false}>
+      <Layout 
+        showTabBar={false}    
+        isHeading={{"isHeading": false, "userID": "", "userName": ""}}
+      >
         <Background main={true} contentHeight="76%">
           <View style={LoginStyle.Layout}>
             <View style={LoginStyle.Container}>

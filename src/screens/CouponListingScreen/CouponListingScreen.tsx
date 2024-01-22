@@ -317,7 +317,7 @@ const CouponListingScreen = ({ navigation }) => {
           />
         } 
       >
-        <Layout showTabBar={true}>
+        <Layout showTabBar={true} isHeading={false}>
           <FadeInView style={{position: "absolute", top: "2%", left: "40%", zIndex:999 ,backgroundColor: "#4BB543", borderRadius: 50 }}>
             <Text style={{paddingHorizontal: "3%", paddingVertical: "1%", color: "white"}}>{ message }</Text>
           </FadeInView>
