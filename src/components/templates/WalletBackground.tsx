@@ -22,7 +22,7 @@ import {
   Hidden,
 } from 'native-base';
 import { LittleCatSVG } from '../../assets/images/LittleCatSVG';
-
+import LeftArrow from '../../assets/images/LeftArrow';
 
 const WalletBackground = (props) => {
   const { height } = Dimensions.get('window');
@@ -38,17 +38,12 @@ const WalletBackground = (props) => {
                 <TouchableOpacity 
                 style={{ width: '15%'}}
                 onPress={()=>{ navigation.navigate("Main")}}>
-
-                  <BackIcon 
-                      name="chevron-left"
-                      style={{
-                          color: "#FFF",
+                  <SvgXml width="100%" height="4%"  xml={LeftArrow}  style={{
                           position: "relative",
-                          marginLeft: 20,
-                          top: "5%",
-                      }}
-                      size={25}>             
-                    </BackIcon>
+                          marginLeft: 0,
+                          top: "4%",
+                      }} />
+
                 </TouchableOpacity>
             <Heading
                 w="100%"
