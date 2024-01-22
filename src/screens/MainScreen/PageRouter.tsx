@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: "1%",
-    height: "45%"
+    height: "50%"
   },
   box: {
     width: '24%',
