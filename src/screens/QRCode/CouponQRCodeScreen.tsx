@@ -39,6 +39,7 @@ import { toggleLoading, toggleMessagePopup, setMessagePopup } from '../../../Red
 import { TOGGLE_SUCCESS_POPUP, SET_SUCCESS_MESSAGE, TOGGLE_ERROR_POPUP, SET_ERROR_MESSAGE } from '../../../Redux/Action/ActionType';
 import { BackHandler } from 'react-native';
 import { useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -47,11 +48,11 @@ const CouponQRCodeScreen = ({navigation, route}) => {
   const params = route.params;
   const coupon = params.coupon
   const [qrCode, setQRCode] = useState("https://reactnative.dev/img/tiny_logo.png");
-  const token = useSelector((state: any) => state.authenticationReducer.baseUser.token);
   
   const fetchCouponQRCode = async (couponId: any, nums: any) => {
     try {
       dispatch(toggleLoading(true));
+      await endpointConnect();
       let {data} = await axios.post(BASE_URL + "coupon/genUsageCouponQRCode", {
         "coupon_id": couponId,
         "nums": nums
@@ -68,42 +69,57 @@ const CouponQRCodeScreen = ({navigation, route}) => {
     }
   }
 
-  useEffect(() => {
-    fetchCouponQRCode(coupon.coupon_id, coupon.total);
+  const endpointConnect = async () => {
     if (!couponSocket.connected) {
-      console.log("reconnected");
+      console.log("endpointConnecting");
+      const token = await AsyncStorage.getItem('jwt');
       couponSocket.auth = {"token": token};
       couponSocket.connect();
     }
-    // couponSocket.auth = {"token": token, "coupon_id": coupon.coupon_id};
-    // couponSocket.connect();
+    const res = await endpointSubscribe();
+    console.log("subscribe result");
+    console.log(res);
+  }
+
+  useEffect(() => {
+    fetchCouponQRCode(coupon.coupon_id, coupon.total);
   }, []);
 
-  couponSocket.on('connect', () => {
-    console.log("connected");
-  });
-
-  couponSocket.on('qrcode_scanned_response/' + coupon.coupon_id, (data) => {
+  couponSocket.on('qrcode_scanned_response', async (data: any) => {
     console.log("qrcode_scanned_response");
     console.log(data);
-    dispatch(setMessagePopup("使用成功！", SET_SUCCESS_MESSAGE));
-    dispatch(toggleMessagePopup(true, TOGGLE_SUCCESS_POPUP));
-    // couponSocket.disconnect();
-    navigation.goBack();
-  })
+    await endpointUnsubscribe();
+    if (data["result"] != null && data["coupon_id"] != null && data["result"] == 0) {
+      dispatch(setMessagePopup("Coupon: " + data["coupon_id"] + " 使用成功！", SET_SUCCESS_MESSAGE));
+      dispatch(toggleMessagePopup(true, TOGGLE_SUCCESS_POPUP)); 
+    } else {
+      dispatch(setMessagePopup("不好意思，請重新嘗試", SET_ERROR_MESSAGE));
+      dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
+    }
+    navigation.navigate("Wallet");
+  });
 
-  // disconnect socket when back button is pressed
-  // useEffect(() => {
-  //   const handleBackPress = () => {
-  //     console.log("back pressed");
-  //     couponSocket.disconnect();
-  //     return true;
-  //   };
-  //   BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-  //   return () => {
-  //     BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
-  //   };
-  // }, []);
+  const endpointSubscribe = () => {
+    return new Promise((resolve, reject) => {
+      console.log("endpointSubscribe");
+      couponSocket.emit('subscribe', {"coupon_id": coupon.coupon_id}, (data: any) => {
+        console.log("subscribe result");
+        console.log(data);
+        resolve(true);
+      });
+    });
+  }
+
+  const endpointUnsubscribe = () => {
+    return new Promise((resolve, reject) => {
+      console.log("endpointUnsubscribe");
+      couponSocket.emit('unsubscribe', {"coupon_id": coupon.coupon_id}, (data: any) => {
+        console.log("unsubscribe result");
+        console.log(data);
+        resolve(data);
+      });
+    });
+  };
 
   return (
     <Layout showTabBar={false}>

@@ -7,13 +7,15 @@ export const socket = io(BASE_URL, {
 })
 // export const couponSocket = io("http://192.168.31.249:8000/" + 'coupon', {
 export const couponSocket = io(BASE_URL + 'coupon', {
-  autoConnect: true,
+  autoConnect: false,
 })
 
 socket.on('connect', () => {
   console.log('socket connected');
   token = localStorage.getItem('jwt') || "";
-  couponSocket.auth = {"token": token}; // missing coupon_id
+  couponSocket.auth = {"token": token};
+  console.log("auth");
+  console.log(auth);
   couponSocket.connect();
 })
 
