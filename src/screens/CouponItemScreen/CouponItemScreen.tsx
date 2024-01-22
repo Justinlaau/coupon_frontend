@@ -4,6 +4,8 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+
+  Alert,
 } from 'react-native';
 import Background from '../../components/templates/Background';
 import Layout from '../../components/templates/Layout';
@@ -127,7 +129,7 @@ const CouponItemScreen = ({navigation, route}) => {
                 </Text>
               </View>
               <Stack h="12%">
-                <TouchableOpacity onPress={() => navigation.navigate('CouponQRCode', {coupon: coupon})}>
+                <TouchableOpacity onPress={() => { dayLeft > 0 ? navigation.navigate('CouponQRCode', {coupon: coupon}) : Alert.alert("coupon 已經過期！") }}>
                 <Box w="80%" h="100%" style={{backgroundColor: "#d63838", borderRadius: 20, alignItems: "center", justifyContent: "center", marginLeft: "auto", marginRight: "auto"}}>
                   <Text fontWeight="600" fontSize="xl" style={{color:"white", textAlignVertical: "center", textAlign: "center"}}>立即使用</Text>
                 </Box>
