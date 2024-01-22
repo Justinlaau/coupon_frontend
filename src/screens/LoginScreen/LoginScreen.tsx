@@ -125,7 +125,7 @@ const LoginScreen = ({navigation}: any) => {
                   />
               </View>
               <View style={LoginStyle.Checkbox}>
-                <CheckBoxes text="Remember me" textStyle={{ color: "#DC2B37" }} color="#DC2B37" />
+                <CheckBoxes text="記住我" textStyle={{ color: "#DC2B37" }} color="#DC2B37" />
 
                 <Text style={LoginStyle.forgetPassword}
                   onPress={() => { 
