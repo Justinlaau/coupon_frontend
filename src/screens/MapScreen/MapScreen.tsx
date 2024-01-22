@@ -110,6 +110,7 @@ export default class MapScreen extends Component{
         <Layout 
           showTabBar={true} 
           isHeading={{"isHeading": false, "userID": "", "userName": ""}}
+          navigation={null}
         >
             <View style={{height: "100%", width: "100%", backgroundColor: "black"}}>
                 <MapView

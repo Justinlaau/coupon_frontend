@@ -90,6 +90,7 @@ const LoginScreen = ({navigation}: any) => {
       <Layout 
         showTabBar={false}    
         isHeading={{"isHeading": false, "userID": "", "userName": ""}}
+        navigation={null}
       >
         <Background main={true} contentHeight="76%">
           <View style={LoginStyle.Layout}>

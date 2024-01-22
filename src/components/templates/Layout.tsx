@@ -12,6 +12,7 @@ import {
   ViewStyle, 
   Animated, 
   TextInput,
+  Pressable,
 } from 'react-native';
 import Background from './Background';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,6 +25,11 @@ import { toggleMessagePopup } from '../../../Redux/Action/CommonAction';
 const { height } = Dimensions.get('window');
 import {SvgXml} from 'react-native-svg';
 import {MagnifierSVG} from '../../assets/images/MagnifierSVG';
+import {ProfileSVG} from '../../assets/images/ProfileSVG';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { socket } from '../../socket';
+
 
 interface LayoutType{
   children: any,
@@ -32,7 +38,8 @@ interface LayoutType{
     "isHeading": Boolean,
     "userName": String,
     "userID": String,
-  }
+  },
+  navigation: any,
 };
 
 export default function Layout(props: LayoutType) {
@@ -63,9 +70,20 @@ export default function Layout(props: LayoutType) {
       }
       {
         props.isHeading["isHeading"] ? 
+        (
         <View style={{position: "absolute", zIndex: 100, width:"100%", height: "5%"}}>
-          <Text style={{fontSize: 25, color: "white"}}> { isFocused? "" : "哈囉, " + props.isHeading["userName"] + " !"} </Text>
-          
+          {isFocused? <></> : 
+          (
+          <View style={{display: "flex", flexDirection: "row", alignItems: "center", left: 10}}>
+            <Pressable onPress={async () => { await AsyncStorage.removeItem("jwt"); axios.defaults.headers.common['Authorization']=""; socket.disconnect(); props.navigation.navigate("Login") }}>
+              <View style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100%"}}>
+                <SvgXml width={35}  xml={ProfileSVG} />
+              </View>
+            </Pressable>
+            <Text style={{fontSize: 15, color: "white", textAlign: "center"}}> 哈囉, {props.isHeading["userName"]} ! </Text> 
+          </View>
+          )
+          }
           <View style={{position: "absolute", right: 10, top: 3, height: "90%", width: isFocused? "95%": "40%", zIndex: 120, 
             backgroundColor: "white", borderRadius: 7, flexDirection: "row"}}>
             <View style={{display: "flex", justifyContent: "center", alignContent: "center", height: "100%"}}>
@@ -77,6 +95,7 @@ export default function Layout(props: LayoutType) {
             />
           </View>
         </View>
+        )
         : null
       }
       {

@@ -33,7 +33,10 @@ import { toggleLoading } from '../../../Redux/Action/CommonAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type {PropsWithChildren} from 'react';
 import { socket } from '../../socket';
+import LEDBoard from './LEDBoard';
 // import Icon from 'react-native-vector-icons/FontAwesome';
+
+const LED_FONT_SIZE = 24; 
 
 const MainScreen = ({navigation}: any) => {
   const dispatch = useDispatch();
@@ -46,6 +49,8 @@ const MainScreen = ({navigation}: any) => {
     "userID": ""
   });
   const [notificationInfo, setNotificationInfo] = useState([""]);
+  const [currentNotiIndex, setCurrentNotiIndex] = useState(0);
+  const translateX = useRef(new Animated.Value(0)).current;
 
   const fetchUserInfo = async () => {
     setUserInfo({
@@ -57,6 +62,7 @@ const MainScreen = ({navigation}: any) => {
   const fetchNotificationInfo = async () => {
     setNotificationInfo([
       "歡迎使用Coupon Go!",
+      "Coupon X 即將過期!"
     ])
   }
 
@@ -126,6 +132,7 @@ const MainScreen = ({navigation}: any) => {
   <Layout 
     showTabBar={true} 
     isHeading={{"isHeading": true, "userID": userInfo["userID"], "userName": userInfo["userName"]}}
+    navigation={navigation}
   >
     <Background main={true} contentHeight="70%" tabBarSpace={true}>
 
@@ -133,52 +140,36 @@ const MainScreen = ({navigation}: any) => {
           <FadeInView style={{position: "absolute", top: "-30%", left: "40%", backgroundColor: "#4BB543", borderRadius: 50 }}>
             <Text style={{paddingHorizontal: "3%", paddingVertical: "1%", color: "white"}}>{ message }</Text>
           </FadeInView>
-          <Stack space={4} alignItems="center" h="100%">
-            <Stack
-              direction="row"
-              h="15%"
-              w="100%"
-              style={MainStyle.header}>
-              <Box
-                style={{flex: 1, justifyContent: 'center', paddingLeft: '7%'}}
-                w="70%"
-                height="100%"
-                _text={{fontSize: '30', fontWeight: '900', textAlign: 'left'}}>
-                揾 Coupon !
-              </Box>
-              <Pressable style={{ height:"100%", width:"25%" }}  onPress={async () => { await AsyncStorage.removeItem("jwt"); axios.defaults.headers.common['Authorization']=""; socket.disconnect(); navigation.navigate("Login") }}>
-                <Center height="100%" width="100%">
-                    <SvgXml width="45%" xml={ProfileSVG} />
-                </Center>
-              </Pressable>
-            </Stack>
-              <ScrollView style={{ height: "100%", width: "100%", paddingHorizontal: "6%", paddingVertical: "5%" }}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={false}
-                    onRefresh={() => fetchCouponGroups()}
-                  />
-                }
-              >
-                <Stack h="50" w="99%" direction="row" mb="9%" mr="auto" ml="auto" style={{alignItems: "center", borderRadius: 10, shadowOffset: {width: 1, height: 1}, backgroundColor: "white", shadowColor: "#000", shadowOpacity: 0.8, shadowRadius: 10, elevation: 6}}>
-                  <Center height="100%" width="15%">
-                    <SvgXml height="40%" xml={MagnifierSVG} />
-                  </Center>
-                  <Box w="85%">
-                    <TextInput placeholder="搜尋優惠卷?" />
-                  </Box>
-                </Stack>
-                <View style={{ borderBottomColor: 'grey', borderBottomWidth: StyleSheet.hairlineWidth,}}/>
-                <Box h="30" mt="2">
-                  <Stack direction="row">
-                    <Text fontWeight="bold" fontSize="15" w="84%">最熱門優惠卷!</Text>
-                  </Stack>
-                </Box>
-                <Box>
-                  <MainPageListing style={{}} couponGroups={couponGroups} infoPopup={infoPopup} toggleInfo={toggleInfo} setInfoMessage={setInfoMessage}/>
-                </Box>
-              </ScrollView>
-          </Stack>
+          <View style={{height: "100%", width: "100%", paddingLeft: "3%", paddingRight: "3%"}}>
+            {/* Title */}
+            <View style={{height: "9%", paddingTop: "3%", marginBottom: "1.5%", display: "flex", justifyContent: "flex-end"}}>
+              <Text style={{fontSize: 25, fontWeight: "bold", height: "100%", textAlignVertical: "bottom"}}>
+                Coupon 你今日用咗未！
+              </Text>
+            </View>
+
+            {/* Line */}
+            <View style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+              <View style={{width: "100%", backgroundColor: "black", height: 1.5, marginBottom: "1%"}}/>
+            </View>
+
+            {/* LED Board */}
+            <View style={{height: "6%", backgroundColor: "white"}}>
+              <LEDBoard 
+                texts={notificationInfo}
+                LEDFontSize={LED_FONT_SIZE}
+              />
+            </View>
+
+            <View style={{height: "83%", backgroundColor: "red"}}>
+              <View style={{}}>
+
+              </View>
+              <Text>
+                  Coupon 你今日用咗未！
+              </Text>
+            </View>
+          </View>
         </NativeBaseProvider>
       </Background>
     </Layout>
@@ -186,18 +177,12 @@ const MainScreen = ({navigation}: any) => {
 };
 
 const MainStyle = StyleSheet.create({
-  test: {
-    backgroundColor: 'blue',
-    height: '100%',
-    width: '100%',
-  },
-  header: {
-    borderTopRightRadius: 50,
-    borderTopLeftRadius: 50,
-  },
-  content: {
-    // overflow: 'scroll',
-  },
+  LEDText:{
+    color: '#0f0',
+    fontSize: LED_FONT_SIZE,
+    textAlignVertical: "center",
+    height: "100%"
+  }
 });
 
 export default MainScreen;
