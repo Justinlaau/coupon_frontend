@@ -165,7 +165,8 @@ const ActualCoupon = (props: ActualCouponType) =>{
                         <TouchableOpacity style={[styles.basedAbs, {zIndex: 7}]} onPress={left? onClickToRight: onClickToLeft} activeOpacity={1}>
                             <Animated.View style={[styles.layeredWords, { width: animatedWidth }]}>
                                 <Text numberOfLines={2}>
-                                    哈囉 這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款這是條款
+                                    五人同行才可以享有半價優惠。
+                                    所有權力均由本店保留。
                                 </Text>
                             </Animated.View>
                         </TouchableOpacity>

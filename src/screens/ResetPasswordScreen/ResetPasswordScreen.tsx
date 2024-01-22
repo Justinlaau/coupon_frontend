@@ -26,7 +26,7 @@ const ResetPasswordScreen = ({navigation} : any) => {
 
     const resetPassword = async ()=>{
         if (password !== confirmPassword ){
-            Alert.alert("Password is not matched")
+            Alert.alert("密碼不匹配")
         }else{
             const Payload = {
                 'password': password,
@@ -34,10 +34,10 @@ const ResetPasswordScreen = ({navigation} : any) => {
             const {data}= await axios.post(BASE_URL + 'user/resetPasswordAPI', Payload);
 
             if (data.result === 0){
-                Alert.alert("Password reset successfully");
+                Alert.alert("密碼重設成功");
                 navigation.navigate("Login")
             }else{
-                Alert.alert("Password invalid");
+                Alert.alert("非法密碼");
             }
         }
     };  
@@ -53,12 +53,12 @@ const ResetPasswordScreen = ({navigation} : any) => {
                         <View style={{height: '20%'}}></View>
 
                         <Text style={{textAlign: 'center', fontSize: 25, fontWeight: 'bold'}}>
-                            Reset account password
+                            重設密碼
                         </Text>
 
                         <View style={{height: '15%'}}></View>
                         <Text style={{textAlign: 'center', fontSize: 17, fontWeight: 400}}>  
-                            Enter a new password for "email"
+                            請輸入新的密碼
                         </Text>
                     </View>
                     
@@ -72,7 +72,7 @@ const ResetPasswordScreen = ({navigation} : any) => {
                     <View style={{alignItems: 'center'}}>
                         <View style={{width: '90%'}}>
                                 <View >
-                                    <InputBox text="Password"
+                                    <InputBox text="密碼"
                                         borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
                                         Input={handlePasswordChange}
                                         InputRes={password}
@@ -86,7 +86,7 @@ const ResetPasswordScreen = ({navigation} : any) => {
                             <View style={{height: '10%'}}></View>
                         <View style={{width: '90%'}}>
                             <View >
-                                <InputBox text="Confirm Password"
+                                <InputBox text="確認密碼"
                                     borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
                                     Input={handleConfirmPasswordChange}
                                     InputRes={confirmPassword}
@@ -101,7 +101,7 @@ const ResetPasswordScreen = ({navigation} : any) => {
                         <View style={{height: "15%"}}></View>
 
                         <View style={{width: '50%'}}>
-                                <ButtonBox text="Reset password"
+                                <ButtonBox text="重設密碼"
                                     color="#DC2B37"
                                     borderStyle={{ borderRadius: 10 }}
                                     isLoading={loading}

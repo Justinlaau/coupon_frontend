@@ -139,7 +139,7 @@ const MainScreen = ({navigation}: any) => {
     <Background main={true} contentHeight="70%" tabBarSpace={true}>
 
         <NativeBaseProvider>
-          <FadeInView style={{position: "absolute", top: "-30%", left: "40%", backgroundColor: "#4BB543", borderRadius: 50 }}>
+          <FadeInView style={{ position: "absolute", top: "-30%", left: "40%", backgroundColor: "#4BB543", borderRadius: 50 }}>
             <Text style={{paddingHorizontal: "3%", paddingVertical: "1%", color: "white"}}>{ message }</Text>
           </FadeInView>
           <View style={{height: "100%", width: "100%", paddingLeft: "3%", paddingRight: "3%"}}>
@@ -173,6 +173,10 @@ const MainScreen = ({navigation}: any) => {
                 height={0.5 * scrollViewHeight}
               />
               <MainPageListing 
+              style={{}}
+              infoPopup = {true}
+              toggleInfo= {true}
+              setInfoMessage = {setMessage}
               couponGroups={couponGroups}
               />
             </ScrollView>

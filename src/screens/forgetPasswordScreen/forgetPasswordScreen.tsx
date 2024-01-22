@@ -42,7 +42,7 @@ const forgetPasswordScreen = ({navigation} : any) => {
 
         setLoading(true);
         if (email === ''){
-            Alert.alert("Please enter your registered email");
+            Alert.alert("請輸入電郵地址");
         }else {
             try{
                 console.log(email)
@@ -50,19 +50,19 @@ const forgetPasswordScreen = ({navigation} : any) => {
                 console.log(data);
     
                 if (data.result == 0){
-                    Alert.alert("Email sent successfully")
+                    Alert.alert("驗證碼已發出")
                     // navigation.navigate('ResetPassword');
                 }else {  
                     // dispatch(setMessagePopup("Invalid Email.", SET_ERROR_MESSAGE));
                     // dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
-                    Alert.alert("Invalid Email");
+                    Alert.alert("郵箱不存在或不正確");
                 }
             }catch (e){
                 console.log("error")
                 console.log(e)
                 // dispatch(setMessagePopup("Invalid Email", SET_ERROR_MESSAGE));
                 // dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP))
-                Alert.alert("Invalid Email");
+                Alert.alert("郵箱不存在或不正確");
             }
   
         }
@@ -76,7 +76,7 @@ const forgetPasswordScreen = ({navigation} : any) => {
             "verification_code": authCode,
         }
         if (authCode === ''){
-            Alert.alert("Please enter the verification code");
+            Alert.alert("請輸入驗證碼");
         }else{
             try{
                 console.log(authCode)
@@ -88,12 +88,12 @@ const forgetPasswordScreen = ({navigation} : any) => {
                         axios.defaults.headers.common['Authorization'] = token;
                         navigation.navigate('ResetPassword');
                 }else{
-                    Alert.alert("Invalid Code");
+                    Alert.alert("驗證碼不正確");
                 }
             }catch (e){
                 console.log("error")
                 console.log(e)
-                Alert.alert("Expired");
+                Alert.alert("驗證碼已過期");
                 navigation.goBack();
             }
         }
@@ -110,12 +110,12 @@ const forgetPasswordScreen = ({navigation} : any) => {
                         <View style={{height: '20%'}}></View>
 
                         <Text style={{textAlign: 'center', fontSize: 25, fontWeight: 'bold'}}>
-                            Forget password ? 
+                            忘記密碼
                         </Text>
 
                         <View style={{height: '15%'}}></View>
                         <Text style={{textAlign: 'center', fontSize: 18, fontWeight: 400}}>  
-                            Enter your email to reset your password.
+                            使用電郵地址重設密碼
                         </Text>
                         
                     </View>
@@ -135,7 +135,7 @@ const forgetPasswordScreen = ({navigation} : any) => {
                             <View style={{flexDirection: 'row'}}>
 
                                 <View style={{width: '70%'}}>
-                                    <InputBox text="Enter your email"
+                                    <InputBox text="請輸入你的電郵地址"
                                     borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
                                     Input={handleEmailChange}
                                     InputRes={email}
@@ -151,7 +151,7 @@ const forgetPasswordScreen = ({navigation} : any) => {
 
                                 <View style={{width: '20%', paddingTop: '2%'}}>
 
-                                    <ButtonBox text="Get"
+                                    <ButtonBox text="獲取"
                                         color="#DC2B37"
                                         borderStyle={{ borderRadius: 10 }}
                                         isLoading={loading}
@@ -162,7 +162,7 @@ const forgetPasswordScreen = ({navigation} : any) => {
                             </View>
                                 <View style={{height: '15%'}}></View>
                             <View >
-                                <InputBox text="Verification Code"
+                                <InputBox text="驗證碼"
                                     borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
                                     Input={handleAuthCodeChange}
                                     InputRes={authCode}
@@ -178,7 +178,7 @@ const forgetPasswordScreen = ({navigation} : any) => {
                         <View style={{height: "10%"}}></View>
 
                         <View style={{width: '40%'}}>
-                                <ButtonBox text="Authenticate"
+                                <ButtonBox text="驗證"
                                     color="#DC2B37"
                                     borderStyle={{ borderRadius: 10 }}
                                     isLoading={loading}

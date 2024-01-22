@@ -6,6 +6,7 @@ import {
     ScrollView, 
     TouchableOpacity,
     RefreshControl,
+    Alert,
 } from 'react-native';
 import Layout from '../../components/templates/Layout';
 import {SvgXml} from 'react-native-svg';
@@ -21,7 +22,7 @@ import { toggleLoading, setCallback, setMessagePopup, toggleMessagePopup } from 
 import { SET_SUCCESS_CALLBACK, SET_ERROR_MESSAGE, TOGGLE_ERROR_POPUP } from '../../../Redux/Action/ActionType';
 import { ErrorCode } from '../../common/ErrorCode';
 
-const WalletScreen = ({navigation: { navigate }}: any) => {
+const WalletScreen = ({navigation: navigation}: any) => {
     const dispatch = useDispatch();
     const [buttonState, setButtonState] = useState(1);
     const [couponList, setCouponList] = useState([]);
@@ -46,7 +47,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
             console.log(data)
             if (data.result == 0 && data.result == ErrorCode.INVALID_USER) {
                 // dispatch(setCallback(() => navigate("Login"), SET_SUCCESS_CALLBACK));
-                navigate("Login");
+                navigation.navigate("Login");
             }
             console.log(data.couponList);
             setCouponList(data.couponList);
@@ -57,8 +58,14 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
             dispatch(toggleLoading(false));
         }
     }
-
+    const noAuthUse = async () =>{
+        if(!await AsyncStorage.getItem("jwt")){
+            Alert.alert("錢包功能需要登陸使用");
+            navigation.navigate("Login");
+        };
+    }
     useEffect(() => {
+        noAuthUse();
         fetchWallet();
     }, []);
 
@@ -133,10 +140,10 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                     <View style={{width: "92%", marginLeft: "4%"}}>
 
                 {
-                    couponList.map((coupon: any, index) => {
+                    !couponList? navigation.navigate("Login") : couponList.map((coupon: any, index) => {
                         if (coupon.used < coupon.total && buttonState == 1) {
                             return (
-                                    <TouchableOpacity key={coupon.coupon_id} onPress={() => navigate("CouponItem", {coupon: coupon})}>
+                                    <TouchableOpacity key={coupon.coupon_id} onPress={() => navigation.navigate("CouponItem", {coupon: coupon})}>
                                     <ActualCoupon
                                         title={coupon.title}
                                         companyName={coupon.owner_name} 
@@ -146,6 +153,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                                         rollAnimated={false}
                                         rightBar={false}
                                         availablePercent={0}
+                                        addFunc={() => {}}
                                         />
                                     </TouchableOpacity>
                             )
@@ -161,6 +169,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                                 rollAnimated={false}
                                 rightBar={false}
                                 availablePercent={0}
+                                addFunc={() => {}}
                                 />
                                 )
                             } else {
@@ -185,3 +194,7 @@ const styles = StyleSheet.create({
     }
 
 })
+WalletScreen.navigationOptions = {
+    swipeEnabled: false,
+    headerLeft: null,
+  };

@@ -237,5 +237,8 @@ const LoginStyle = StyleSheet.create({
     width: "60%"
   }
 });
-
+LoginScreen.navigationOptions = {
+  swipeEnabled: false,
+  headerLeft: null,
+};
 export default LoginScreen;
