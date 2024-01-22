@@ -27,15 +27,15 @@ import {
 const CouponCard = (props) => {
   return (
     <NativeBaseProvider>
-      <Box w="90%" h="220" mb={props.marb} borderRadius={15} bg="white" mx="4%" style={{shadowOffset:  {width: 1, height: 1}, shadowColor: "#000", shadowOpacity: 0.8, shadowRadius: 2, elevation: 2}}>
+      <Box w="97%" h="220" mb={props.marb} borderRadius={5} bg="white" mx="1.5%" style={{shadowOffset:  {width: 5, height: 5}, shadowColor: "#000", shadowOpacity: 0.8, shadowRadius: 5, elevation: 10}}>
         <Box>
-          <AspectRatio w="100%" bg="white" ratio={16/14} borderRadius={15}>
+          <AspectRatio w="100%" bg="white" ratio={16/14} borderRadius={5}>
             <Image source={{
               uri: props.imgSource,
-            }} alt={props.imgAlt} borderRadius={15} w="100%" h="100%" />
+            }} alt={props.imgAlt} borderRadius={5} w="100%" h="100%" />
           </AspectRatio>
         </Box>
-        <Stack direction="column" px="4%" py="4%" bg="white" borderBottomRadius={15} h="32.5%">
+        <Stack direction="column" px="4%" py="4%" bg="white" borderBottomRadius={5} h="32.5%">
           <Text fontSize="9" color="#A9A8A8">{props.merchantName}</Text>
           <Stack direction="row" alignItems="center" alignContent="center">
             <Text w="80%" fontWeight="bold" fontSize="md">{props.couponDetail}</Text>

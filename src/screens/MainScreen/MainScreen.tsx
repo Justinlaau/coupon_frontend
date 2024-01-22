@@ -34,6 +34,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import type {PropsWithChildren} from 'react';
 import { socket } from '../../socket';
 import LEDBoard from './LEDBoard';
+import PageRouter from './PageRouter';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 const LED_FONT_SIZE = 24; 
@@ -49,23 +50,27 @@ const MainScreen = ({navigation}: any) => {
     "userID": ""
   });
   const [notificationInfo, setNotificationInfo] = useState([""]);
-  const [currentNotiIndex, setCurrentNotiIndex] = useState(0);
-  const translateX = useRef(new Animated.Value(0)).current;
-
+  const scrollViewRef = useRef<ScrollView>(null);
+  const [scrollViewHeight, setScrollViewHeight] = useState(0);
+  
+  const handleContentSizeChange = (contentHeight: number) => {
+    setScrollViewHeight(contentHeight);
+  };
+  
   const fetchUserInfo = async () => {
     setUserInfo({
       "userName": "丹",
       "userID": "123123"
     })
   }
-
+  
   const fetchNotificationInfo = async () => {
     setNotificationInfo([
       "歡迎使用Coupon Go!",
       "Coupon X 即將過期!"
     ])
   }
-
+  
   const fetchCouponGroups = async () => {
     try {
       dispatch(toggleLoading(true));
@@ -80,25 +85,22 @@ const MainScreen = ({navigation}: any) => {
       dispatch(toggleLoading(false));
     }
   }
-
+  
   useEffect(() => {
     fetchUserInfo();
     fetchNotificationInfo();
     fetchCouponGroups();
   }, [])
-
+  
   const toggleInfo = (show: boolean) => {
     setInfoPopup(show)
   }
-  const setInfoMessage = (message: string) => {
-    setMessage(message)
-  };
-
+  
   type FadeInViewProps = PropsWithChildren<{style: ViewStyle}>
   const FadeInView: React.FC<FadeInViewProps> = (props) => {
     const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
     // const fadeInfoPopup = useSelector((state: any) => state.commonReducer.data.infoPopup);
-
+    
     useEffect(() => {
       if (!infoPopup) return;
       fadeAnim.setValue(1);
@@ -109,20 +111,20 @@ const MainScreen = ({navigation}: any) => {
           duration: 1000,
           useNativeDriver: true,
         }
-      ).start();
-
-      setTimeout(() => {
-        toggleInfo(false);
-      }, 100)
-    }, [infoPopup])
-
-    return (
-      <Animated.View                 // Special animatable View
+        ).start();
+        
+        setTimeout(() => {
+          toggleInfo(false);
+        }, 100)
+      }, [infoPopup])
+      
+      return (
+        <Animated.View                 // Special animatable View
         style={{
           ...props.style,
           opacity: fadeAnim,         // Bind opacity to animated value
         }}
-      >
+        >
         {props.children}
       </Animated.View>
     );
@@ -154,21 +156,26 @@ const MainScreen = ({navigation}: any) => {
             </View>
 
             {/* LED Board */}
-            <View style={{height: "6%", backgroundColor: "white"}}>
+            <View style={{height: "7%", backgroundColor: "white"}}>
               <LEDBoard 
                 texts={notificationInfo}
                 LEDFontSize={LED_FONT_SIZE}
               />
             </View>
 
-            <View style={{height: "83%", backgroundColor: "red"}}>
-              <View style={{}}>
-
-              </View>
-              <Text>
-                  Coupon 你今日用咗未！
-              </Text>
-            </View>
+            {/* Bottom */}
+            <ScrollView contentContainerStyle={{flexGrow: 1}}
+              ref={scrollViewRef}
+              onContentSizeChange={handleContentSizeChange}
+            >
+              <PageRouter
+                navigation={navigation}
+                height={0.5 * scrollViewHeight}
+              />
+              <MainPageListing 
+              couponGroups={couponGroups}
+              />
+            </ScrollView>
           </View>
         </NativeBaseProvider>
       </Background>

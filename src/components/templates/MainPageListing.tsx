@@ -62,7 +62,7 @@ const MainPageListing: React.FC<MainPageListingProps> = (props) => {
       <VStack style={{ display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
         {
           props.couponGroups.map((el, i) => 
-            <Box w="50%" mb="4" py="4" key={i}>
+            <Box w="50%" py="3" key={i}>
               <CouponCard useYellowAdd={true} marb="0" imgSource={BASE_S3_IMG_URL + el["image"]} imgAlt={el["title"]} merchantName={el["owner_name"]} couponDetail={el["title"]} 
                           addFunc={() => addFunc(el["coupon_group_id"], el["expire_date"])}/>
             </Box>

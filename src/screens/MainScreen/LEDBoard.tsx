@@ -8,7 +8,7 @@ interface LEDBoardType{
 };
 
 const LEDBoard = (props: LEDBoardType ) => {
-    const viewRef = useRef<View>(null);;
+    const viewRef = useRef<View>(null);
     const handleLayout = () => {
       viewRef.current?.measure((x: number, y: number, width: number, height: number) => {
         setTextRight(width);
@@ -44,7 +44,7 @@ const LEDBoard = (props: LEDBoardType ) => {
     return (
     <View ref={viewRef} onLayout={handleLayout} style={styles.container}>
         <View style={styles.background}>
-            {Array.from(Array(700), (_, i) => <View key={i} style={styles.dot} />)}
+            {Array.from(Array(650), (_, i) => <View key={i} style={styles.dot} />)}
         </View>
         <Animated.View style={[styles.textContainer, { transform: [{ translateX }] }]}>
             <Text style={styles.text}>{props.texts[currentTextIndex]}</Text>
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     width: 5,
     height: 5,
     borderRadius: 5,
-    backgroundColor: '#333',
+    backgroundColor: '#252525',
   },
   textContainer: {
     flex: 1,
