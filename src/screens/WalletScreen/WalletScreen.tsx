@@ -6,6 +6,7 @@ import {
     ScrollView, 
     TouchableOpacity,
     RefreshControl,
+    Alert
 } from 'react-native';
 import Layout from '../../components/templates/Layout';
 import {SvgXml} from 'react-native-svg';
@@ -31,30 +32,35 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
     };
 
     const fetchWallet = async () => {
-        try {
-            dispatch(toggleLoading(true));
-            let {data} = await axios.post(BASE_URL + "coupon/clientWallet", {
-                "sorted": true
-            });
-            // TODO: popup callback, developing
-            // dispatch(setCallback(() => redirectLogin, SET_SUCCESS_CALLBACK));
-            // dispatch(setMessagePopup("Please login to continue.", SET_ERROR_MESSAGE));
-            // dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
-            // return;
-
-            console.log("data")
-            console.log(data)
-            if (data.result == 0 && data.result == ErrorCode.INVALID_USER) {
-                // dispatch(setCallback(() => navigate("Login"), SET_SUCCESS_CALLBACK));
-                navigate("Login");
+        if(!await AsyncStorage.getItem("jwt")){
+            Alert.alert("登入后才能使用錢包功能");
+            navigate("Login")
+        }else{
+            try {
+                dispatch(toggleLoading(true));
+                let {data} = await axios.post(BASE_URL + "coupon/clientWallet", {
+                    "sorted": true
+                });
+                // TODO: popup callback, developing
+                // dispatch(setCallback(() => redirectLogin, SET_SUCCESS_CALLBACK));
+                // dispatch(setMessagePopup("Please login to continue.", SET_ERROR_MESSAGE));
+                // dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
+                // return;
+    
+                console.log("data")
+                console.log(data)
+                if (data.result == 0 && data.result == ErrorCode.INVALID_USER) {
+                    // dispatch(setCallback(() => navigate("Login"), SET_SUCCESS_CALLBACK));
+                    navigate("Login");
+                }
+                console.log(data.couponList);
+                setCouponList(data.couponList);
+            } catch (error) {
+                console.log("fetchWallet error");
+                console.log(error);
+            } finally {
+                dispatch(toggleLoading(false));
             }
-            console.log(data.couponList);
-            setCouponList(data.couponList);
-        } catch (error) {
-            console.log("fetchWallet error");
-            console.log(error);
-        } finally {
-            dispatch(toggleLoading(false));
         }
     }
 
@@ -129,7 +135,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                     <View style={{width: "92%", marginLeft: "4%"}}>
 
                 {
-                    couponList.map((coupon: any, index) => {
+                    !couponList?navigate("Login") :couponList.map((coupon: any, index) => {
                         if (coupon.used < coupon.total && buttonState == 1) {
                             return (
                                     <TouchableOpacity key={coupon.coupon_id} onPress={() => navigate("CouponItem", {coupon: coupon})}>
@@ -142,6 +148,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                                         rollAnimated={false}
                                         rightBar={false}
                                         availablePercent={0}
+                                        addFunc={{}}
                                         />
                                     </TouchableOpacity>
                             )
@@ -157,6 +164,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                                 rollAnimated={false}
                                 rightBar={false}
                                 availablePercent={0}
+                                addFunc= {{}}
                                 />
                                 )
                             } else {

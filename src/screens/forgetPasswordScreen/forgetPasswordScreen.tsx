@@ -110,12 +110,12 @@ const forgetPasswordScreen = ({navigation} : any) => {
                         <View style={{height: '20%'}}></View>
 
                         <Text style={{textAlign: 'center', fontSize: 25, fontWeight: 'bold'}}>
-                            Forget password ? 
+                            忘記密碼
                         </Text>
 
                         <View style={{height: '15%'}}></View>
                         <Text style={{textAlign: 'center', fontSize: 18, fontWeight: 400}}>  
-                            Enter your email to reset your password.
+                            使用電郵地址重設密碼
                         </Text>
                         
                     </View>
@@ -135,7 +135,7 @@ const forgetPasswordScreen = ({navigation} : any) => {
                             <View style={{flexDirection: 'row'}}>
 
                                 <View style={{width: '70%'}}>
-                                    <InputBox text="Enter your email"
+                                    <InputBox text="輸入你的電郵"
                                     borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
                                     Input={handleEmailChange}
                                     InputRes={email}
@@ -151,7 +151,7 @@ const forgetPasswordScreen = ({navigation} : any) => {
 
                                 <View style={{width: '20%', paddingTop: '2%'}}>
 
-                                    <ButtonBox text="Get"
+                                    <ButtonBox text="獲取"
                                         color="#DC2B37"
                                         borderStyle={{ borderRadius: 10 }}
                                         isLoading={loading}
@@ -162,7 +162,7 @@ const forgetPasswordScreen = ({navigation} : any) => {
                             </View>
                                 <View style={{height: '15%'}}></View>
                             <View >
-                                <InputBox text="Verification Code"
+                                <InputBox text="驗證碼"
                                     borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
                                     Input={handleAuthCodeChange}
                                     InputRes={authCode}
@@ -178,7 +178,7 @@ const forgetPasswordScreen = ({navigation} : any) => {
                         <View style={{height: "10%"}}></View>
 
                         <View style={{width: '40%'}}>
-                                <ButtonBox text="Authenticate"
+                                <ButtonBox text="發送"
                                     color="#DC2B37"
                                     borderStyle={{ borderRadius: 10 }}
                                     isLoading={loading}

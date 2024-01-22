@@ -21,6 +21,7 @@ import {
   RefreshControl,
   Animated,
   ViewStyle,
+  Alert,
 } from 'react-native';
 import {
   NativeBaseProvider,
@@ -42,6 +43,7 @@ import {
 import BASE_S3_IMG_URL, { BASE_URL } from '../../config/config';
 import ActualCoupon from '../../components/atoms/ActualCoupon';
 import type {PropsWithChildren} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialObjectState: { [key: string]: boolean } = {}
 
@@ -92,24 +94,29 @@ const CouponListingScreen = ({ navigation }) => {
   }
 
   const addFunc = async (couponGroupId: string, expireDate: string) => {
-    if (infoPopup) {
-      setInfoPopup(false);
-      return;
-    }
-    setMessage("操作中");
-    setInfoPopup(true);
-    // console.log("adding coupon");
-    let {data} = await axios.post(BASE_URL + "coupon/addCoupon", {
-      "coupon_group_id": couponGroupId,
-      "total": 1
-    })
-
-    if ( data["result"] == 0 ) {
-      setMessage("成功!!");
+    if(!await AsyncStorage.getItem("jwt")){
+      Alert.alert("登入後才可使用COUPONGO優惠服務");
+  
+    }else{
+      if (infoPopup) {
+        setInfoPopup(false);
+        return;
+      }
+      setMessage("操作中");
       setInfoPopup(true);
-    } else {
-      dispatch(setMessagePopup("Add Coupon Failed: " + data["message"], SET_ERROR_MESSAGE));
-      dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
+      // console.log("adding coupon");
+      let {data} = await axios.post(BASE_URL + "coupon/addCoupon", {
+        "coupon_group_id": couponGroupId,
+        "total": 1
+      })
+  
+      if ( data["result"] == 0 ) {
+        setMessage("成功!!");
+        setInfoPopup(true);
+      } else {
+        dispatch(setMessagePopup("你只可以添加同一優惠卷最多5張！", SET_ERROR_MESSAGE));
+        dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
+      }
     }
   }
 
