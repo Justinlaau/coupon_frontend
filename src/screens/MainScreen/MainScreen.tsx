@@ -75,8 +75,8 @@ const MainScreen = ({navigation}: any) => {
     try {
       dispatch(toggleLoading(true));
       let {data} = await axios.post(BASE_URL + "coupon/getAllCouponGroupsAPI")
-      console.log("data")
-      console.log(data)
+      // console.log("data")
+      // console.log(data)
       setCouponGroups(data)
     } catch (error) {
       console.log("error")

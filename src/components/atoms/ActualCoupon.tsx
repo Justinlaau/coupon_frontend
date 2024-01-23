@@ -76,7 +76,7 @@ interface ActualCouponType{
     title: string,
     companyName: string,
     value: string,
-    couponType: number,
+    couponCategory: number,
     rollAnimated: boolean,
     rightBar: boolean,
     availablePercent: number,
@@ -132,7 +132,7 @@ const ActualCoupon = (props: ActualCouponType) =>{
             <View style={[{
                 width: "100%",
                 flexDirection: "row",
-                backgroundColor: backgroundColor[props.couponType],
+                backgroundColor: backgroundColor[props.couponCategory],
                 height: couponHeight,
                 borderRadius: radius,
             }, styles.shadow, props.rightBar? {}: {overflow: "hidden"}]}
@@ -143,7 +143,7 @@ const ActualCoupon = (props: ActualCouponType) =>{
                 <View style={[styles.CouponDescription, props.rightBar? {width: "50%"} : {width: "65%"}]}>
                     {/* <GiftIcon name="gift" size={30} style={{color: 'white'}}/> */}
                     {/* props.text */}
-                    <View style={[styles.frontWords, {backgroundColor: backgroundColor[props.couponType]}]}>
+                    <View style={[styles.frontWords, {backgroundColor: backgroundColor[props.couponCategory]}]}>
                         <View style={[styles.frontContainer]}>
                             <Text style={{
                                 fontSize: 20,
@@ -179,15 +179,15 @@ const ActualCoupon = (props: ActualCouponType) =>{
                     <View style={{width: "15%", backgroundColor: "white", height: "100%"}}>
                         <View style={{display: "flex", justifyContent: "center", alignItems: "center", height: "70%", width: "100%"}}
                             ref={viewRef} onLayout={handleLayout}>
-                            <View style={{position: "absolute", width: "50%", height: "90%", backgroundColor: backgroundColor[props.couponType], opacity: 0.3, 
+                            <View style={{position: "absolute", width: "50%", height: "90%", backgroundColor: backgroundColor[props.couponCategory], opacity: 0.3, 
                             borderRadius: 30, top: 0.1 * viewHeight
                             }}>
                             </View>
-                            <View style={{position: "absolute", width: "50%", backgroundColor: backgroundColor[props.couponType], borderRadius: 30,
+                            <View style={{position: "absolute", width: "50%", backgroundColor: backgroundColor[props.couponCategory], borderRadius: 30,
                             top: (props.availablePercent) * viewHeight, height: (1 - props.availablePercent) * viewHeight
                             }}>
                             </View>
-                            <View style={{position: "absolute", width: 30, height: 30, backgroundColor: backgroundColor[props.couponType], 
+                            <View style={{position: "absolute", width: 30, height: 30, backgroundColor: backgroundColor[props.couponCategory], 
                             borderRadius: 30, borderColor: "white", borderWidth: 3,
                             top: (props.availablePercent) * viewHeight - 18 }}>
                             </View>
@@ -213,7 +213,7 @@ const deviceWidth = Math.round(Dimensions.get('window').width);
 const styles = StyleSheet.create({
     container:{
         alignItems: 'center',
-        marginTop: "5%",
+        marginLeft: "3%",
         marginBottom: '5%',
     },
     imageContainer:{

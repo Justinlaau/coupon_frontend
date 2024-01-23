@@ -19,6 +19,9 @@ import { BASE_URL } from '../config/config';
 import MapScreen from '../screens/MapScreen/MapScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen/ResetPasswordScreen';
 
+{/* Categorized Screens */}
+import FoodScreen from '../screens/CategorizedScreens/FoodScreen/FoodScreen';
+
 const Stack = createNativeStackNavigator();
 
 const MyStack = () => {
@@ -73,6 +76,10 @@ const MyStack = () => {
         <Stack.Screen name="CouponQRCode" component={CouponQRCodeScreen} />
         <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         <Stack.Screen name="Map" component={MapScreen} />
+
+        {/* Categorized Screens */}
+        <Stack.Screen name="FoodMain" component={FoodScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

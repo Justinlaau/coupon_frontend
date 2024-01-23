@@ -198,18 +198,7 @@ const CouponListingScreen = ({ navigation }) => {
         console.log("data")
         console.log(data)
         setCouponGroups(data)
-      }       
-
-      // console.log("filterList")
-      // console.log(filterList)
-      let { data } = await axios.post(BASE_URL + "coupon/filterCouponGroups", {
-        "categories": filterList,
-        "address_locode": selectedAddressCategory
-      })
-      // console.log("data")
-      // console.log(data)
-      setCouponGroups(data)
-
+      }
     } catch (error) {
       console.log("error")
       console.log(error)
@@ -324,7 +313,7 @@ const CouponListingScreen = ({ navigation }) => {
           />
         } 
       >
-        <Layout showTabBar={true} isHeading={false}>
+        <Layout showTabBar={true} navigation={navigation} isHeading={{"isHeading": false}}>
           <FadeInView style={{position: "absolute", top: "2%", left: "40%", zIndex:999 ,backgroundColor: "#4BB543", borderRadius: 50 }}>
             <Text style={{paddingHorizontal: "3%", paddingVertical: "1%", color: "white"}}>{ message }</Text>
           </FadeInView>
@@ -402,7 +391,7 @@ const CouponListingScreen = ({ navigation }) => {
                         title={el["title"]}
                         value={el["value"]}
                         image={{ uri: BASE_S3_IMG_URL + el["image"] }}
-                        couponType={el["coupon_type"]}
+                        couponCategory={el["coupon_category"]}
                         rollAnimated={false}
                         rightBar={true}
                         availablePercent={el["available"]/el["stock"]}

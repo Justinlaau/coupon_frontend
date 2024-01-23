@@ -32,12 +32,14 @@ import { socket } from '../../socket';
 
 
 interface LayoutType{
-  children: any,
+  children: any | undefined,
   showTabBar: Boolean,
   isHeading: {
     "isHeading": Boolean,
     "userName": String,
     "userID": String,
+  } | {
+    "isHeading": Boolean
   },
   navigation: any,
 };

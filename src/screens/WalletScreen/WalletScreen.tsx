@@ -149,7 +149,7 @@ const WalletScreen = ({navigation: navigation}: any) => {
                                         companyName={coupon.owner_name} 
                                         value={coupon.value} 
                                         image={{uri: BASE_S3_IMG_URL + coupon.image}}
-                                        couponType={coupon.coupon_type}
+                                        couponCategory={coupon.coupon_category}
                                         rollAnimated={false}
                                         rightBar={false}
                                         availablePercent={0}
@@ -165,7 +165,7 @@ const WalletScreen = ({navigation: navigation}: any) => {
                                 companyName={coupon.owner_name} 
                                 value={coupon.value} 
                                 image={{uri: BASE_S3_IMG_URL + coupon.image}}
-                                couponType={coupon.coupon_type}
+                                couponCategory={coupon.coupon_category}
                                 rollAnimated={false}
                                 rightBar={false}
                                 availablePercent={0}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, DimensionValue } from 'react-native';
+import { View, StyleSheet, DimensionValue, TouchableOpacity, Text } from 'react-native';
 
 interface PageRouterType {
     navigation: any,
@@ -10,7 +10,11 @@ const PageRouter = (props : PageRouterType) => {
   return (
     <View style={[styles.container, {height: props.height}]}>
       <View style={styles.row}>
-        <View style={styles.box} />
+        <TouchableOpacity style={{width: '24%', height: "100%", backgroundColor: "grey"}} onPress={() => props.navigation.navigate("FoodMain")}>
+          <Text>
+            美食精選
+          </Text>
+        </TouchableOpacity>
         <View style={styles.box} />
         <View style={styles.box} />
         <View style={styles.box} />

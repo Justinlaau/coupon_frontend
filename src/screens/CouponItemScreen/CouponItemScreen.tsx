@@ -115,10 +115,11 @@ const CouponItemScreen = ({navigation, route}) => {
                     companyName={coupon.owner_name} 
                     value={coupon.value} 
                     image={{uri: BASE_S3_IMG_URL + coupon.image}}
-                    couponType={coupon.coupon_type}
+                    couponCategory={coupon.coupon_category}
                     rollAnimated={true}
                     rightBar={false}
                     availablePercent={0}
+                    addFunc={null}
                     />
               </View>
               <View style={{display: "flex", justifyContent:"center", alignItems: "center", marginBottom: "3%"}}>
