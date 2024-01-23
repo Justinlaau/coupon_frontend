@@ -94,7 +94,12 @@ const MainScreen = ({navigation}: any) => {
   
   const toggleInfo = (show: boolean) => {
     setInfoPopup(show)
-  }
+  };
+
+  const setInfoMessage = (message: string) => {
+    setMessage(message)
+  };
+
   
   type FadeInViewProps = PropsWithChildren<{style: ViewStyle}>
   const FadeInView: React.FC<FadeInViewProps> = (props) => {
@@ -174,9 +179,9 @@ const MainScreen = ({navigation}: any) => {
               />
               <MainPageListing 
               style={{}}
-              infoPopup = {true}
-              toggleInfo= {true}
-              setInfoMessage = {setMessage}
+              infoPopup = {infoPopup}
+              toggleInfo= {toggleInfo}
+              setInfoMessage = {setInfoMessage}
               couponGroups={couponGroups}
               />
             </ScrollView>
@@ -186,14 +191,5 @@ const MainScreen = ({navigation}: any) => {
     </Layout>
   );
 };
-
-const MainStyle = StyleSheet.create({
-  LEDText:{
-    color: '#0f0',
-    fontSize: LED_FONT_SIZE,
-    textAlignVertical: "center",
-    height: "100%"
-  }
-});
 
 export default MainScreen;

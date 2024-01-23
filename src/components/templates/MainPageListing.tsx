@@ -39,9 +39,9 @@ const MainPageListing: React.FC<MainPageListingProps> = (props) => {
   
   const addFunc = async (couponGroupId: string, expireDate: string) => {
     if(!await AsyncStorage.getItem("jwt")){
-      Alert.alert("COUPONGO服務需要登陸使用");
+      Alert.alert("登入后才可使用COUPONGO優惠服務");
     }else{
-      if (!props.infoPopup) {
+      if (props.infoPopup) {
         props.toggleInfo(false);
         return;
       }
@@ -52,12 +52,12 @@ const MainPageListing: React.FC<MainPageListingProps> = (props) => {
         "coupon_group_id": couponGroupId,
         "total": 1
       })
-      console.log(data);
+  
       if ( data["result"] == 0 ) {
         props.setInfoMessage("成功！！！");
         props.toggleInfo(true);
       } else {
-        dispatch(setMessagePopup("無法添加優惠卷: " + data["message"], SET_ERROR_MESSAGE));
+        dispatch(setMessagePopup("你只可以添加同一優惠卷最多5張！", SET_ERROR_MESSAGE));
         dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
       }
     }
