@@ -1,9 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   TextInput,
   StyleSheet,
-  Pressable
+  Pressable,
+  ScrollView,
+  RefreshControl,
+  ViewStyle,
+  Animated,
 } from 'react-native';
 import Background from '../../components/templates/Background';
 import Layout from '../../components/templates/Layout';
@@ -17,10 +21,6 @@ import {
   Center,
   Stack,
   Box,
-  Icon,
-  Input,
-  ScrollView,
-  Container,
   Text,
   Button,
 } from 'native-base';
@@ -31,11 +31,15 @@ import { use } from 'i18next';
 import { useDispatch } from 'react-redux';
 import { toggleLoading } from '../../../Redux/Action/CommonAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import type {PropsWithChildren} from 'react';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 const MainScreen = ({navigation}: any) => {
   const dispatch = useDispatch();
-  const [couponGroups, setCouponGroups] = useState([])
+  const [couponGroups, setCouponGroups] = useState([]);
+  const [infoPopup, setInfoPopup] = useState(false);
+  const [message, setMessage] = useState("success");
+  const [test, setTest] = useState(false);
 
   const fetchCouponGroups = async () => {
     try {
@@ -56,10 +60,55 @@ const MainScreen = ({navigation}: any) => {
     fetchCouponGroups()
   }, [])
 
+  const toggleInfo = (show: boolean) => {
+    setInfoPopup(show)
+  }
+  const setInfoMessage = (message: string) => {
+    setMessage(message)
+  };
+
+  type FadeInViewProps = PropsWithChildren<{style: ViewStyle}>
+  const FadeInView: React.FC<FadeInViewProps> = (props) => {
+    const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
+    // const fadeInfoPopup = useSelector((state: any) => state.commonReducer.data.infoPopup);
+
+    useEffect(() => {
+      if (!infoPopup) return;
+      fadeAnim.setValue(1);
+      
+      Animated.timing(fadeAnim,
+        {
+          toValue: 0,
+          duration: 1000,
+          useNativeDriver: true,
+        }
+      ).start();
+
+      setTimeout(() => {
+        toggleInfo(false);
+      }, 100)
+    }, [infoPopup])
+
+    return (
+      <Animated.View                 // Special animatable View
+        style={{
+          ...props.style,
+          opacity: fadeAnim,         // Bind opacity to animated value
+        }}
+      >
+        {props.children}
+      </Animated.View>
+    );
+  }
+
   return (
     <Layout showTabBar={true}>
       <Background main={true} contentHeight="68%" tabBarSpace={true}>
         <NativeBaseProvider>
+          
+          <FadeInView style={{position: "absolute", top: "-30%", left: "40%", backgroundColor: "#4BB543", borderRadius: 50 }}>
+            <Text style={{paddingHorizontal: "3%", paddingVertical: "1%", color: "white"}}>{ message }</Text>
+          </FadeInView>
           <Stack space={4} alignItems="center" h="100%">
             <Stack
               direction="row"
@@ -79,7 +128,14 @@ const MainScreen = ({navigation}: any) => {
                 </Center>
               </Pressable>
             </Stack>
-              <ScrollView h="100" w="100%" px="6" py="5">
+              <ScrollView style={{ height: "100%", width: "100%", paddingHorizontal: "6%", paddingVertical: "5%" }}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={false}
+                    onRefresh={() => fetchCouponGroups()}
+                  />
+                }
+              >
                 <Stack h="50" w="99%" direction="row" mb="9%" mr="auto" ml="auto" style={{alignItems: "center", borderRadius: 10, shadowOffset: {width: 1, height: 1}, backgroundColor: "white", shadowColor: "#000", shadowOpacity: 0.8, shadowRadius: 10, elevation: 6}}>
                   <Center height="100%" width="15%">
                     <SvgXml height="40%" xml={MagnifierSVG} />
@@ -96,7 +152,9 @@ const MainScreen = ({navigation}: any) => {
                     {/* <Text fontWeight="light" color="grey" fontSize="15" onPress={() => navigation.navigate("CouponListing")}>View All</Text> */}
                   </Stack>
                 </Box>
-                <Box><MainPageListing couponGroups={couponGroups}/></Box>
+                <Box>
+                  <MainPageListing style={{}} couponGroups={couponGroups} infoPopup={infoPopup} toggleInfo={toggleInfo} setInfoMessage={setInfoMessage}/>
+                </Box>
               </ScrollView>
           </Stack>
         </NativeBaseProvider>

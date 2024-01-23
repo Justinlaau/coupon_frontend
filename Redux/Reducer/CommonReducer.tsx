@@ -9,6 +9,9 @@ import {
   SET_ERROR_CALLBACK,
   SET_SUCCESS_CALLBACK,
   SET_OPERATION_CALLBACK,
+  TOGGLE_INFO_POPUP,
+  SET_INFO_MESSAGE,
+  SET_USER_INFO,
 } from "../Action/ActionType";
 
 const initialState = {
@@ -17,9 +20,11 @@ const initialState = {
     errorPopup: false,
     successPopup: false,
     operationPopup: false,
+    infoPopup: false,
     successPopupMessage: "success",
     errorPopupMessage: "error",
-    operationPopupMessage: "info",
+    operationPopupMessage: "operation",
+    infoPopupMessage: "info",
     successPopupCallback: () => {},
     errorPopupCallback: () => {},
     operationPopupCallback: () => {},
@@ -64,6 +69,14 @@ export const commonReducer = (state = initialState, action: any) => {
           [action.type]: action.data,
         },
       };
+    case TOGGLE_INFO_POPUP:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          infoPopup: action.data,
+        }
+      }
     case SET_SUCCESS_MESSAGE:
       return {
         ...state,
@@ -88,6 +101,14 @@ export const commonReducer = (state = initialState, action: any) => {
           operationPopupMessage: action.data,
         },
       };
+    case SET_INFO_MESSAGE:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          infoPopupMessage: action.data,
+        }
+      }
     case SET_ERROR_CALLBACK:
       return {
         ...state,

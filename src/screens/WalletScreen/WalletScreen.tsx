@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { 
     View, 
-    TextInput,
     StyleSheet,
     Text,
-    SafeAreaView, 
     ScrollView, 
-    Alert,
-    TouchableOpacity
+    TouchableOpacity,
+    RefreshControl,
 } from 'react-native';
 import Layout from '../../components/templates/Layout';
 import {SvgXml} from 'react-native-svg';
@@ -43,6 +41,9 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
             // dispatch(setMessagePopup("Please login to continue.", SET_ERROR_MESSAGE));
             // dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
             // return;
+
+            console.log("data")
+            console.log(data)
             if (data.result == 0 && data.result == ErrorCode.INVALID_USER) {
                 // dispatch(setCallback(() => navigate("Login"), SET_SUCCESS_CALLBACK));
                 navigate("Login");
@@ -117,9 +118,16 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                 <Text style={{marginRight: "5%"}}> 按日期排序 </Text>
             </View>
 
-            <ScrollView style={{height: "80%"}}>
+            <ScrollView style={{height: "80%"}}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={false}
+                        onRefresh={() => fetchWallet()}
+                            />
+                        }
+                    >                
+                    <View style={{width: "92%", marginLeft: "4%"}}>
 
-                <View style={{width: "92%", marginLeft: "4%"}}>
                 {
                     couponList.map((coupon: any, index) => {
                         if (coupon.used < coupon.total && buttonState == 1) {

@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import TabBar from './TabBar';
-import {View, StyleSheet, Text, Image, Dimensions, ActivityIndicator, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, Image, Dimensions, ActivityIndicator, TouchableOpacity, RefreshControl, ViewStyle, Animated} from 'react-native';
 import Background from './Background';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
@@ -20,12 +20,7 @@ export default function Layout(props: {children: any, showTabBar: Boolean}) {
   const errorPopupMessage = useSelector((state: any) => state.commonReducer.data.errorPopupMessage);
   const operationPopup = useSelector((state: any) => state.commonReducer.data.operationPopup);
   const operationPopupMessage = useSelector((state: any) => state.commonReducer.data.operationPopupMessage);
-  // const errorCallback = useSelector((state: any) => state.commonReducer.data.errorPopupCallback);
 
-  // useEffect(() =>{
-  //   console.log("errorPopupMessage", errorPopupMessage);
-  //   console.log("errorPopup", errorPopup);
-  // })
   return (
     <View style={[LayoutStyle.layout, {height}]}>
       {props.children}
@@ -69,7 +64,7 @@ export default function Layout(props: {children: any, showTabBar: Boolean}) {
             <View style={LayoutStyle.loadingStyle}>
               <View style={LayoutStyle.messageBox}>
                 <View>
-                  <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 10}}>{errorPopupMessage}</Text>
+                  <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 10, marginBottom: 10}}>{errorPopupMessage}</Text>
                 </View>
                 <TouchableOpacity onPress={() => {
                     dispatch(toggleMessagePopup(false, TOGGLE_ERROR_POPUP))
@@ -94,9 +89,9 @@ export default function Layout(props: {children: any, showTabBar: Boolean}) {
                   <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 10}}>{operationPopupMessage}</Text>
                 </View>
                 <TouchableOpacity onPress={() => dispatch(toggleMessagePopup(false, TOGGLE_OPERATION_POPUP))}>
-                    <View style={{width: 60, height: 40, backgroundColor: "#DC2B37", justifyContent: 'center', alignItems: 'center', borderRadius: 10}}>
-                      <Text style={{color: "white"}}>確定</Text>
-                    </View>
+                  <View style={{width: 60, height: 40, backgroundColor: "#DC2B37", justifyContent: 'center', alignItems: 'center', borderRadius: 10}}>
+                    <Text style={{color: "white"}}>確定</Text>
+                  </View>
                 </TouchableOpacity>
               </View>
             </View>
@@ -132,8 +127,10 @@ const LayoutStyle = StyleSheet.create({
     elevation: 10,
   },
   messageBox: {
-    width: "80%",
-    height: "50%",
+    maxWidth: '80%',
+    paddingHorizontal: "3%",
+    paddingVertical: "3%",
+    // height: "50%",
     backgroundColor: '#fff',
     borderRadius: 10,
     justifyContent: 'center',

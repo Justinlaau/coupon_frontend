@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux';
 import { SET_BASE_USER } from '../../../Redux/Action/ActionType';
 import Layout from '../../components/templates/Layout';
 import { setMessagePopup, toggleMessagePopup } from '../../../Redux/Action/CommonAction';
+import KeyboardAvoidingWrapper from '../../components/templates/KeyboardAvoidingWrapper';
 import { 
   TOGGLE_SUCCESS_POPUP,
   SET_SUCCESS_MESSAGE, 
@@ -98,7 +99,7 @@ const LoginScreen = ({navigation}: any) => {
               <SvgXml width={'70'} xml={ProfileSVG} />
             </View>
             <View style={LoginStyle.InputContainer}>
-              <InputBox text="用戶名"
+            <InputBox text="用戶名"
                 borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
                 Input={handleUsernameChange}
                 InputRes={username}
@@ -120,7 +121,7 @@ const LoginScreen = ({navigation}: any) => {
                 />
             </View>
             <View style={LoginStyle.Checkbox}>
-              <CheckBoxes text="記住用戶名與密碼" textStyle={{ color: "#DC2B37" }} color="#DC2B37" />
+              <CheckBoxes text="Remember me" textStyle={{ color: "#DC2B37" }} color="#DC2B37" />
 
               <Text style={LoginStyle.forgetPassword}
                 onPress={() => { 
@@ -131,7 +132,7 @@ const LoginScreen = ({navigation}: any) => {
               </Text>
             </View>
             <View style={LoginStyle.ButtonContainer}>
-              <ButtonBox text="登入"
+            <ButtonBox text="登入"
                 color="#DC2B37"
                 borderStyle={{ borderRadius: 10 }}
                 isLoading={loading}
@@ -156,7 +157,7 @@ const LoginScreen = ({navigation}: any) => {
                 />
             </View>
             <View style={LoginStyle.CreateButton}>
-              <ButtonBox text="創建帳戶"
+            <ButtonBox text="創建帳戶"
                 borderStyle={{ borderColor: "#DC2B37", borderWidth: 2, borderRadius: 25 }}
                 textStyle={{ color: "#DC2B37" }} boxType="outline" action={() => { navigation.navigate('Register') }} />
             </View>
