@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     position: "absolute"
   },
   text: {
-    color: '#c00',
+    color: '#dd0000',
     fontSize: 20,
     textAlignVertical: "top",
     height: "100%"

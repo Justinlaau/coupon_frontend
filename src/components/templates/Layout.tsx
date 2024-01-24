@@ -29,7 +29,9 @@ import {ProfileSVG} from '../../assets/images/ProfileSVG';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { socket } from '../../socket';
-
+import Notification1 from '../../assets/images/Notification/Notification1';
+import Notification2 from '../../assets/images/Notification/Notification2';
+import NotificationBase from '../../assets/images/Notification/NotificationBase';
 
 interface LayoutType{
   children: any | undefined,
@@ -64,6 +66,38 @@ export default function Layout(props: LayoutType) {
     setFocused(false);
   };
 
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const animation = useRef(new Animated.Value(0)).current;
+  const notiImages = [NotificationBase, Notification1, NotificationBase, Notification2]
+
+  useEffect(() => {
+    const imageTimer = setTimeout(() => {
+      const nextIndex = (currentImageIndex + 1) % notiImages.length;
+      setCurrentImageIndex(nextIndex);
+      startAnimation();
+    }, 2000);
+
+    return () => {
+      clearTimeout(imageTimer);
+    };
+  }, [currentImageIndex]);
+
+  const startAnimation = () => {
+    animation.setValue(0);
+    Animated.timing(animation, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const interpolatedOpacity = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  });
+
+
   return (
     <View style={[LayoutStyle.layout, {height}]}>
       {props.children}
@@ -79,7 +113,7 @@ export default function Layout(props: LayoutType) {
           <View style={{display: "flex", flexDirection: "row", alignItems: "center", left: 10}}>
             <Pressable onPress={async () => { await AsyncStorage.removeItem("jwt"); axios.defaults.headers.common['Authorization']=""; socket.disconnect(); props.navigation.navigate("Login") }}>
               <View style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100%"}}>
-                <SvgXml width={35}  xml={ProfileSVG} />
+                <SvgXml width={30} height={30}  xml={ProfileSVG} />
               </View>
             </Pressable>
             <Text style={{fontSize: 15, color: "white", textAlign: "center"}}> 哈囉, {props.isHeading["userName"]} ! </Text> 
@@ -96,9 +130,18 @@ export default function Layout(props: LayoutType) {
             onBlur={handleBlur}
             />
           </View> */}
+          <View style={{position: "absolute", right: 0, height: "100%", width:"10%", zIndex: 120, 
+            backgroundColor: "transparent", borderRadius: 7, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+              <Animated.View style={{ opacity: interpolatedOpacity }}>
+                <SvgXml width={50} xml={notiImages[currentImageIndex]} />
+                <View style={{backgroundColor: "#E9D14D", width: 15, height: 15, position: "absolute", borderRadius: 50, right: 10}}> 
+
+                </View>
+              </Animated.View>
+          </View>
         </View>
         )
-        : null
+        : <></>
       }
       {
         commonLoading ? (
