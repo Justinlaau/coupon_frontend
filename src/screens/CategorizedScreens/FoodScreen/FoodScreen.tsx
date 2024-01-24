@@ -7,6 +7,7 @@ import { MagnifierSVG } from '../../../assets/images/MagnifierSVG';
 import FoodSubpageRouter from './FoodSubpageRouter';
 import FilteredCouponListing from '../FilteredCouponListing';
 import { ScrollView } from 'native-base';
+import LeftArrow from '../../../assets/images/LeftArrow';
 
 interface State {
     navigation: any;
@@ -34,14 +35,12 @@ class FoodScreen extends Component<{}, State>  {
             display: "flex", flexDirection: "row"
         }}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={{height: "100%", width: "5%", marginLeft: "2%", alignItems: "flex-start", justifyContent: "center" }}>
-                <Text style={{fontSize: 35, color: "white", textAlignVertical: "center"}}>
-                    {"<"}
-                </Text>
+              <SvgXml width="100%" height="100%" xml={LeftArrow} />
             </TouchableOpacity>
 
             <View style={{height: "100%", width: "30%", marginLeft: "2%", marginTop: "1%"}}>
-                <Text style={{fontSize: 25, color: "white", textAlignVertical: "center"}}>
-                    精選美食
+                <Text style={{fontSize: 25, color: "white", textAlignVertical: "bottom"}}>
+                    美食
                 </Text>
             </View>
 

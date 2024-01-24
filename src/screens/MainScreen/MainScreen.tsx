@@ -11,26 +11,17 @@ import {
 } from 'react-native';
 import Background from '../../components/templates/Background';
 import Layout from '../../components/templates/Layout';
-import {ProfileSVG} from '../../assets/images/ProfileSVG';
 import {MagnifierSVG} from '../../assets/images/MagnifierSVG';
-import MainPageMenu from '../../components/templates/MainPageMenu';
 import MainPageListing from '../../components/templates/MainPageListing';
 import {
   NativeBaseProvider,
-  VStack,
-  Center,
-  Stack,
-  Box,
   Text,
-  Button,
 } from 'native-base';
 import {SvgXml} from 'react-native-svg';
 import axios from 'axios';
 import BASE_S3_IMG_URL, { BASE_URL } from '../../config/config';
-import { use } from 'i18next';
 import { useDispatch } from 'react-redux';
 import { toggleLoading } from '../../../Redux/Action/CommonAction';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import type {PropsWithChildren} from 'react';
 import { socket } from '../../socket';
 import LEDBoard from './LEDBoard';
