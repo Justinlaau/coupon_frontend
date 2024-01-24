@@ -74,8 +74,8 @@ export default function Layout(props: LayoutType) {
         props.isHeading["isHeading"] ? 
         (
         <View style={{position: "absolute", zIndex: 100, width:"100%", height: "5%"}}>
-          {isFocused? <></> : 
-          (
+          {/* {isFocused? <></> : 
+          ( */}
           <View style={{display: "flex", flexDirection: "row", alignItems: "center", left: 10}}>
             <Pressable onPress={async () => { await AsyncStorage.removeItem("jwt"); axios.defaults.headers.common['Authorization']=""; socket.disconnect(); props.navigation.navigate("Login") }}>
               <View style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100%"}}>
@@ -84,18 +84,18 @@ export default function Layout(props: LayoutType) {
             </Pressable>
             <Text style={{fontSize: 15, color: "white", textAlign: "center"}}> 哈囉, {props.isHeading["userName"]} ! </Text> 
           </View>
-          )
-          }
-          <View style={{position: "absolute", right: 10, top: 3, height: "90%", width: isFocused? "95%": "40%", zIndex: 120, 
-            backgroundColor: "white", borderRadius: 7, flexDirection: "row"}}>
+          {/* )
+          } */}
+          {/* <View style={{position: "absolute", right: 10, top: 3, height: "90%", width: isFocused? "95%": "7%", zIndex: 120, 
+            backgroundColor: "transparent", borderRadius: 7, flexDirection: "row"}}>
             <View style={{display: "flex", justifyContent: "center", alignContent: "center", height: "100%"}}>
-              <SvgXml height="40%" xml={MagnifierSVG} />
+              <SvgXml height="60%" xml={MagnifierSVG} />
             </View>
-            <TextInput style={{height: "100%"}} placeholder='搜尋優惠卷?'
+            <TextInput style={{height: "100%"}} placeholder=''
             onFocus={handleFocus}
             onBlur={handleBlur}
             />
-          </View>
+          </View> */}
         </View>
         )
         : null

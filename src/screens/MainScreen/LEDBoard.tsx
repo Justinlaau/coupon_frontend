@@ -44,7 +44,7 @@ const LEDBoard = (props: LEDBoardType ) => {
     return (
     <View ref={viewRef} onLayout={handleLayout} style={styles.container}>
         <View style={styles.background}>
-            {Array.from(Array(650), (_, i) => <View key={i} style={styles.dot} />)}
+            {/* {Array.from(Array(650), (_, i) => <View key={i} style={styles.dot} />)} */}
         </View>
         <Animated.View style={[styles.textContainer, { transform: [{ translateX }] }]}>
             <Text style={styles.text}>{props.texts[currentTextIndex]}</Text>
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
   container: {
     overflow: 'hidden',
     width: '100%',
-    height: 40,
-    backgroundColor: "black"
+    height: "100%",
+    backgroundColor: "#EEEEEE"
   },
   background: {
     flex: 1,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     width: 5,
     height: 5,
     borderRadius: 5,
-    backgroundColor: '#252525',
+    backgroundColor: '#EEEEEE',
   },
   textContainer: {
     flex: 1,
@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
     position: "absolute"
   },
   text: {
-    color: '#f00',
-    fontSize: 24,
+    color: '#c00',
+    fontSize: 20,
     textAlignVertical: "top",
     height: "100%"
   },

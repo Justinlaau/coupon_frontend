@@ -39,8 +39,8 @@ class FoodScreen extends Component<{}, State>  {
                 </Text>
             </TouchableOpacity>
 
-            <View style={{height: "100%", width: "30%", marginLeft: "2%"}}>
-                <Text style={{fontSize: 30, color: "white", textAlignVertical: "center"}}>
+            <View style={{height: "100%", width: "30%", marginLeft: "2%", marginTop: "1%"}}>
+                <Text style={{fontSize: 25, color: "white", textAlignVertical: "center"}}>
                     精選美食
                 </Text>
             </View>

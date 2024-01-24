@@ -141,7 +141,7 @@ const MainScreen = ({navigation}: any) => {
     isHeading={{"isHeading": true, "userID": userInfo["userID"], "userName": userInfo["userName"]}}
     navigation={navigation}
   >
-    <Background main={true} contentHeight="70%" tabBarSpace={true}>
+    <Background main={true} contentHeight="76.5%" tabBarSpace={true}>
 
         <NativeBaseProvider>
           <FadeInView style={{ position: "absolute", top: "-30%", left: "40%", backgroundColor: "#4BB543", borderRadius: 50 }}>
@@ -149,10 +149,13 @@ const MainScreen = ({navigation}: any) => {
           </FadeInView>
           <View style={{height: "100%", width: "100%", paddingLeft: "3%", paddingRight: "3%"}}>
             {/* Title */}
-            <View style={{height: "9%", paddingTop: "3%", marginBottom: "1.5%", display: "flex", justifyContent: "flex-end"}}>
-              <Text style={{fontSize: 25, fontWeight: "bold", height: "100%", textAlignVertical: "bottom"}}>
-                Coupon 你今日用咗未！
-              </Text>
+            <View style={{height: "7%", paddingTop: "3%", marginBottom: "1.5%", display: "flex", justifyContent: "flex-start", flexDirection: "row"}}>
+              <View style={{display: "flex", justifyContent: "center", alignContent: "center", height: "100%", marginRight: "3%"}}>
+                <SvgXml height="60%" xml={MagnifierSVG} />
+              </View>
+              <View style={{height: "100%", display: "flex", justifyContent: "center"}}>
+                <TextInput style={{height: "300%", fontSize: 20, textAlignVertical: "center"}} placeholder='Coupon! 你今日用咗未！'/>
+              </View>
             </View>
 
             {/* Line */}
@@ -161,7 +164,7 @@ const MainScreen = ({navigation}: any) => {
             </View>
 
             {/* LED Board */}
-            <View style={{height: "7%", backgroundColor: "white"}}>
+            <View style={{height: "5%", backgroundColor: "white"}}>
               <LEDBoard 
                 texts={notificationInfo}
                 LEDFontSize={LED_FONT_SIZE}
@@ -175,7 +178,7 @@ const MainScreen = ({navigation}: any) => {
             >
               <PageRouter
                 navigation={navigation}
-                height={0.5 * scrollViewHeight}
+                height={0.35 * scrollViewHeight}
               />
               <MainPageListing 
               style={{}}
