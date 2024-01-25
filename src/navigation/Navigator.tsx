@@ -18,7 +18,7 @@ import axios from 'axios';
 import { BASE_URL } from '../config/config';
 import MapScreen from '../screens/MapScreen/MapScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen/ResetPasswordScreen';
-
+import StackPage from '../screens/StackPage/StackPage';
 {/* Categorized Screens */}
 import FoodScreen from '../screens/CategorizedScreens/FoodScreen/FoodScreen';
 
@@ -64,7 +64,7 @@ const MyStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName = "Main"
+        initialRouteName = "StackPage"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Wallet" component={WalletScreen} />
@@ -76,6 +76,8 @@ const MyStack = () => {
         <Stack.Screen name="CouponQRCode" component={CouponQRCodeScreen} />
         <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         <Stack.Screen name="Map" component={MapScreen} />
+        <Stack.Screen name="StackPage" component={StackPage} />
+
 
         {/* Categorized Screens */}
         <Stack.Screen name="FoodMain" component={FoodScreen} />
