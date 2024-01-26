@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DimensionValue, TouchableOpacity, Text } from 'react-native';
+import { View, DimensionValue, TouchableOpacity, Text } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
 interface PageRouterItems{
@@ -21,10 +21,21 @@ const PageRouterItems = (props: PageRouterItems) => {
         onPressOut={() => props.setOnClick(false)}
         activeOpacity={1}
         >
-        { props.onClick? 
-          <SvgXml height={45} width={45} xml={props.xmlOnClick} />
-          : <SvgXml height={45} width={45} xml={props.xml} />
-        }
+        <View style={{     
+          shadowColor: "#000",
+          shadowOffset: {
+              height: 3,
+              width: 3
+          },
+          elevation: 3,
+          backgroundColor: "white", 
+          borderRadius: 10
+        }}>
+          { props.onClick? 
+            <SvgXml height={45} width={45} xml={props.xmlOnClick} />
+            : <SvgXml height={45} width={45} xml={props.xml} />
+          }
+        </View>
         <Text style={{fontSize: 13, color: "black"}}>
           {props.title}
         </Text>

@@ -140,7 +140,7 @@ const forgetPasswordScreen = ({navigation} : any) => {
                                     Input={handleEmailChange}
                                     InputRes={email}
                                     shadowStyle={{
-                                        shadowRadius: 20, shadowColor: 'black',
+                                        shadowRadius: 20, shadowColor: '#000',
                                         shadowOffset: { width: -100, height: -100 },
                                     }}
                                     />
@@ -167,7 +167,7 @@ const forgetPasswordScreen = ({navigation} : any) => {
                                     Input={handleAuthCodeChange}
                                     InputRes={authCode}
                                     shadowStyle={{
-                                        shadowRadius: 20, shadowColor: 'black',
+                                        shadowRadius: 20, shadowColor: '#000',
                                         shadowOffset: { width: -100, height: -100 },
                                     }}
                                 />

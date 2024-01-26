@@ -130,15 +130,18 @@ export default function Layout(props: LayoutType) {
             onBlur={handleBlur}
             />
           </View> */}
-          <View style={{position: "absolute", right: 0, height: "100%", width:"10%", zIndex: 120, 
-            backgroundColor: "transparent", borderRadius: 7, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <Animated.View style={{ opacity: interpolatedOpacity }}>
-                <SvgXml width={50} xml={notiImages[currentImageIndex]} />
-                <View style={{backgroundColor: "#E9D14D", width: 15, height: 15, position: "absolute", borderRadius: 50, right: 10}}> 
+          <TouchableOpacity style={{position: "absolute", right: 0, height: "100%", width:"10%"}} onPress={() => props.navigation.navigate("Notification")}>
 
-                </View>
-              </Animated.View>
-          </View>
+            <View style={{position: "absolute", right: 0, height: "100%", width:"100%", zIndex: 120, 
+              backgroundColor: "transparent", borderRadius: 7, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                <Animated.View style={{ opacity: interpolatedOpacity }}>
+                  <SvgXml width={50} xml={notiImages[currentImageIndex]} />
+                  <View style={{backgroundColor: "#E9D14D", width: 15, height: 15, position: "absolute", borderRadius: 50, right: 10}}> 
+
+                  </View>
+                </Animated.View>
+            </View>
+          </TouchableOpacity>
         </View>
         )
         : <></>

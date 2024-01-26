@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, View, Text, StyleSheet } from 'react-native';
+import { Animated, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface LEDBoardType{
     texts: string[],
-    LEDFontSize: number
+    LEDFontSize: number,
+    navigation: any,
 };
 
 const LEDBoard = (props: LEDBoardType ) => {
@@ -42,14 +43,19 @@ const LEDBoard = (props: LEDBoardType ) => {
     }, [props.texts, currentTextIndex, translateX, textRight]);
 
     return (
-    <View ref={viewRef} onLayout={handleLayout} style={styles.container}>
-        <View style={styles.background}>
-            {/* {Array.from(Array(650), (_, i) => <View key={i} style={styles.dot} />)} */}
-        </View>
-        <Animated.View style={[styles.textContainer, { transform: [{ translateX }] }]}>
-            <Text style={styles.text}>{props.texts[currentTextIndex]}</Text>
-        </Animated.View>
-    </View>
+    <TouchableOpacity style={{height: "100%", width: "100%"}} 
+      onPress={() => props.navigation.navigate("Notification")}
+      activeOpacity={1}  
+    >
+      <View ref={viewRef} onLayout={handleLayout} style={styles.container}>
+          <View style={styles.background}>
+              {/* {Array.from(Array(650), (_, i) => <View key={i} style={styles.dot} />)} */}
+          </View>
+          <Animated.View style={[styles.textContainer, { transform: [{ translateX }] }]}>
+              <Text style={styles.text}>{props.texts[currentTextIndex]}</Text>
+          </Animated.View>
+      </View>
+    </TouchableOpacity>
     );
 };
 

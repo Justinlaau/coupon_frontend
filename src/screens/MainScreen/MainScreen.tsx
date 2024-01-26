@@ -159,6 +159,7 @@ const MainScreen = ({navigation}: any) => {
               <LEDBoard 
                 texts={notificationInfo}
                 LEDFontSize={LED_FONT_SIZE}
+                navigation={navigation}
               />
             </View>
 
