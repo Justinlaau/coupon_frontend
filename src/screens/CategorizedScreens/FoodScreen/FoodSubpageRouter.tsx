@@ -9,6 +9,21 @@ import {
     Animated,
     LayoutChangeEvent
 } from 'react-native';
+import { SvgXml } from 'react-native-svg';
+
+{/* import SVG */}
+import BurgerSVG from '../../../assets/images/Food/BurgerSVG';
+import CHFoodSVG from '../../../assets/images/Food/CHFoodSVG';
+import DessertSVG from '../../../assets/images/Food/DessertSVG';
+import FastFoodSVG from '../../../assets/images/Food/FastFoodSVG';
+import FChickenSVG from '../../../assets/images/Food/FChickenSVG';
+import JPFoodSVG from '../../../assets/images/Food/JPFoodSVG';
+import KebabSVG from '../../../assets/images/Food/KebabSVG';
+import KFoodSVG from '../../../assets/images/Food/KFoodSVG';
+import PizzaSVG from '../../../assets/images/Food/PizzaSVG';
+import SaladSVG from '../../../assets/images/Food/SaladSVG';
+import ThaiFoodSVG from '../../../assets/images/Food/ThaiFoodSVG';
+import WFoodSVG from '../../../assets/images/Food/WFoodSVG';
 
 interface FoodSubpageRouterType {
     navigation: any,
@@ -63,33 +78,77 @@ const FoodSubpageRouter = (props : FoodSubpageRouterType) => {
                 ref={scrollViewRef}
             >
                 <View style={styles.row}>
-                    <View style={styles.item}>
-                        <Text>
-                            廣東菜
-                        </Text>
-                    </View>
-                    <View style={styles.item}>           
-                        <Text>
-                            日本菜
-                        </Text>
-                    </View>
+                    <TouchableOpacity style={styles.item}>
+                        <SvgXml xml={FastFoodSVG}/>
+                        <Text style={styles.text}> 快餐 </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.item}>
+                        <SvgXml xml={BurgerSVG}/>
+                        <Text style={styles.text}> 漢堡包 </Text>
+                    </TouchableOpacity>
                 </View>
+
                 <View style={styles.row}>
-                    <View style={styles.item} />
-                    <View style={styles.item} />
+                    <TouchableOpacity style={styles.item}>
+                        <SvgXml xml={PizzaSVG}/>
+                        <Text style={styles.text}> 薄餅 </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.item}>
+                        <SvgXml xml={CHFoodSVG}/>
+                        <Text style={styles.text}> 中餐 </Text>
+                    </TouchableOpacity>                    
                 </View>
+
                 <View style={styles.row}>
-                    <View style={styles.item} />
-                    <View style={styles.item} />
+                    <TouchableOpacity style={styles.item}>
+                        <SvgXml xml={WFoodSVG}/>
+                        <Text style={styles.text}> 西餐 </Text>
+                    </TouchableOpacity>                    
+
+                    <TouchableOpacity style={styles.item}>
+                        <SvgXml xml={JPFoodSVG}/>
+                        <Text style={styles.text}> 日本菜 </Text>
+                    </TouchableOpacity>                    
                 </View>
+
                 <View style={styles.row}>
-                    <View style={styles.item} />
-                    <View style={styles.item} />
+                    <TouchableOpacity style={styles.item}>
+                        <SvgXml xml={KFoodSVG}/>
+                        <Text style={styles.text}> 韓國菜 </Text>
+                    </TouchableOpacity>   
+
+                    <TouchableOpacity style={styles.item}>
+                        <SvgXml xml={ThaiFoodSVG}/>
+                        <Text style={styles.text}> 泰國菜 </Text>
+                    </TouchableOpacity>      
                 </View>
+
                 <View style={styles.row}>
-                    <View style={styles.item} />
-                    <View style={styles.item} />
+                    <TouchableOpacity style={styles.item}>
+                        <SvgXml xml={KebabSVG}/>
+                        <Text style={styles.text}> 土耳其烤肉 </Text>
+                    </TouchableOpacity>   
+
+                    <TouchableOpacity style={styles.item}>
+                        <SvgXml xml={FChickenSVG}/>
+                        <Text style={styles.text}> 炸雞 </Text>
+                    </TouchableOpacity>   
                 </View>
+
+                <View style={styles.row}>
+                    <TouchableOpacity style={styles.item}>
+                        <SvgXml xml={SaladSVG}/>
+                        <Text style={styles.text}> 沙律 </Text>
+                    </TouchableOpacity>   
+
+                    <TouchableOpacity style={styles.item}>
+                        <SvgXml xml={DessertSVG}/>
+                        <Text style={styles.text}> 甜品 </Text>
+                    </TouchableOpacity>   
+                </View>
+
             </ScrollView>
 
             <View style={{height: "5%", marginBottom: "2%", display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -131,12 +190,15 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'column',
         height: "100%",
+        width: 100
     },
     item: {
         width: 100,
         margin: 5,
         flex: 1,
-        backgroundColor: 'gray',
+        display: 'flex',
+        justifyContent: "center",
+        alignItems: "center"
     },
     scrollbar: {
         width: "50%",
@@ -150,6 +212,9 @@ const styles = StyleSheet.create({
         width: "10%",
         borderRadius: 20
     },
+    text: {
+        color: "black"
+    }
 });
 
 export default FoodSubpageRouter;

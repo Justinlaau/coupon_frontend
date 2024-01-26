@@ -70,8 +70,9 @@ const FilteredCouponListing = (props: FilteredCouponListingType) => {
     return (
         <View style={{height: "100%", width: "95%"}}>
             {
-                couponGroups.map((el) => (
+                couponGroups.map((el, idx) => (
                   <ActualCoupon
+                    key={idx}
                     companyName={el["owner_name"]}
                     title={el["title"]}
                     value={el["value"]}

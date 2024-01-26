@@ -65,11 +65,9 @@ const chineseConverter = (str: string) => {
     
 };
 
-const backgroundColor: Dict = {
-    0: "#FF6C22",
-    1: "#FFB22C",
-    2: "#DB6144",
-}
+const backgroundColor = [
+    "#FF6C22", "#FFB22C", "#DB6144",
+]
 
 interface ActualCouponType{
     image: any,

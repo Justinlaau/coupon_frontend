@@ -145,7 +145,7 @@ const MainScreen = ({navigation}: any) => {
                 <SvgXml height="60%" xml={MagnifierSVG} />
               </View>
               <View style={{height: "100%", display: "flex", justifyContent: "center"}}>
-                <TextInput style={{height: "300%", fontSize: 20, textAlignVertical: "center"}} placeholder='Coupon! 你今日用咗未！'/>
+                <TextInput style={{height: "300%", fontSize: 20, textAlignVertical: "center", color: 'black'}} placeholder='Coupon! 你今日用咗未！' placeholderTextColor="#333"/>
               </View>
             </View>
 
