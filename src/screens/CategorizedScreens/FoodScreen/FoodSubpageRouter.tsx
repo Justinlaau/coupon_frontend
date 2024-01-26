@@ -7,7 +7,8 @@ import {
     TouchableOpacity, 
     Text,
     Animated,
-    LayoutChangeEvent
+    LayoutChangeEvent, 
+    Image
 } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
@@ -79,72 +80,78 @@ const FoodSubpageRouter = (props : FoodSubpageRouterType) => {
             >
                 <View style={styles.row}>
                     <TouchableOpacity style={styles.item}>
-                        <SvgXml xml={FastFoodSVG}/>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.image} source={require('../../../assets/images/Food/FastFood.png')}/>
+                            <View style={styles.shadow}/>
+                        </View>
                         <Text style={styles.text}> 快餐 </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.item}>
-                        <SvgXml xml={BurgerSVG}/>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.image} source={require('../../../assets/images/Food/Burger.png')}/>
+                            <View style={styles.shadow}/>
+                        </View>                        
                         <Text style={styles.text}> 漢堡包 </Text>
                     </TouchableOpacity>
                 </View>
 
                 <View style={styles.row}>
                     <TouchableOpacity style={styles.item}>
-                        <SvgXml xml={PizzaSVG}/>
+                    <Image source={require('../../../assets/images/Food/Pizza.png')}/>
                         <Text style={styles.text}> 薄餅 </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.item}>
-                        <SvgXml xml={CHFoodSVG}/>
+                        <Image source={require('../../../assets/images/Food/CHFood.png')}/>
                         <Text style={styles.text}> 中餐 </Text>
                     </TouchableOpacity>                    
                 </View>
 
                 <View style={styles.row}>
                     <TouchableOpacity style={styles.item}>
-                        <SvgXml xml={WFoodSVG}/>
+                        <Image source={require('../../../assets/images/Food/WFood.png')}/>
                         <Text style={styles.text}> 西餐 </Text>
                     </TouchableOpacity>                    
 
                     <TouchableOpacity style={styles.item}>
-                        <SvgXml xml={JPFoodSVG}/>
+                        <Image source={require('../../../assets/images/Food/JPFood.png')}/>
                         <Text style={styles.text}> 日本菜 </Text>
                     </TouchableOpacity>                    
                 </View>
 
                 <View style={styles.row}>
                     <TouchableOpacity style={styles.item}>
-                        <SvgXml xml={KFoodSVG}/>
+                        <Image source={require('../../../assets/images/Food/KFood.png')}/>
                         <Text style={styles.text}> 韓國菜 </Text>
                     </TouchableOpacity>   
 
                     <TouchableOpacity style={styles.item}>
-                        <SvgXml xml={ThaiFoodSVG}/>
+                        <Image source={require('../../../assets/images/Food/ThaiFood.png')}/>
                         <Text style={styles.text}> 泰國菜 </Text>
                     </TouchableOpacity>      
                 </View>
 
                 <View style={styles.row}>
                     <TouchableOpacity style={styles.item}>
-                        <SvgXml xml={KebabSVG}/>
+                        <Image source={require('../../../assets/images/Food/Kebab.png')}/>
                         <Text style={styles.text}> 土耳其烤肉 </Text>
                     </TouchableOpacity>   
 
                     <TouchableOpacity style={styles.item}>
-                        <SvgXml xml={FChickenSVG}/>
+                        <Image source={require('../../../assets/images/Food/FChicken.png')}/>
                         <Text style={styles.text}> 炸雞 </Text>
                     </TouchableOpacity>   
                 </View>
 
                 <View style={styles.row}>
                     <TouchableOpacity style={styles.item}>
-                        <SvgXml xml={SaladSVG}/>
+                        <Image source={require('../../../assets/images/Food/Salad.png')}/>
                         <Text style={styles.text}> 沙律 </Text>
                     </TouchableOpacity>   
 
                     <TouchableOpacity style={styles.item}>
-                        <SvgXml xml={DessertSVG}/>
+                        <Image source={require('../../../assets/images/Food/Dessert.png')}/>
                         <Text style={styles.text}> 甜品 </Text>
                     </TouchableOpacity>   
                 </View>
@@ -214,6 +221,37 @@ const styles = StyleSheet.create({
     },
     text: {
         color: "black"
+    },
+    imageContainer: {
+        width: 45,
+        height: 45,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 10,
+        backgroundColor: "white",
+    },
+    shadow:{
+        position: 'absolute',
+        zIndex: 5,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 8,
+        shadowColor: 'black',
+        shadowOpacity: 0.7,
+        shadowOffset: { width: 0, height: 4 },
+        shadowRadius: 2,
+        elevation: 2,
+        borderRadius: 10
+    },
+    image: {
+        height: 45,
+        width: 45,
+        resizeMode: "contain",
+        borderRadius: 10,
+        position: "absolute",
+        zIndex: 20
     }
 });
 
