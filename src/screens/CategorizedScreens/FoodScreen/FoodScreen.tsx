@@ -56,7 +56,15 @@ class FoodScreen extends Component<{}, State>  {
             <View style={{
                 width: "93%", height: "100%", marginLeft: "3.5%"
             }}>
-                <FoodSubpageRouter height={"25%"} navigation={navigation}/>
+                <FoodSubpageRouter height={"20%"} navigation={navigation}/>
+
+                <View style={{
+                  height: "5%"
+                }}> 
+                  <Text style={{fontSize: 30, fontWeight: "bold", color: "#222"}}>
+                      精選優惠卷
+                  </Text>
+                </View>
 
                 <View style={{
                     height: "73%", backgroundColor: "white", marginTop: "2%", borderRadius: 10

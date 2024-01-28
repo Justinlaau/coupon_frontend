@@ -98,60 +98,90 @@ const FoodSubpageRouter = (props : FoodSubpageRouterType) => {
 
                 <View style={styles.row}>
                     <TouchableOpacity style={styles.item}>
-                    <Image source={require('../../../assets/images/Food/Pizza.png')}/>
-                        <Text style={styles.text}> 薄餅 </Text>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.image} source={require('../../../assets/images/Food/Pizza.png')}/>
+                            <View style={styles.shadow}/>
+                        </View>        
+                    <Text style={styles.text}> 薄餅 </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.item}>
-                        <Image source={require('../../../assets/images/Food/CHFood.png')}/>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.image} source={require('../../../assets/images/Food/CHFood.png')}/>
+                            <View style={styles.shadow}/>
+                        </View>        
                         <Text style={styles.text}> 中餐 </Text>
                     </TouchableOpacity>                    
                 </View>
 
                 <View style={styles.row}>
                     <TouchableOpacity style={styles.item}>
-                        <Image source={require('../../../assets/images/Food/WFood.png')}/>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.image} source={require('../../../assets/images/Food/WFood.png')}/>
+                            <View style={styles.shadow}/>
+                        </View>        
                         <Text style={styles.text}> 西餐 </Text>
                     </TouchableOpacity>                    
 
                     <TouchableOpacity style={styles.item}>
-                        <Image source={require('../../../assets/images/Food/JPFood.png')}/>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.image} source={require('../../../assets/images/Food/JPFood.png')}/>
+                            <View style={styles.shadow}/>
+                        </View>        
                         <Text style={styles.text}> 日本菜 </Text>
                     </TouchableOpacity>                    
                 </View>
 
                 <View style={styles.row}>
                     <TouchableOpacity style={styles.item}>
-                        <Image source={require('../../../assets/images/Food/KFood.png')}/>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.image} source={require('../../../assets/images/Food/KFood.png')}/>
+                            <View style={styles.shadow}/>
+                        </View>        
                         <Text style={styles.text}> 韓國菜 </Text>
                     </TouchableOpacity>   
 
                     <TouchableOpacity style={styles.item}>
-                        <Image source={require('../../../assets/images/Food/ThaiFood.png')}/>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.image} source={require('../../../assets/images/Food/ThaiFood.png')}/>
+                            <View style={styles.shadow}/>
+                        </View>        
                         <Text style={styles.text}> 泰國菜 </Text>
                     </TouchableOpacity>      
                 </View>
 
                 <View style={styles.row}>
                     <TouchableOpacity style={styles.item}>
-                        <Image source={require('../../../assets/images/Food/Kebab.png')}/>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.image} source={require('../../../assets/images/Food/Kebab.png')}/>
+                            <View style={styles.shadow}/>
+                        </View>        
                         <Text style={styles.text}> 土耳其烤肉 </Text>
                     </TouchableOpacity>   
 
                     <TouchableOpacity style={styles.item}>
-                        <Image source={require('../../../assets/images/Food/FChicken.png')}/>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.image} source={require('../../../assets/images/Food/FChicken.png')}/>
+                            <View style={styles.shadow}/>
+                        </View>        
                         <Text style={styles.text}> 炸雞 </Text>
                     </TouchableOpacity>   
                 </View>
 
                 <View style={styles.row}>
                     <TouchableOpacity style={styles.item}>
-                        <Image source={require('../../../assets/images/Food/Salad.png')}/>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.image} source={require('../../../assets/images/Food/Salad.png')}/>
+                            <View style={styles.shadow}/>
+                        </View>        
                         <Text style={styles.text}> 沙律 </Text>
                     </TouchableOpacity>   
 
                     <TouchableOpacity style={styles.item}>
-                        <Image source={require('../../../assets/images/Food/Dessert.png')}/>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.image} source={require('../../../assets/images/Food/Dessert.png')}/>
+                            <View style={styles.shadow}/>
+                        </View>        
                         <Text style={styles.text}> 甜品 </Text>
                     </TouchableOpacity>   
                 </View>
@@ -214,7 +244,7 @@ const styles = StyleSheet.create({
         borderRadius: 20
     },
     scrollBarContainer:{
-        backgroundColor: "grey",
+        backgroundColor: "#d3d3d3",
         height: "100%",
         width: "10%",
         borderRadius: 20
@@ -232,18 +262,18 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
     },
     shadow:{
-        position: 'absolute',
-        zIndex: 5,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: 8,
-        shadowColor: 'black',
-        shadowOpacity: 0.7,
-        shadowOffset: { width: 0, height: 4 },
-        shadowRadius: 2,
-        elevation: 2,
-        borderRadius: 10
+        // position: 'absolute',
+        // zIndex: 5,
+        // bottom: 0,
+        // left: 0,
+        // right: 0,
+        // height: 8,
+        // shadowColor: 'black',
+        // shadowOpacity: 0.7,
+        // shadowOffset: { width: 0, height: 4 },
+        // shadowRadius: 2,
+        // elevation: 2,
+        // borderRadius: 10
     },
     image: {
         height: 45,
