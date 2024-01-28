@@ -50,7 +50,7 @@ const Background = ( props ) => {
               </>
             ) : null
           }
-          <View h={props.contentHeight} style={BackgroundStyle.whiteView} bottom={props.tabBarSpace ? "8%" : "0%"}>
+          <View h={props.contentHeight} style={[BackgroundStyle.whiteView, props.overflow? {overflow: 'hidden'}: {}]} bottom={props.tabBarSpace ? "8%" : "0%"}>
           { props.main ? (
               <>
                 <Heading

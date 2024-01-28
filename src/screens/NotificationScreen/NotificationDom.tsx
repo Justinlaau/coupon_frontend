@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Dimensions, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import WelcomeSVG from "../../assets/images/Notification/WelcomeSVG";
 import { SvgXml } from "react-native-svg";
+import AdvertisementSVG from "../../assets/images/Notification/AdvertisementSVG";
 
 interface NotificationDomTypes{
     title: string,
@@ -18,7 +19,8 @@ interface typeToSvG{
 
 const NotificationDom = (props: NotificationDomTypes) => {
     const messageTypeToSVG: typeToSvG = {
-        "Welcome Message": WelcomeSVG
+        "Welcome": WelcomeSVG,
+        "Advertisement": AdvertisementSVG
     }
     return (
         <View style={styles.container}>
