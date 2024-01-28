@@ -63,7 +63,7 @@ const messagesList: MessageType[] = [{
   },
   {
     title: "搶！",
-    issueDates: new Date(2024, 0, 28, 2),
+    issueDates: new Date(2024, 0, 28, 3),
     messageType: "Advertisement",
     shortMessage: "Mcdonald 推出新優惠卷 快搶",
     longMessage: "test6"
@@ -106,9 +106,6 @@ class NotificationScreen extends Component<{}, State>  {
       navigation: props.navigation,
       isPopUp: -1,
     };
-  }
-
-  componentDidMount(): void {
     this.resetTimeList();
     this.messageListInit();
   }
@@ -199,14 +196,13 @@ class NotificationScreen extends Component<{}, State>  {
               ))
             }
           </ScrollView>
-          <View style={[styles.popUpContainer, isPopUp !== -1? {"top": 0}: {"top": -10000}]}>
-              {
-                this.state.isPopUp === -1 ? <></> :
-                <Text>
-                  {messagesList[this.state.isPopUp].longMessage}
-                </Text>
-              }
-              <Button title="Understand" onPress={() => this.setIsPopUp(-1)}/>
+          <View style={[{width: "100%", height: "100%", backgroundColor: "#EEEEEE", position: "absolute", zIndex: 199}, isPopUp !== -1? {"top": 0}: {"top": -10000}]}>
+            <View style={[styles.popUpContainer]}>
+                  <Text>
+                    {this.state.isPopUp === -1 ? "" : messagesList[this.state.isPopUp].longMessage}
+                  </Text>
+                <Button title="Understand" onPress={() => this.setIsPopUp(-1)}/>
+            </View>
           </View>
           
       </Background>

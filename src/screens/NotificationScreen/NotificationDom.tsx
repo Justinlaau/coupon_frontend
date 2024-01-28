@@ -33,7 +33,7 @@ const NotificationDom = (props: NotificationDomTypes) => {
                         {props.title}
                     </Text>
                     <Text style={styles.textHeading}>
-                        {props.issueDate.toLocaleDateString(undefined, { weekday: 'long' , year: 'numeric', month: 'long', day: 'numeric' })}
+                        {props.issueDate.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'numeric', year: '2-digit' })}
                     </Text>
                 </View>
 
