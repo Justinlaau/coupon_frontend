@@ -1,5 +1,5 @@
 
-import { View, StyleSheet, Text, Alert, Image, FlatList, ScrollView} from 'react-native';
+import { View, StyleSheet, Text, Alert, Image, FlatList, ScrollView, ListRenderItem} from 'react-native';
 import Background from '../../components/templates/Background';
 import { InputBox } from '../../components/atoms/InputBox';
 import { ProfileSVG } from '../../assets/images/ProfileSVG';
@@ -14,8 +14,10 @@ import React, { useEffect, useState } from 'react';
 import { BASE_URL } from '../../config/config';
 import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 
-interface blogProps{
-    image_urls : [String],
+interface BlogProps{
+    idx : Int32,
+    image_urls : String[],
+    cover_image : String,
     title : String,
     content_body : String,
     create_date : String,
@@ -23,19 +25,30 @@ interface blogProps{
 }
 export const BlogsScreen = () => {
         // Mock data for 
-    const [posts, setPosts] = useState([]);
-
+    // const [posts, setPosts] = useState([]);
+    const [blogList, setBlogList] = useState<BlogProps[]>([]);
     const fetchData = async () => {
         try {
             // Make API call and get response
             const {data} = await axios.get(BASE_URL + "blog/fetch-all-blogs");
             // Extract image_urls and title from the response data
-            console.log(data)
+            // console.log(data)
             const { blog_list } = data
-            console.log(blog_list);
+            // console.log(blog_list);
             // Map image_urls and create post objects
-    
+            const blogListData: BlogProps[] = blog_list.map((blog: BlogProps, index : Int32) => ({
+                image_urls: blog.image_urls,
+                title: blog.title,
+                content_body: blog.content_body,
+                create_date: blog.create_date,
+                category_id: blog.category_id,
+                cover_image : blog.image_urls[0],
+                idx : index
+              }));
+            //   console.log("blogListData : " + blogListData);
             // Set the fetched posts in the state
+            setBlogList(blogListData);
+            console.log("ajsduiasjdiuasjdiasjd" + blogListData);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -47,25 +60,26 @@ export const BlogsScreen = () => {
     }, []);
     
 
-    const coupon_buckets_url = "https://coupongo-buckets.s3.amazonaws.com/";
+    const coupon_buckets_url = "https://coupongo-buckets.s3.amazonaws.com";
     
-    const renderPost: React.FC<blogProps> = ({ image_urls, title, content_body, create_date}) => (
+    const renderPost= ({ item }: { item: BlogProps }) => (
         <View style={styles.postContainer}>
-        <Image source={{ uri: image_urls }} style={styles.postImage} />
-        <Text style={styles.postCaption}>{title}</Text>
+            <Text>{"hausdhusa"}</Text>
+            <Image source={{ uri: coupon_buckets_url + item.cover_image }} style={styles.postImage} />
+            {/* <Text style={styles.postCaption}>{item.title}</Text> */}
         </View>
     );
     
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.title}>發現更多</Text>
-            <FlatList
-                data={posts}
-                keyExtractor={(item) => item.id}
-                renderItem={renderPost}
-                numColumns={3}
-            />
-        </ScrollView>
+        <Text style={styles.title}>發現更多</Text>
+        <FlatList
+          data={blogList}
+          keyExtractor={(item) => item.idx.toString()}
+          renderItem={renderPost}
+          numColumns={3}
+        />
+      </ScrollView>
     );
 };
     
@@ -85,6 +99,7 @@ postContainer: {
     flex: 1,
     margin: 1,
     aspectRatio: 1,
+    backgroundColor: "black"
 },
 postImage: {
     flex: 1,
