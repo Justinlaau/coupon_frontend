@@ -15,7 +15,6 @@ import { BASE_URL } from '../../config/config';
 import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 
 interface BlogProps{
-    idx : Int32,
     image_urls : String[],
     cover_image : String,
     title : String,
@@ -29,26 +28,20 @@ export const BlogsScreen = () => {
     const [blogList, setBlogList] = useState<BlogProps[]>([]);
     const fetchData = async () => {
         try {
-            // Make API call and get response
             const {data} = await axios.get(BASE_URL + "blog/fetch-all-blogs");
-            // Extract image_urls and title from the response data
-            // console.log(data)
             const { blog_list } = data
-            // console.log(blog_list);
-            // Map image_urls and create post objects
-            const blogListData: BlogProps[] = blog_list.map((blog: BlogProps, index : Int32) => ({
-                image_urls: blog.image_urls,
+            // console.log(blog_list)
+            const imageUrls = blog_list.flatMap((blog : BlogProps) => blog.image_urls.flat());
+            // console.log(imageUrls);
+            const blogListData: BlogProps[] = blog_list.map((blog: BlogProps) => ({
+                image_urls: blog.image_urls.flat(),
                 title: blog.title,
                 content_body: blog.content_body,
                 create_date: blog.create_date,
                 category_id: blog.category_id,
-                cover_image : blog.image_urls[0],
-                idx : index
+                cover_image : blog.image_urls.flat()[0],
               }));
-            //   console.log("blogListData : " + blogListData);
-            // Set the fetched posts in the state
             setBlogList(blogListData);
-            console.log("ajsduiasjdiuasjdiasjd" + blogListData);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -60,51 +53,47 @@ export const BlogsScreen = () => {
     }, []);
     
 
-    const coupon_buckets_url = "https://coupongo-buckets.s3.amazonaws.com";
+    const coupon_buckets_url = "https://coupongo-buckets.s3.amazonaws.com/";
     
     const renderPost= ({ item }: { item: BlogProps }) => (
         <View style={styles.postContainer}>
-            <Text>{"hausdhusa"}</Text>
-            <Image source={{ uri: coupon_buckets_url + item.cover_image }} style={styles.postImage} />
+            {/* <Text>{item.title}</Text> */}
+            <Image source={{ uri: coupon_buckets_url + item.cover_image}} style={styles.postImage} />
             {/* <Text style={styles.postCaption}>{item.title}</Text> */}
         </View>
     );
     
     return (
-        <ScrollView style={styles.container}>
-        <Text style={styles.title}>發現更多</Text>
-        <FlatList
-          data={blogList}
-          keyExtractor={(item) => item.idx.toString()}
-          renderItem={renderPost}
-          numColumns={3}
-        />
-      </ScrollView>
+        <View style = {styles.container}>
+            <View style={{width : "80%", height : "5%", borderRadius : 10, backgroundColor : "white"}}></View>
+            <FlatList
+            data={blogList}
+            keyExtractor={(item) => item.title.toString()}
+            renderItem={renderPost}
+            numColumns={3}
+            />
+        </View>
     );
 };
     
 const styles = StyleSheet.create({
 container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingTop: 20,
-},
-title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    paddingHorizontal: 20,
-    marginBottom: 10,
+    backgroundColor: 'black',
+    // paddingTop: 0,
+    zIndex : 0,
+    // alignItems : "center"
 },
 postContainer: {
     flex: 1,
     margin: 1,
     aspectRatio: 1,
-    backgroundColor: "black"
+    backgroundColor : "white",
+    zIndex : 1
 },
 postImage: {
     flex: 1,
-},
-postCaption: {
-    padding: 8,
-},
+    zIndex: 2,
+    backgroundColor : "gray"
+}
 });
