@@ -45,9 +45,9 @@ const MainScreen = ({navigation}: any) => {
     setScrollViewHeight(contentHeight);
   };
   
-  const fetchUserInfo = async () => {
-    setUserInfo("丹");
-  }
+  // const fetchUserInfo = async () => {
+  //   setUserInfo("丹");
+  // }
   
   const fetchNotificationInfo = async () => {
     setNotificationInfo([
@@ -77,7 +77,7 @@ const MainScreen = ({navigation}: any) => {
       let {data} = await axios.get(BASE_URL + "user/UserGetUserInfo");
       // console.log("data")
       // console.log(data)
-      setUserInfo(data["user"]["username"])
+      setUserInfo(data["user"]["nickname"])
     } catch (error) {
       console.log("error")
       console.log(error)

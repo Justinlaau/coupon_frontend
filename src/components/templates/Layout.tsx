@@ -39,7 +39,6 @@ interface LayoutType{
   isHeading: {
     "isHeading": Boolean,
     "userName": String,
-    "userID": String,
   } | {
     "isHeading": Boolean
   },
@@ -97,6 +96,18 @@ export default function Layout(props: LayoutType) {
     outputRange: [0, 1],
   });
 
+  const profileNavigating = async () => {
+    if (axios.defaults.headers.common['Authorization'] == ""){
+      await AsyncStorage.removeItem("jwt"); 
+      axios.defaults.headers.common['Authorization']=""; 
+      socket.disconnect(); 
+      props.navigation.navigate("Login");
+    }
+    else{
+      props.navigation.navigate("UserProfile");
+    }
+  }
+
 
   return (
     <View style={[LayoutStyle.layout, {height}]}>
@@ -111,7 +122,7 @@ export default function Layout(props: LayoutType) {
           {/* {isFocused? <></> : 
           ( */}
           <View style={{display: "flex", flexDirection: "row", alignItems: "center", left: 10}}>
-            <Pressable onPress={async () => { await AsyncStorage.removeItem("jwt"); axios.defaults.headers.common['Authorization']=""; socket.disconnect(); props.navigation.navigate("Login") }}>
+            <Pressable onPress={async () => {profileNavigating();}}>
               <View style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100%"}}>
                 <SvgXml width={30} height={30}  xml={ProfileSVG} />
               </View>

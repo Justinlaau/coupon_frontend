@@ -23,6 +23,7 @@ import StackPage from '../screens/StackPage/StackPage';
 import NotificationScreen from '../screens/NotificationScreen/NotificationScreen';
 {/* Categorized Screens */}
 import FoodScreen from '../screens/CategorizedScreens/FoodScreen/FoodScreen';
+import UserProfileScreen from '../screens/UserProfileScreen/UserProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -66,7 +67,7 @@ const MyStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName = "Main"
+        initialRouteName = "UserProfile"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Wallet" component={WalletScreen} />
@@ -79,6 +80,8 @@ const MyStack = () => {
         <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         <Stack.Screen name="Map" component={MapScreen} />
         <Stack.Screen name="StackPage" component={StackPage} />
+        
+        <Stack.Screen name="UserProfile" component={UserProfileScreen} />
 
         {/* Notification Screen */}
         <Stack.Screen name="Notification" component={NotificationScreen} />
