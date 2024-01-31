@@ -19,7 +19,7 @@ import { BASE_URL } from '../config/config';
 import MapScreen from '../screens/MapScreen/MapScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen/ResetPasswordScreen';
 import StackPage from '../screens/StackPage/StackPage';
-
+import { BlogsScreen } from '../screens/BlogsScreen/BlogsScreen';
 import NotificationScreen from '../screens/NotificationScreen/NotificationScreen';
 {/* Categorized Screens */}
 import FoodScreen from '../screens/CategorizedScreens/FoodScreen/FoodScreen';
@@ -66,7 +66,7 @@ const MyStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName = "Main"
+        initialRouteName = "Blogs"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Wallet" component={WalletScreen} />
@@ -79,7 +79,7 @@ const MyStack = () => {
         <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         <Stack.Screen name="Map" component={MapScreen} />
         <Stack.Screen name="StackPage" component={StackPage} />
-
+        <Stack.Screen name="Blogs" component = {BlogsScreen} /> 
         {/* Notification Screen */}
         <Stack.Screen name="Notification" component={NotificationScreen} />
 
