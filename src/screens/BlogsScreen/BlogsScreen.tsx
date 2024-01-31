@@ -1,5 +1,5 @@
 
-import { View, StyleSheet, Text, Alert, Image, FlatList, ScrollView, ListRenderItem} from 'react-native';
+import { View, StyleSheet, Text, Alert, Image, FlatList, ScrollView, ListRenderItem,TouchableOpacity} from 'react-native';
 import Background from '../../components/templates/Background';
 import { InputBox } from '../../components/atoms/InputBox';
 import { ProfileSVG } from '../../assets/images/ProfileSVG';
@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { BASE_URL } from '../../config/config';
 import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
+
 
 interface BlogProps{
     image_urls : String[],
@@ -52,15 +53,17 @@ export const BlogsScreen = () => {
         fetchData();
     }, []);
     
-
+    const handleViewPress = (item : BlogProps) =>{
+        console.log(item.category_id);
+    }
     const coupon_buckets_url = "https://coupongo-buckets.s3.amazonaws.com/";
     
     const renderPost= ({ item }: { item: BlogProps }) => (
+        <TouchableOpacity onPress={() => handleViewPress(item)} style={styles.postContainer} >
         <View style={styles.postContainer}>
-            {/* <Text>{item.title}</Text> */}
             <Image source={{ uri: coupon_buckets_url + item.cover_image}} style={styles.postImage} />
-            {/* <Text style={styles.postCaption}>{item.title}</Text> */}
         </View>
+        </TouchableOpacity>
     );
     
     return (
