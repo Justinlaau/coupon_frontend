@@ -156,18 +156,20 @@ const ActualCoupon = (props: ActualCouponType) =>{
                     {/* props.text */}
                     <View style={[styles.frontWords, {backgroundColor: backgroundColor[Number(props.couponCategory)]? backgroundColor[Number(props.couponCategory)] : "grey"}]}>
                         {props.rightBar? <></> :
-                            <View style={{position: "absolute", width: "100%", height: "100%", display: "flex",
-                                justifyContent: "flex-start", alignItems: "center"
+                            <View style={{position: "absolute", left: "60%", top: "30%",display: "flex",
+                                justifyContent: "flex-end", alignItems: "flex-end", transform: [{ rotate: '270deg' }]
                                 }}>
-                                <Text style={{position: "absolute", transform: [{ rotate: '270deg' }], alignSelf: "flex-end", fontSize: 13, color: "white",
-                                    paddingRight: "17%", paddingTop: "7%"}}>
-                                    歡迎使用
-                                </Text>
+                                <View style={{display: "flex", justifyContent:"center", alignItems: "center",}}>
+                                    <Text style={{fontSize: 13, color: "white"}}>
+                                        歡迎使用
+                                    </Text>
+                                </View>
 
-                                <Text style={{position: "absolute", transform: [{ rotate: '270deg' }], alignSelf: "flex-end", color: "white", fontSize: 20, 
-                                    paddingTop: "40%", paddingRight: "5%"}}>
-                                    COUPON GO
-                                </Text>
+                                <View style={{display: "flex", justifyContent:"center", alignItems: "center",}}>
+                                    <Text style={{color: "white", fontSize: 20,}}>
+                                        COUPON GO
+                                    </Text>
+                                </View>
                             </View>
                         }
                         <View style={[styles.frontContainer]}>
