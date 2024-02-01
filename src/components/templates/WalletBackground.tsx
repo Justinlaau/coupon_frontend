@@ -57,7 +57,7 @@ const WalletBackground = (props) => {
                 textAlign={'center'}
                 color="light.50"
                 fontSize={20}>
-                Q Wallet
+                {props.heading}
             </Heading>
             <SvgXml width="100%" height="8%"  xml={LittleCatSVG} style={BackgroundStyle.LittleCatView} />
           </View>

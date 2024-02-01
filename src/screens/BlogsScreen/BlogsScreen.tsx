@@ -14,7 +14,6 @@ import React, { useEffect, useState } from 'react';
 import { BASE_URL } from '../../config/config';
 import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 
-
 interface BlogProps{
     image_urls : String[],
     cover_image : String,
@@ -31,7 +30,9 @@ export const BlogsScreen = () => {
         try {
             const {data} = await axios.get(BASE_URL + "blog/fetch-all-blogs");
             const { blog_list } = data
-            // console.log(blog_list)
+
+
+            console.log(blog_list.length)
             const imageUrls = blog_list.flatMap((blog : BlogProps) => blog.image_urls.flat());
             // console.log(imageUrls);
             const blogListData: BlogProps[] = blog_list.map((blog: BlogProps) => ({
