@@ -22,7 +22,7 @@ interface BlogProps{
     create_date : String,
     category_id : Int32
 }
-export const BlogsScreen = () => {
+export const BlogsScreen = ({navigation}) => {
         // Mock data for 
     // const [posts, setPosts] = useState([]);
     const [blogList, setBlogList] = useState<BlogProps[]>([]);
@@ -32,7 +32,7 @@ export const BlogsScreen = () => {
             const { blog_list } = data
 
 
-            console.log(blog_list.length)
+            console.log(blog_list)
             const imageUrls = blog_list.flatMap((blog : BlogProps) => blog.image_urls.flat());
             // console.log(imageUrls);
             const blogListData: BlogProps[] = blog_list.map((blog: BlogProps) => ({
@@ -55,7 +55,10 @@ export const BlogsScreen = () => {
     }, []);
     
     const handleViewPress = (item : BlogProps) =>{
-        console.log(item.category_id);
+        const blogPost = blogList.find((post) => post.title === item.title )
+        console.log(blogPost)
+        navigation.navigate("BlogPost", {blogPost})
+        // console.log(item.category_id);
     }
     const coupon_buckets_url = "https://coupongo-buckets.s3.amazonaws.com/";
     
