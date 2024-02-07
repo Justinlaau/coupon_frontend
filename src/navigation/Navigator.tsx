@@ -24,7 +24,7 @@ import NotificationScreen from '../screens/NotificationScreen/NotificationScreen
 {/* Categorized Screens */}
 import FoodScreen from '../screens/CategorizedScreens/FoodScreen/FoodScreen';
 
-import BlogPostScreen from '../screens/BlogsScreen/BlogPostScreen';
+// import BlogPostScreen from '../screens/BlogsScreen/BlogPostScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -68,7 +68,7 @@ const MyStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName = "Blogs"
+        initialRouteName = "Login"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Wallet" component={WalletScreen} />
@@ -82,7 +82,7 @@ const MyStack = () => {
         <Stack.Screen name="Map" component={MapScreen} />
         <Stack.Screen name="StackPage" component={StackPage} />
         <Stack.Screen name="Blogs" component = {BlogsScreen} /> 
-        <Stack.Screen name="BlogPost" component={BlogPostScreen} />
+        {/* <Stack.Screen name="BlogPost" component={BlogPostScreen} /> */}
         {/* Notification Screen */}
         <Stack.Screen name="Notification" component={NotificationScreen} />
 

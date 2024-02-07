@@ -36,10 +36,7 @@ const MainScreen = ({navigation}: any) => {
   const [infoPopup, setInfoPopup] = useState(false);
   const [message, setMessage] = useState("成功！！！");
   // const [test, setTest] = useState(false);
-  const [userInfo, setUserInfo] = useState({
-    "userName": "",
-    "userID": ""
-  });
+  const [userInfo, setUserInfo] = useState("訪客");
   const [notificationInfo, setNotificationInfo] = useState([""]);
   const scrollViewRef = useRef<ScrollView>(null);
   const [scrollViewHeight, setScrollViewHeight] = useState(0);
@@ -48,12 +45,9 @@ const MainScreen = ({navigation}: any) => {
     setScrollViewHeight(contentHeight);
   };
   
-  const fetchUserInfo = async () => {
-    setUserInfo({
-      "userName": "丹",
-      "userID": "123123"
-    })
-  }
+  // const fetchUserInfo = async () => {
+  //   setUserInfo("丹");
+  // }
   
   const fetchNotificationInfo = async () => {
     setNotificationInfo([
@@ -77,8 +71,23 @@ const MainScreen = ({navigation}: any) => {
     }
   }
   
+  const fetchGetUserInfo = async () => {
+    try {
+      dispatch(toggleLoading(true));
+      let {data} = await axios.get(BASE_URL + "user/UserGetUserInfo");
+      // console.log("data")
+      // console.log(data)
+      setUserInfo(data["user"]["nickname"])
+    } catch (error) {
+      console.log("error")
+      console.log(error)
+    } finally {
+      dispatch(toggleLoading(false));
+    }
+  }
+
   useEffect(() => {
-    fetchUserInfo();
+    fetchGetUserInfo();
     fetchNotificationInfo();
     fetchCouponGroups();
   }, [])
@@ -129,7 +138,7 @@ const MainScreen = ({navigation}: any) => {
   return (
   <Layout 
     showTabBar={true} 
-    isHeading={{"isHeading": true, "userID": userInfo["userID"], "userName": userInfo["userName"]}}
+    isHeading={{"isHeading": true, "userName": userInfo}}
     navigation={navigation}
   >
     <Background main={true} contentHeight="76.5%" tabBarSpace={true}>
@@ -155,13 +164,13 @@ const MainScreen = ({navigation}: any) => {
             </View>
 
             {/* LED Board */}
-            <View style={{height: "5%", backgroundColor: "white"}}>
+            {/* <View style={{height: "5%", backgroundColor: "white"}}>
               <LEDBoard 
                 texts={notificationInfo}
                 LEDFontSize={LED_FONT_SIZE}
                 navigation={navigation}
               />
-            </View>
+            </View> */}
 
             {/* Bottom */}
             <ScrollView contentContainerStyle={{flexGrow: 1}}
