@@ -2,8 +2,8 @@ import { color } from "@rneui/base";
 import { Dict } from "native-base/lib/typescript/theme/tools";
 import React, { useEffect, useRef, useState } from "react";
 import {StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, Animated} from "react-native";
-import GiftIcon from 'react-native-vector-icons/FontAwesome'
-
+import { SvgXml } from "react-native-svg";
+import GiftSVG from "../../assets/images/GiftSVG";
 
 const numberToChinese = (number: number) => {
     const chineseNumbers: Dict = {
@@ -66,7 +66,7 @@ const chineseConverter = (str: string) => {
 };
 
 const backgroundColor = [
-    "#FF6C22", "#FFB22C", "#DB6144",
+    "#FF6C22", "#FFB22C", "#DB6144"
 ]
 
 interface ActualCouponType{
@@ -86,7 +86,20 @@ const couponHeight = 150;
 const ActualCoupon = (props: ActualCouponType) =>{
     const viewRef = useRef<View>(null);
     const [viewHeight, setViewHeight] = useState<number>(0);
-  
+    const [viewWidthWelcome, setViewWidthWelcome] = useState(0);
+    const [viewWidthCouponGo, setViewWidthCouponGo] = useState(0);
+
+    const onViewLayoutWelcome = () => {
+        viewRef.current?.measure((x: number, y: number, width: number, height: number) => {
+            setViewWidthWelcome(width);
+        });
+    };
+
+    const onViewLayoutCouponGo = () => {
+        viewRef.current?.measure((x: number, y: number, width: number, height: number) => {
+            setViewWidthCouponGo(width);
+        });
+    };
     const handleLayout = () => {
         viewRef.current?.measure((x: number, y: number, width: number, height: number) => {
         setViewHeight(height);
@@ -130,33 +143,52 @@ const ActualCoupon = (props: ActualCouponType) =>{
             <View style={[{
                 width: "100%",
                 flexDirection: "row",
-                backgroundColor: backgroundColor[props.couponCategory],
+                backgroundColor: backgroundColor[Number(props.couponCategory)],
                 height: couponHeight,
                 borderRadius: radius,
             }, styles.shadow, props.rightBar? {}: {overflow: "hidden"}]}
             >
                 <View style={[styles.imageContainer]}>
-                    <Image style={styles.imageStyle} source={props.image} />
+                    <Image style={styles.imageStyle} source={props.image} resizeMode="stretch"/>
                 </View>
                 <View style={[styles.CouponDescription, props.rightBar? {width: "50%"} : {width: "65%"}]}>
                     {/* <GiftIcon name="gift" size={30} style={{color: 'white'}}/> */}
                     {/* props.text */}
-                    <View style={[styles.frontWords, {backgroundColor: backgroundColor[props.couponCategory]}]}>
+                    <View style={[styles.frontWords, {backgroundColor: backgroundColor[Number(props.couponCategory)]? backgroundColor[Number(props.couponCategory)] : "grey"}]}>
+                        {props.rightBar? <></> :
+                            <View style={{position: "absolute", left: "60%", top: "30%",display: "flex",
+                                justifyContent: "flex-end", alignItems: "flex-end", transform: [{ rotate: '270deg' }]
+                                }}>
+                                <View style={{display: "flex", justifyContent:"center", alignItems: "center",}}>
+                                    <Text style={{fontSize: 13, color: "white"}}>
+                                        歡迎使用
+                                    </Text>
+                                </View>
+
+                                <View style={{display: "flex", justifyContent:"center", alignItems: "center",}}>
+                                    <Text style={{color: "white", fontSize: 20,}}>
+                                        COUPON GO
+                                    </Text>
+                                </View>
+                            </View>
+                        }
                         <View style={[styles.frontContainer]}>
+                            <SvgXml width={20} height={20} xml={GiftSVG}/>
                             <Text style={{
                                 fontSize: 20,
                                 fontWeight: 'bold',
-                                color: 'white',
-                            }}>
+                                color: 'white'}} 
+                                numberOfLines={1}>
                                 {props.title}
                             </Text>
                             <Text style={{
                                 fontSize: 13,
                                 fontWeight: 'bold',
-                                color: 'white'}}>
+                                color: 'white'}}
+                                numberOfLines={1}>
                                 {chineseConverter(props.value)}
                             </Text >
-                            <Text style={{fontSize: 45, color: 'white'}}><Text style={{fontSize: 35}}>$</Text>{props.value}</Text>
+                            <Text style={{fontSize: 40, color: 'white'}} numberOfLines={1}><Text style={{fontSize: 35}}>$</Text>{props.value}</Text>
                         </View>
                     </View>
                     { props.rollAnimated? 
@@ -177,15 +209,15 @@ const ActualCoupon = (props: ActualCouponType) =>{
                     <View style={{width: "15%", backgroundColor: "white", height: "100%"}}>
                         <View style={{display: "flex", justifyContent: "center", alignItems: "center", height: "70%", width: "100%"}}
                             ref={viewRef} onLayout={handleLayout}>
-                            <View style={{position: "absolute", width: "50%", height: "90%", backgroundColor: backgroundColor[props.couponCategory], opacity: 0.3, 
+                            <View style={{position: "absolute", width: "50%", height: "90%", backgroundColor: backgroundColor[Number(props.couponCategory)], opacity: 0.3, 
                             borderRadius: 30, top: 0.1 * viewHeight
                             }}>
                             </View>
-                            <View style={{position: "absolute", width: "50%", backgroundColor: backgroundColor[props.couponCategory], borderRadius: 30,
+                            <View style={{position: "absolute", width: "50%", backgroundColor: backgroundColor[Number(props.couponCategory)], borderRadius: 30,
                             top: (props.availablePercent) * viewHeight, height: (1 - props.availablePercent) * viewHeight
                             }}>
                             </View>
-                            <View style={{position: "absolute", width: 30, height: 30, backgroundColor: backgroundColor[props.couponCategory], 
+                            <View style={{position: "absolute", width: 30, height: 30, backgroundColor: backgroundColor[Number(props.couponCategory)], 
                             borderRadius: 30, borderColor: "white", borderWidth: 3,
                             top: (props.availablePercent) * viewHeight - 18 }}>
                             </View>
@@ -224,8 +256,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     imageStyle: {
-        height: "80%",
-        width: "80%"
+        height: "100%",
+        width: "100%",
+        borderTopLeftRadius: radius,
+        borderBottomLeftRadius: radius
     },
     basedAbs:{
         position: "absolute",
@@ -237,6 +271,8 @@ const styles = StyleSheet.create({
         position: "absolute",
         width: "100%",
         height: "100%",
+        display: "flex",
+        flexDirection: "column"
     },
     frontContainer:{
         height: "100%",
@@ -267,8 +303,8 @@ const styles = StyleSheet.create({
         height: couponHeight,
         borderLeftWidth: 2.2,
         borderLeftColor: '#FFFFFF',
-        borderStyle: 'dotted',
-        overflow: "hidden"
+        borderStyle: 'dashed',
+        overflow: "hidden",
     },
 })
 

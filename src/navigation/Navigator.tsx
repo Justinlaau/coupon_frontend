@@ -23,6 +23,7 @@ import { BlogsScreen } from '../screens/BlogsScreen/BlogsScreen';
 import NotificationScreen from '../screens/NotificationScreen/NotificationScreen';
 {/* Categorized Screens */}
 import FoodScreen from '../screens/CategorizedScreens/FoodScreen/FoodScreen';
+import UserProfileScreen from '../screens/UserProfileScreen/UserProfileScreen';
 
 // import BlogPostScreen from '../screens/BlogsScreen/BlogPostScreen';
 
@@ -81,8 +82,10 @@ const MyStack = () => {
         <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         <Stack.Screen name="Map" component={MapScreen} />
         <Stack.Screen name="StackPage" component={StackPage} />
+        <Stack.Screen name="UserProfile" component={UserProfileScreen} />
         <Stack.Screen name="Blogs" component = {BlogsScreen} /> 
         {/* <Stack.Screen name="BlogPost" component={BlogPostScreen} /> */}
+        
         {/* Notification Screen */}
         <Stack.Screen name="Notification" component={NotificationScreen} />
 
