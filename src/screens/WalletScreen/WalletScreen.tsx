@@ -75,7 +75,7 @@ const WalletScreen = ({navigation: navigation}: any) => {
         isHeading={{"isHeading": false, "userID": "", "userName": ""}}
         navigation={null}
     >
-        <WalletBackground main={true} contentHeight="82%" tabBarSpace={true} >
+        <WalletBackground main={true} contentHeight="82%" tabBarSpace={true} heading="Q Wallet">
             <View style={{ flexDirection: 'row', justifyContent: "space-between"}}>  
                 <View style={{ width:"35%", marginTop: "5%" , marginLeft: "10%"}}>
                     <TouchableOpacity onPress={()=>pressHandler(1)}

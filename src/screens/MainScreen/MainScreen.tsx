@@ -164,13 +164,13 @@ const MainScreen = ({navigation}: any) => {
             </View>
 
             {/* LED Board */}
-            <View style={{height: "5%", backgroundColor: "white"}}>
+            {/* <View style={{height: "5%", backgroundColor: "white"}}>
               <LEDBoard 
                 texts={notificationInfo}
                 LEDFontSize={LED_FONT_SIZE}
                 navigation={navigation}
               />
-            </View>
+            </View> */}
 
             {/* Bottom */}
             <ScrollView contentContainerStyle={{flexGrow: 1}}
