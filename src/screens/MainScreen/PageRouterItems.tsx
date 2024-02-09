@@ -7,16 +7,17 @@ interface PageRouterItems{
     onClick: boolean,
     xml: any,
     xmlOnClick: any,
-    navigateString: string,
     boxWidth: DimensionValue | undefined,
     navigation: any,
+    passer: {},
     title: string,
 }
 
 const PageRouterItems = (props: PageRouterItems) => {
+  console.log(props.passer)
     return (
         <TouchableOpacity style={{width: props.boxWidth, height: "100%", display: 'flex', justifyContent: "center", alignItems: "center"}} 
-        onPress={() => props.navigation.navigate(props.navigateString)}
+        onPress={() => props.navigation.navigate("CategorizedScreen", props.passer)}
         onPressIn={() => props.setOnClick(true)}
         onPressOut={() => props.setOnClick(false)}
         activeOpacity={1}

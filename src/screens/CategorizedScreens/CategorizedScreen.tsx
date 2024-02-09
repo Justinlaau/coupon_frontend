@@ -1,46 +1,49 @@
 import React, { Component } from 'react';
+import { RouteProp, NavigationProp } from '@react-navigation/native';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
-import Layout from '../../../components/templates/Layout';
-import Background from '../../../components/templates/Background';
+import Layout from '../../components/templates/Layout';
+import Background from '../../components/templates/Background';
 import { SvgXml } from 'react-native-svg';
-import { MagnifierSVG } from '../../../assets/images/MagnifierSVG';
-import FoodSubpageRouter from './FoodSubpageRouter';
-import FilteredCouponListing from '../FilteredCouponListing';
+import { MagnifierSVG } from '../../assets/images/MagnifierSVG';
+import SubpageRouter from './SubpageRouter';
+import FilteredCouponListing from './FilteredCouponListing';
 import { ScrollView } from 'native-base';
-import LeftArrow from '../../../assets/images/LeftArrow';
+import LeftArrow from '../../assets/images/LeftArrow';
 
-interface State {
-    navigation: any;
+type RootStackParamList = {
+  Param: {
+    screenName: string,
+    subcategories: string[],
+    subcategoriesPNG: any[],
+    category: number
+  }
 }
 
-class FoodScreen extends Component<{}, State>  {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      navigation: props.navigation,
-    };
-  }
+type SubcategoriesScreenProps = {
+  route: RouteProp<RootStackParamList, 'Param'>;
+  navigation: NavigationProp<any>;
+};
 
-
+class CategorizedScreen extends Component<SubcategoriesScreenProps> {
   render() {
-    const { navigation } = this.state; 
+    const { screenName, subcategories, subcategoriesPNG, category } = this.props.route.params;
 
     return (
         <Layout 
         showTabBar={false} 
         isHeading={{"isHeading": false}}
-        navigation={navigation}
+        navigation={this.props.navigation}
       >
         <View style={{"position": "absolute", height: "5%", width: "100%", zIndex: 200,
             display: "flex", flexDirection: "row"
         }}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={{height: "100%", width: "5%", marginLeft: "2%", alignItems: "flex-start", justifyContent: "center" }}>
+            <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{height: "100%", width: "5%", marginLeft: "2%", alignItems: "flex-start", justifyContent: "center" }}>
               <SvgXml width="100%" height="100%" xml={LeftArrow} />
             </TouchableOpacity>
 
             <View style={{height: "100%", width: "30%", marginLeft: "2%", marginTop: "1%"}}>
                 <Text style={{fontSize: 25, color: "white", textAlignVertical: "bottom"}}>
-                    美食
+                    { screenName }
                 </Text>
             </View>
 
@@ -56,8 +59,11 @@ class FoodScreen extends Component<{}, State>  {
             <View style={{
                 width: "93%", height: "100%", marginLeft: "3.5%"
             }}>
-                <FoodSubpageRouter height={"20%"} navigation={navigation}/>
-
+                {
+                  subcategories.length > 0 ? 
+                  <SubpageRouter height={"20%"} navigation={this.props.navigation} subcategories={subcategories} subcategoriesPNG={subcategoriesPNG}/>:
+                  <></>
+                }
                 <View style={{
                   height: "5%"
                 }}> 
@@ -67,13 +73,13 @@ class FoodScreen extends Component<{}, State>  {
                 </View>
 
                 <View style={{
-                    height: "73%", backgroundColor: "white", marginTop: "2%", borderRadius: 10
+                    height: subcategories.length > 0 ? "73%" : "93%", backgroundColor: "white", marginTop: "2%", borderRadius: 10
                 }}>
                     <View style={{
                         width: "100%", display: "flex", justifyContent: "center", alignItems: "center"
                     }}>
                         <ScrollView>
-                            <FilteredCouponListing category={[2]}/>
+                            <FilteredCouponListing category={[category]}/>
                         </ScrollView>
                     </View>
                 </View>
@@ -85,4 +91,4 @@ class FoodScreen extends Component<{}, State>  {
   }
 }
 
-export default FoodScreen;
+export default CategorizedScreen;

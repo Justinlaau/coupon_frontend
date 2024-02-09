@@ -21,6 +21,16 @@ import LivingSVGonClick from '../../assets/images/ICON/LivingSVGonClick';
 import ShopSVG from '../../assets/images/ICON/ShopSVG';
 import ShopSVGonClick from '../../assets/images/ICON/ShopSVGonClick';
 
+/* Passer */
+import FoodScreenPasser from '../CategorizedScreens/Passer/FoodScreenPasser';
+import SupermarketScreenPasser from '../CategorizedScreens/Passer/SupermarketScreenPasser';
+import RecreationPasser from '../CategorizedScreens/Passer/RecreationPasser';
+import ClothesPasser from '../CategorizedScreens/Passer/ClothesPasser';
+import BeautyPasser from '../CategorizedScreens/Passer/BeautyPasser';
+import FashionPasser from '../CategorizedScreens/Passer/FashionPasser';
+import LivingPasser from '../CategorizedScreens/Passer/LivingPasser';
+import ShopPasser from '../CategorizedScreens/Passer/ShopPasser';
+
 interface PageRouterType {
     navigation: any,
     height: DimensionValue | undefined,
@@ -48,9 +58,9 @@ const PageRouter = (props : PageRouterType) => {
             onClick={onClickFood}
             xml={FoodSVG}
             xmlOnClick={FoodSVGonClick}
-            navigateString="FoodMain"
             boxWidth={boxWidth}
             navigation={props.navigation}
+            passer={FoodScreenPasser}
             title="美食"
         />
 
@@ -59,9 +69,9 @@ const PageRouter = (props : PageRouterType) => {
             onClick={onClickSuperMarket}
             xml={SupermarketSVG}
             xmlOnClick={SupermarketSVGonClick}
-            navigateString="Main"
             boxWidth={boxWidth}
             navigation={props.navigation}
+            passer={SupermarketScreenPasser}
             title="超巿"
         />
 
@@ -70,9 +80,9 @@ const PageRouter = (props : PageRouterType) => {
             onClick={onClickRecreation}
             xml={RecreationSVG}
             xmlOnClick={RecreationSVGonClick}
-            navigateString="Main"
             boxWidth={boxWidth}
             navigation={props.navigation}
+            passer={RecreationPasser}
             title="休閒娛樂"
         />     
 
@@ -81,9 +91,9 @@ const PageRouter = (props : PageRouterType) => {
             onClick={onClickClothes}
             xml={ClothesSVG}
             xmlOnClick={ClothesSVGonClick}
-            navigateString="Main"
             boxWidth={boxWidth}
             navigation={props.navigation}
+            passer={ClothesPasser}
             title="服裝"
         />   
 
@@ -92,9 +102,9 @@ const PageRouter = (props : PageRouterType) => {
             onClick={onClickBeauty}
             xml={BeautySVG}
             xmlOnClick={BeautySVGonClick}
-            navigateString="Main"
             boxWidth={boxWidth}
             navigation={props.navigation}
+            passer={BeautyPasser}
             title="美容化妝"
         />           
       </View>
@@ -104,9 +114,9 @@ const PageRouter = (props : PageRouterType) => {
             onClick={onClickFashion}
             xml={FashionSVG}
             xmlOnClick={FashionSVGonClick}
-            navigateString="Main"
             boxWidth={boxWidth}
             navigation={props.navigation}
+            passer={FashionPasser}
             title="時尚潮流"
           />           
         <PageRouterItems
@@ -114,9 +124,9 @@ const PageRouter = (props : PageRouterType) => {
             onClick={onClickLiving}
             xml={LivingSVG}
             xmlOnClick={LivingSVGonClick}
-            navigateString="Main"
             boxWidth={boxWidth}
             navigation={props.navigation}
+            passer={LivingPasser}
             title="生活家居"
           />           
         <PageRouterItems
@@ -124,9 +134,19 @@ const PageRouter = (props : PageRouterType) => {
             onClick={onClickShop}
             xml={ShopSVG}
             xmlOnClick={ShopSVGonClick}
-            navigateString="Main"
             boxWidth={boxWidth}
             navigation={props.navigation}
+            passer={ShopPasser}
+            title="飾物"
+          />          
+       <PageRouterItems
+            setOnClick={setSth}
+            onClick={sth}
+            xml={ShopSVG}
+            xmlOnClick={ShopSVGonClick}
+            boxWidth={boxWidth}
+            navigation={props.navigation}
+            passer={{}}
             title="禮券"
           />          
        <PageRouterItems
@@ -134,19 +154,9 @@ const PageRouter = (props : PageRouterType) => {
             onClick={sth}
             xml={ShopSVG}
             xmlOnClick={ShopSVGonClick}
-            navigateString="Main"
             boxWidth={boxWidth}
             navigation={props.navigation}
-            title="禮券"
-          />          
-       <PageRouterItems
-            setOnClick={setSth}
-            onClick={sth}
-            xml={ShopSVG}
-            xmlOnClick={ShopSVGonClick}
-            navigateString="Main"
-            boxWidth={boxWidth}
-            navigation={props.navigation}
+            passer={{}}
             title="禮券"
           />          
       </View>

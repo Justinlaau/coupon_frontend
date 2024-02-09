@@ -22,7 +22,7 @@ import StackPage from '../screens/StackPage/StackPage';
 import { BlogsScreen } from '../screens/BlogsScreen/BlogsScreen';
 import NotificationScreen from '../screens/NotificationScreen/NotificationScreen';
 {/* Categorized Screens */}
-import FoodScreen from '../screens/CategorizedScreens/FoodScreen/FoodScreen';
+import CategorizedScreen from '../screens/CategorizedScreens/CategorizedScreen';
 import UserProfileScreen from '../screens/UserProfileScreen/UserProfileScreen';
 
 // import BlogPostScreen from '../screens/BlogsScreen/BlogPostScreen';
@@ -90,7 +90,7 @@ const MyStack = () => {
         <Stack.Screen name="Notification" component={NotificationScreen} />
 
         {/* Categorized Screens */}
-        <Stack.Screen name="FoodMain" component={FoodScreen} />
+        <Stack.Screen name="CategorizedScreen" component={CategorizedScreen} />
 
       </Stack.Navigator>
     </NavigationContainer>
