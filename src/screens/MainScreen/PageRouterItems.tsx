@@ -14,7 +14,6 @@ interface PageRouterItems{
 }
 
 const PageRouterItems = (props: PageRouterItems) => {
-  console.log(props.passer)
     return (
         <TouchableOpacity style={{width: props.boxWidth, height: "100%", display: 'flex', justifyContent: "center", alignItems: "center"}} 
         onPress={() => props.navigation.navigate("CategorizedScreen", props.passer)}

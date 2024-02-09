@@ -40,7 +40,10 @@ const MainScreen = ({navigation}: any) => {
   const [notificationInfo, setNotificationInfo] = useState([""]);
   const scrollViewRef = useRef<ScrollView>(null);
   const [scrollViewHeight, setScrollViewHeight] = useState(0);
-  
+
+  const [isFocused, setIsFocused] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+
   const handleContentSizeChange = (contentHeight: number) => {
     setScrollViewHeight(contentHeight);
   };
@@ -48,6 +51,25 @@ const MainScreen = ({navigation}: any) => {
   // const fetchUserInfo = async () => {
   //   setUserInfo("丹");
   // }
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    if (!handleCheckText()) setIsFocused(false);
+  };
+
+  const handleChangeText = (text: string) => {
+    setInputValue(text);
+  };
+
+  const handleCheckText = () => {
+    if (inputValue.length > 0) {
+      return true;
+    }
+    return false;
+  };
   
   const fetchNotificationInfo = async () => {
     setNotificationInfo([
@@ -90,8 +112,8 @@ const MainScreen = ({navigation}: any) => {
     fetchGetUserInfo();
     fetchNotificationInfo();
     fetchCouponGroups();
-  }, [])
-  
+  }, []);
+
   const toggleInfo = (show: boolean) => {
     setInfoPopup(show)
   };
@@ -153,8 +175,20 @@ const MainScreen = ({navigation}: any) => {
               <View style={{display: "flex", justifyContent: "center", alignContent: "center", height: "100%", marginRight: "3%"}}>
                 <SvgXml height="60%" xml={MagnifierSVG} />
               </View>
-              <View style={{height: "100%", display: "flex", justifyContent: "center"}}>
-                <TextInput style={{height: "300%", fontSize: 20, textAlignVertical: "center", color: 'black'}} placeholder='Coupon! 你今日用咗未！' placeholderTextColor="#333"/>
+              <View style={{height: "100%", display: "flex", justifyContent: "center", width: "85%"}}>
+                <TextInput style={{height: "300%", fontSize: 20, width: "100%",
+                              textAlignVertical: "center", color: 'black'}} placeholder="" placeholderTextColor="rgba(0, 0, 0, 0)"
+                              onFocus={handleFocus}
+                              onBlur={handleBlur}
+                              value={inputValue}
+                              onChangeText={handleChangeText}
+                              />
+                <LEDBoard 
+                  texts={notificationInfo}
+                  LEDFontSize={LED_FONT_SIZE}
+                  navigation={navigation}
+                  isFocused={isFocused}
+                />
               </View>
             </View>
 

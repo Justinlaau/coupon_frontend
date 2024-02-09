@@ -6,6 +6,7 @@ interface LEDBoardType{
     texts: string[],
     LEDFontSize: number,
     navigation: any,
+    isFocused: boolean
 };
 
 const LEDBoard = (props: LEDBoardType ) => {
@@ -43,28 +44,30 @@ const LEDBoard = (props: LEDBoardType ) => {
     }, [props.texts, currentTextIndex, translateX, textRight]);
 
     return (
-    <TouchableOpacity style={{height: "100%", width: "100%"}} 
-      onPress={() => props.navigation.navigate("Notification")}
-      activeOpacity={1}  
-    >
+    // <TouchableOpacity style={{height: "100%", width: "100%"}} 
+    //   onPress={() => props.navigation.navigate("Notification")}
+    //   activeOpacity={1}  
+    // >
       <View ref={viewRef} onLayout={handleLayout} style={styles.container}>
           <View style={styles.background}>
               {/* {Array.from(Array(650), (_, i) => <View key={i} style={styles.dot} />)} */}
           </View>
           <Animated.View style={[styles.textContainer, { transform: [{ translateX }] }]}>
-              <Text style={styles.text}>{props.texts[currentTextIndex]}</Text>
+              {props.isFocused? <></> : <Text style={styles.text}>{props.texts[currentTextIndex]}</Text>}
           </Animated.View>
       </View>
-    </TouchableOpacity>
+    // </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create({
   container: {
     overflow: 'hidden',
-    width: '100%',
+    width: "100%",
     height: "100%",
-    backgroundColor: "#EEEEEE"
+    backgroundColor: "#EEEEEE",
+    position: "absolute",
+    zIndex: -100
   },
   background: {
     flex: 1,
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
     position: "absolute"
   },
   text: {
-    color: '#dd0000',
+    color: '#555',
     fontSize: 20,
     textAlignVertical: "top",
     height: "100%"
