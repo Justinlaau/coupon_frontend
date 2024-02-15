@@ -13,27 +13,37 @@ const LEDBoard = (props: LEDBoardType ) => {
     const viewRef = useRef<View>(null);
     const handleLayout = () => {
       viewRef.current?.measure((x: number, y: number, width: number, height: number) => {
-        setTextRight(width);
+        setTextBottom(height);
         });
     };
   
-    const [textRight, setTextRight] = useState(0);
+    const [textBottom, setTextBottom] = useState(0);
     const [currentTextIndex, setCurrentTextIndex] = useState(0);
-    const translateX = useRef(new Animated.Value(textRight)).current;
+    const translateY = useRef(new Animated.Value(textBottom)).current;
 
     useEffect(() => {
-    const currentText = props.texts[currentTextIndex];
-    const textWidth = currentText.length * props.LEDFontSize; 
-    const animationDuration = textWidth * props.LEDFontSize; 
+    const animationDuration = 1500; 
+    const stayDuration = 1500;
+    const fadeDuration = 700;
 
     Animated.sequence([
-        Animated.timing(translateX, {
-        toValue: -textWidth,
+        Animated.timing(translateY, {
+        toValue: -5,
         duration: animationDuration,
         useNativeDriver: true,
         }),
-        Animated.timing(translateX, {
-        toValue: textRight,
+        Animated.timing(translateY, {
+          toValue: -5,
+          duration: stayDuration,
+          useNativeDriver: true,
+          }),
+        Animated.timing(translateY, {
+          toValue: -textBottom,
+          duration: fadeDuration,
+          useNativeDriver: true,
+          }),
+        Animated.timing(translateY, {
+        toValue: textBottom,
         duration: 0,
         useNativeDriver: true,
         }),
@@ -41,7 +51,7 @@ const LEDBoard = (props: LEDBoardType ) => {
         const nextIndex = (currentTextIndex + 1) % props.texts.length;
         setCurrentTextIndex(nextIndex);
     });
-    }, [props.texts, currentTextIndex, translateX, textRight]);
+    }, [props.texts, currentTextIndex, translateY, textBottom]);
 
     return (
     // <TouchableOpacity style={{height: "100%", width: "100%"}} 
@@ -52,7 +62,7 @@ const LEDBoard = (props: LEDBoardType ) => {
           <View style={styles.background}>
               {/* {Array.from(Array(650), (_, i) => <View key={i} style={styles.dot} />)} */}
           </View>
-          <Animated.View style={[styles.textContainer, { transform: [{ translateX }] }]}>
+          <Animated.View style={[styles.textContainer, { transform: [{ translateY }] }]}>
               {props.isFocused? <></> : <Text style={styles.text}>{props.texts[currentTextIndex]}</Text>}
           </Animated.View>
       </View>
@@ -67,7 +77,9 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "#EEEEEE",
     position: "absolute",
-    zIndex: -100
+    zIndex: -100,
+    justifyContent: "center",
+    alignItems: "center"
   },
   background: {
     flex: 1,
@@ -90,7 +102,7 @@ const styles = StyleSheet.create({
   text: {
     color: '#555',
     fontSize: 20,
-    textAlignVertical: "top",
+    textAlignVertical: "bottom",
     height: "100%"
   },
 });

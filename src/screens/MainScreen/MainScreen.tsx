@@ -171,31 +171,35 @@ const MainScreen = ({navigation}: any) => {
           </FadeInView>
           <View style={{height: "100%", width: "100%", paddingLeft: "3%", paddingRight: "3%"}}>
             {/* Title */}
-            <View style={{height: "7%", paddingTop: "3%", marginBottom: "1.5%", display: "flex", justifyContent: "flex-start", flexDirection: "row"}}>
-              <View style={{display: "flex", justifyContent: "center", alignContent: "center", height: "100%", marginRight: "3%"}}>
-                <SvgXml height="60%" xml={MagnifierSVG} />
-              </View>
-              <View style={{height: "100%", display: "flex", justifyContent: "center", width: "85%"}}>
-                <TextInput style={{height: "300%", fontSize: 20, width: "100%",
-                              textAlignVertical: "center", color: 'black'}} placeholder="" placeholderTextColor="rgba(0, 0, 0, 0)"
-                              onFocus={handleFocus}
-                              onBlur={handleBlur}
-                              value={inputValue}
-                              onChangeText={handleChangeText}
-                              />
-                <LEDBoard 
-                  texts={notificationInfo}
-                  LEDFontSize={LED_FONT_SIZE}
-                  navigation={navigation}
-                  isFocused={isFocused}
-                />
+            <View style={{height: "6.5%", width: "100%", justifyContent: "center", alignItems: "center", marginTop: "2.5%"}}>
+              <View style={{height: "100%", marginBottom: "1.5%", display: "flex", justifyContent: "flex-start", flexDirection: "row",
+                borderWidth: 4.5, borderColor: "#DC2B37", borderRadius: 150, width: "95%"
+              }}>
+                <View style={{display: "flex", justifyContent: "center", alignContent: "center", height: "100%", marginRight: "3%"}}>
+                  <SvgXml height="50%" xml={MagnifierSVG} />
+                </View>
+                <View style={{height: "100%", display: "flex", justifyContent: "center", width: "85%"}}>
+                  <TextInput style={{height: "300%", fontSize: 20, width: "100%",
+                                textAlignVertical: "center", color: 'black'}} placeholder="" placeholderTextColor="rgba(0, 0, 0, 0)"
+                                onFocus={handleFocus}
+                                onBlur={handleBlur}
+                                value={inputValue}
+                                onChangeText={handleChangeText}
+                                />
+                  <LEDBoard 
+                    texts={notificationInfo}
+                    LEDFontSize={LED_FONT_SIZE}
+                    navigation={navigation}
+                    isFocused={isFocused}
+                    />
+                </View>
               </View>
             </View>
 
             {/* Line */}
-            <View style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+            {/* <View style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
               <View style={{width: "100%", backgroundColor: "black", height: 1.5, marginBottom: "1%"}}/>
-            </View>
+            </View> */}
 
             {/* LED Board */}
             {/* <View style={{height: "5%", backgroundColor: "white"}}>
