@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/LoginScreen/LoginScreen';
 import MainScreen from '../screens/MainScreen/MainScreen';
-import forgetPasswordScreen from '../screens/forgetPasswordScreen/forgetPasswordScreen';
+import ForgetPasswordScreen from '../screens/forgetPasswordScreen/ForgetPasswordScreen';
 
 import {NavigationContainer} from '@react-navigation/native';
 import CouponListingScreen from '../screens/CouponListingScreen/CouponListingScreen';
@@ -24,6 +24,7 @@ import NotificationScreen from '../screens/NotificationScreen/NotificationScreen
 {/* Categorized Screens */}
 import CategorizedScreen from '../screens/CategorizedScreens/CategorizedScreen';
 import UserProfileScreen from '../screens/UserProfileScreen/UserProfileScreen';
+import NotificationSender from '../screens/NotificationScreen/NotificationSender';
 
 // import BlogPostScreen from '../screens/BlogsScreen/BlogPostScreen';
 
@@ -41,7 +42,7 @@ const MyStack = () => {
       if (logonToken != null) {
         // fetch user info
         axios.defaults.headers.common['Authorization'] = logonToken;
-        const request_response = await axios.post(BASE_URL + "user/UserGetUserInfo");
+        const request_response = await axios.post(BASE_URL + "userr/UserGetUserInfo");
         let username = "";
         if (request_response.data["result"] == 0) {
           username = request_response.data["user"]["username"]
@@ -75,7 +76,7 @@ const MyStack = () => {
         <Stack.Screen name="Wallet" component={WalletScreen} />
         <Stack.Screen name="Main" component={MainScreen} />
         <Stack.Screen name="CouponListing" component={CouponListingScreen} />
-        <Stack.Screen name="forgetPassword" component={forgetPasswordScreen} />
+        <Stack.Screen name="forgetPassword" component={ForgetPasswordScreen} />
         <Stack.Screen name="Register" component={RegisterScreen}/>
         <Stack.Screen name="CouponItem" component={CouponItemScreen} />
         <Stack.Screen name="CouponQRCode" component={CouponQRCodeScreen} />
@@ -88,6 +89,7 @@ const MyStack = () => {
         
         {/* Notification Screen */}
         <Stack.Screen name="Notification" component={NotificationScreen} />
+        <Stack.Screen name="NotificationSender" component={NotificationSender} />
 
         {/* Categorized Screens */}
         <Stack.Screen name="CategorizedScreen" component={CategorizedScreen} />

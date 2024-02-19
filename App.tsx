@@ -16,7 +16,6 @@ const locationConfig = {
   skipPermissionRequests: true,
   enableBackgroundLocationUpdates: true,
 }
-import { socket } from './src/socket';
 
 Geolocation.setRNConfiguration(locationConfig);
 
@@ -27,8 +26,6 @@ const App = () => {
     const token = await AsyncStorage.getItem('jwt') || "";
     console.log(token)
     axios.defaults.headers.common['Authorization'] = token;
-    socket.auth = { token: token };
-    socket.connect();
     return token;
   }
 

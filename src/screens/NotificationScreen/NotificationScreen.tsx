@@ -1,14 +1,34 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, TextInput, StyleSheet, Dimensions, Button } from 'react-native';
+import { Dispatch,  } from 'redux';
+import { ScrollView, View, Text, TouchableOpacity, TextInput, StyleSheet, Dimensions, Button, Alert, Pressable } from 'react-native';
+import { NativeBaseProvider } from 'native-base';
 import Layout from '../../components/templates/Layout';
 import { SvgXml } from 'react-native-svg';
 import LeftArrow from '../../assets/images/LeftArrow';
 import Background from '../../components/templates/Background';
 import NotificationDom from './NotificationDom';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import { clientNotificationSocket, socket } from '../../socket';
+import { getEndpoint } from '../../socket';
+import userSvg from '../../assets/images/ICON/UserSVG';
+import messageSVG from '../../assets/images/ICON/messageSVG';
+import heartLoveSVG from '../../assets/images/ICON/heartLoveSVG';
+import commentSVG from '../../assets/images/ICON/comment';
+import { Box, Center } from 'native-base';
+import TabBar from '../../components/templates/TabBar';
+import NotificationRow from './NotificationRow';
+import { Socket } from 'socket.io-client';
+import { RoleConstant } from '../../common/roleConstant';
+import { BASE_URL } from '../../config/config';
+import axios from 'axios';
+
 
 interface State {
   navigation: any,
   isPopUp: number,
+  systemNotification: any,
+  ownerNotification: any,
+  ownerNameMap: {[key: string]: string};
 };
 
 interface MessageType {
@@ -26,132 +46,140 @@ interface TimeListType {
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
-const messagesList: MessageType[] = [{
-    title: "歡迎xxx加盟",
-    issueDates: new Date(2024, 0, 26),
-    messageType: "Welcome",
-    shortMessage: "歡迎xxx加盟 111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
-    longMessage: "test"
-  },
-  {
-    title: "搶！",
-    issueDates: new Date(2024, 0, 27),
-    messageType: "Advertisement",
-    shortMessage: "Mcdonald 推出新優惠卷 快搶",
-    longMessage: "test2"
-  },
-  {
-    title: "歡迎xxx加盟",
-    issueDates: new Date(2024, 0, 20),
-    messageType: "Welcome",
-    shortMessage: "歡迎xxx加盟 111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
-    longMessage: "test3"
-  },
-  {
-    title: "搶！",
-    issueDates: new Date(2023, 11, 31),
-    messageType: "Advertisement",
-    shortMessage: "Mcdonald 推出新優惠卷 快搶",
-    longMessage: "test4"
-  },
-  {
-    title: "搶！",
-    issueDates: new Date(2023, 10, 31),
-    messageType: "Advertisement",
-    shortMessage: "Mcdonald 推出新優惠卷 快搶",
-    longMessage: "test5"
-  },
-  {
-    title: "搶！",
-    issueDates: new Date(2024, 0, 28, 3),
-    messageType: "Advertisement",
-    shortMessage: "Mcdonald 推出新優惠卷 快搶",
-    longMessage: "test6"
-  },
-  {
-    title: "搶！",
-    issueDates: new Date(2024, 0, 27, 15),
-    messageType: "Advertisement",
-    shortMessage: "Mcdonald 推出新優惠卷 快搶",
-    longMessage: "test7"
-  },
-];
-
-var timeList: TimeListType = {
-  "hour": [],
-  "day": [],
-  "week": [],
-  "month": [],
-  "other": []
-};
-
-const timeKeyToMessageMap: {[key: string]: string} = {
-  "hour": "最近一小時內",
-  "day": "最近一天內",
-  "week": "最近一週內",
-  "month": "最近一個月內",
-  "other": "超過一個月"
-};
-
-function calculateTimeDifference(date1: Date, date2: Date): number {
-  const differenceInMilliseconds = Math.abs(date1.getTime() - date2.getTime());
-  const differenceInHours = differenceInMilliseconds / (1000 * 60 * 60);
-  return differenceInHours;
-}
-
 class NotificationScreen extends Component<{}, State>  {
   constructor(props: any) {
     super(props);
     this.state = {
       navigation: props.navigation,
       isPopUp: -1,
+      systemNotification: {},
+      ownerNotification: {},
+      ownerNameMap: {},
     };
-    this.resetTimeList();
-    this.messageListInit();
+  }
+
+  componentDidMount(): void {
+    var clientNotificationSocket: Socket = getEndpoint("clientNotificationSystemInapp");
+    if (clientNotificationSocket != null && clientNotificationSocket.connected) {
+      console.log("clientNotificationSocket is connected");
+      this.notificationSubscription(clientNotificationSocket);
+      clientNotificationSocket.on('broadcast', async (data: any) => {
+        console.log("clientNotification broadcast data");
+        console.log(data);
+        let curSystemNotification: any = this.state.systemNotification;
+        let curOwnerNotification: any = this.state.ownerNotification;
+        let curOwnerNameMap: any = this.state.ownerNameMap;
+        if ( data["sender_role"] == RoleConstant.OWNER) {
+          if (!curOwnerNotification.hasOwnProperty(data["sender_id"])) {
+            curOwnerNotification[data["sender_id"]] = [];
+            const ownerNameRes = await axios.post(BASE_URL + 'business/baseGetOwnerNameByIdsRequest', {"owner_ids": [data["sender_id"]]});
+            if (ownerNameRes.data.result == 0) {
+              curOwnerNameMap[data["sender_id"]] = ownerNameRes.data.data[0].owner_name;
+            }
+          }
+          curOwnerNotification[data["sender_id"]].push({
+            "body": data["body"],
+            "createDate": data["create_date"],
+            "messageId": data["message_id"],
+            "redirectType": data["redirect_type"],
+            "redirectUrl": data["redirect_url"],
+            "sendDate": data["send_date"],
+            "senderId": data["sender_id"],
+            "senderRole": data["sender_role"],
+            "shortMessage": data["short_message"],
+            "title": data["title"],
+            "updateDate": data["update_date"]
+          });
+        } else if (data["sender_role"] == RoleConstant.ADMIN) {
+          if (!curSystemNotification.hasOwnProperty(data["sender_id"])) curSystemNotification[data["sender_id"]] = [];
+          curSystemNotification[data["sender_id"]].push(data);
+        }
+        this.setState({systemNotification: curSystemNotification, ownerNotification: curOwnerNotification, ownerNameMap: curOwnerNameMap});
+      });
+    } else {
+      console.log("clientNotificationSocket is not connected");
+    }
   }
   
-  resetTimeList(){
-    timeList = {
-      "hour": [],
-      "day": [],
-      "week": [],
-      "month": [],
-      "other": []
-    };    
+  subscriptionRequest = (clientNotificationSocket: Socket, token: string) => {
+    return new Promise((resolve, reject) => [
+      clientNotificationSocket.emit('subscribe', {"token": token}, (ack: any) => {
+        console.log("ack");
+        console.log(ack);
+        resolve(ack);
+      })
+    ])
   }
 
-  messageListInit() {
-    messagesList.sort((a, b) => b.issueDates.getTime() - a.issueDates.getTime());
-    const currentTime = new Date();
+  async notificationSubscription(clientNotificationSocket: Socket) {
+    console.log("notificationSubscription");
+    const token: string = await AsyncStorage.getItem('jwt') || "";
+    const result: any = await this.subscriptionRequest(clientNotificationSocket, token);
+    console.log("result");
+    console.log(result);
 
-    messagesList.map((el, idx) => {
-      const timeDifference = calculateTimeDifference(el.issueDates, currentTime); 
-      if (timeDifference < 1){
-        timeList.hour.push(idx);
-      }else if (timeDifference < 24){
-        timeList.day.push(idx);
-      }else if (timeDifference < 168){
-        timeList.week.push(idx);
-      }else if (timeDifference < 744){
-        timeList.month.push(idx);
-      }else{
-        timeList.other.push(idx);
+    if (result["result"] == 0) {
+      let curSystemNotification: any = {};
+      let curOwnerNotification: any = {};
+      const snapshot = result["notification_snapshot"];
+
+      for (let item of snapshot) {
+        const pushMessage = {
+          "body": item["body"],
+          "createDate": item["create_date"],
+          "messageId": item["message_id"],
+          "messageType": item["message_type"],
+          "notificationStatus": item["notification_status"],
+          "notificationType": item["notification_type"],
+          "redirectType": item["redirect_type"],
+          "redirectUrl": item["redirect_url"],
+          "sendDate": item["send_date"],
+          "senderId": item["sender_id"],
+          "senderRole": item["sender_role"],
+          "shortMessage": item["short_message"],
+          "title": item["title"],
+          "updateDate": item["update_date"]
+        };
+
+        if (item["sender_role"] == RoleConstant.OWNER) {
+          if (!curOwnerNotification.hasOwnProperty(item["sender_id"])) curOwnerNotification[item["sender_id"]] = [];
+          curOwnerNotification[item["sender_id"]].push(pushMessage);
+        } else if (item["sender_role"] == RoleConstant.ADMIN) {
+          if (!curSystemNotification.hasOwnProperty(item["sender_id"])) curSystemNotification[item["sender_id"]] = [];
+          curSystemNotification[item["sender_id"]].push(pushMessage);
+        }
       }
-    });
+
+      const ownerIdList = Object.keys(curOwnerNotification);
+      console.log("ownerIdList");
+      console.log(ownerIdList);
+      let curOwnerNameMap: {[key: string]: string} = {};
+      const { data } = await axios.post(BASE_URL + 'business/baseGetOwnerNameByIdsRequest', {"owner_ids": ownerIdList});
+      console.log("data");
+      console.log(data);
+      if (data.result == 0) {
+        for (let owner of data.data) {
+          curOwnerNameMap[owner.owner_id] = owner.owner_name;
+        }
+      }
+      this.setState({systemNotification: curSystemNotification, ownerNotification: curOwnerNotification, ownerNameMap: curOwnerNameMap});
+    }
+
   }
 
   setIsPopUp = (idx: number) => {
     this.setState(() => ({
-        isPopUp: idx
+      isPopUp: idx
     }));
   };
   
   render() {
-    const { navigation, isPopUp } = this.state; 
+    const { navigation, isPopUp, systemNotification, ownerNotification } = this.state; 
     
     return (
+      <NativeBaseProvider>
       <Layout 
-      showTabBar={false} 
+      showTabBar={true} 
       isHeading={{"isHeading": false}}
       navigation={navigation}
     >
@@ -162,51 +190,68 @@ class NotificationScreen extends Component<{}, State>  {
             <SvgXml width="100%" height="100%" xml={LeftArrow} />
           </TouchableOpacity>
 
-          <View style={{height: "100%", width: "30%", marginLeft: "2%", marginTop: "1%"}}>
-              <Text style={{fontSize: 25, color: "white", textAlignVertical: "bottom"}}>
-                  通知
-              </Text>
+          <View style={{height: "100%", width: "80%", marginLeft: "2%", marginTop: "1%"}}>
+            <Text numberOfLines={1} ellipsizeMode="tail" style={{fontSize: 22, fontWeight: "bold", color: "white", textAlignVertical: "bottom"}}>
+              訊息
+            </Text>
           </View>
       </View>
-      <Background main={false} contentHeight="95%" tabBarSpace={false} overflow={true}>
-          <ScrollView 
-            style={{width: "92%", height: "100%", marginLeft: "4%", position: "absolute", zIndex: 100}}
-            showsVerticalScrollIndicator={false}
-          >
-            {
-              Object.keys(timeList).map((key: string) => (
-                timeList[key].length === 0 ? <></> :
-                <View>
-                  <Text style={{fontSize: 30, fontWeight: "bold", color: "#333"}}>
-                    {timeKeyToMessageMap[key]}
-                  </Text>
-                  {timeList[key].map((el) => (
-                    <TouchableOpacity style={styles.touchableOpacityContainer} onPress={() => {this.setIsPopUp(el)}}>
-                      <NotificationDom 
-                      key={el}
-                      title={messagesList[el].title}
-                      issueDate={messagesList[el].issueDates}
-                      messageType={messagesList[el].messageType}
-                      shortMessage={messagesList[el].shortMessage}
-                      longMessage={messagesList[el].longMessage}
-                      />
-                    </TouchableOpacity>
-                  ))}
+      <Background main={false} contentHeight="87%" tabBarSpace={true} overflow={true}>
+        <View style={{ height: "100%" }}>
+          <ScrollView>
+            <View style={{ display: "flex", flexDirection: "row", height: 120 }}>
+              <View style={{flex:1}}></View>
+              <Center style={{flex: 6}}>
+                <View style={{ backgroundColor: "#e0f2fe", height: 60, width: 60, padding: 10, marginBottom: 3, borderRadius: 22, alignItems: "center", justifyContent: "center"  }}>
+                  <SvgXml height={30} width={30} xml={userSvg}></SvgXml>
                 </View>
-              ))
-            }
-          </ScrollView>
-          <View style={[{width: "100%", height: "100%", backgroundColor: "#EEEEEE", position: "absolute", zIndex: 199}, isPopUp !== -1? {"top": 0}: {"top": -10000}]}>
-            <View style={[styles.popUpContainer]}>
-                  <Text>
-                    {this.state.isPopUp === -1 ? "" : messagesList[this.state.isPopUp].longMessage}
-                  </Text>
-                <Button title="Understand" onPress={() => this.setIsPopUp(-1)}/>
+                <Text style={{ fontSize: 15, fontWeight: "bold", textAlign: "center" }}>關注</Text>
+              </Center>
+              <Center style={{ flex: 6 }}>
+                <View style={{ backgroundColor: "#fee2e2", height: 60, width: 60, padding: 10, marginBottom: 3, borderRadius: 22, alignItems: "center", justifyContent: "center"  }}>
+                  <SvgXml height={30} width={30} xml={heartLoveSVG}></SvgXml>
+                </View>
+                <Text style={{ fontSize: 15, fontWeight: "bold", textAlign: "center" }}>讚</Text>
+              </Center>
+              <Center style={{ flex: 6 }}>
+                <View style={{ backgroundColor: "#f0fdf4", height: 60, width: 60, padding: 10, marginBottom: 3, borderRadius: 22, alignItems: "center", justifyContent: "center"  }}>
+                  <SvgXml height={30} width={30} xml={commentSVG}></SvgXml>
+                </View>
+                <Text style={{ fontSize: 15, fontWeight: "bold", textAlign: "center" }}>評論</Text>
+              </Center>
+              <View style={{flex:1}}></View>
             </View>
-          </View>
-          
+            <View>
+              <NotificationRow 
+                icon={messageSVG}
+                iconType="svg"
+                sender="訊息通知"
+                senderId="coupongoAdmin"
+                senderRole="admin"
+                shortMessage="活動通知: 龍年釣好運！吉祥年釣吉祥魚"
+                time="2024-02-19 22:30:00"
+                toSenderPage={() => navigation.navigate("NotificationSender", {sender: "訊息通知", senderId: "coupongoAdmin", senderRole: "admin"})}
+              />
+              {
+                Object.keys(ownerNotification).map((key: string) => (
+                  <NotificationRow 
+                    icon={messageSVG}
+                    iconType="svg"
+                    sender={this.state.ownerNameMap[key]}
+                    senderId={key}
+                    senderRole="owner"
+                    shortMessage={ownerNotification[key][ownerNotification[key].length-1].shortMessage}
+                    time={ownerNotification[key][ownerNotification[key].length-1].sendDate}
+                    toSenderPage={() => navigation.navigate("NotificationSender", {sender: this.state.ownerNameMap[key], senderId: key, senderRole: "owner"})}
+                  />
+                ))
+              }
+            </View>
+          </ScrollView>
+        </View>
       </Background>
     </Layout>
+    </NativeBaseProvider>
     );
     }
   }

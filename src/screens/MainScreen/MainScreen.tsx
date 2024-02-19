@@ -99,7 +99,7 @@ const MainScreen = ({navigation}: any) => {
       let {data} = await axios.get(BASE_URL + "user/UserGetUserInfo");
       // console.log("data")
       // console.log(data)
-      setUserInfo(data["user"]["nickname"])
+      setUserInfo(data["user"]["nickname"] || "")
     } catch (error) {
       console.log("error")
       console.log(error)

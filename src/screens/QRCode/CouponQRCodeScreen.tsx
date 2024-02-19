@@ -16,7 +16,7 @@ import MainPageListing from '../../components/templates/MainPageListing';
 import ActualCoupon from '../../components/atoms/ActualCoupon';
 import LeftArrow from '../../assets/images/LeftArrow';
 import {CatSVG} from '../../assets/images/CatSVG';
-import { couponSocket } from '../../socket';
+import { getEndpoint } from '../../socket';
 import {
   NativeBaseProvider,
   VStack,
@@ -39,6 +39,8 @@ import { toggleLoading, toggleMessagePopup, setMessagePopup } from '../../../Red
 import { TOGGLE_SUCCESS_POPUP, SET_SUCCESS_MESSAGE, TOGGLE_ERROR_POPUP, SET_ERROR_MESSAGE } from '../../../Redux/Action/ActionType';
 import { BackHandler } from 'react-native';
 import { useSelector } from 'react-redux';
+import { Socket } from 'socket.io-client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -68,42 +70,39 @@ const CouponQRCodeScreen = ({navigation, route}) => {
     }
   }
 
+  const couponScanSubscriptionRequest = (couponSocket: Socket, token: string, couponId: string) => {
+    return new Promise((resolve, reject) => {
+      couponSocket.emit('subscribe', {"token": token, "coupon_id": couponId}, (ack: any) => {
+        console.log("ack");
+        console.log(ack);
+        resolve(ack);
+      });
+    })
+  }
+
+  const couponScanSubscription = async (couponSocket: Socket) => {
+    const token = await AsyncStorage.getItem('jwt') || "";
+    couponScanSubscriptionRequest(couponSocket, token, coupon.coupon_id);
+  }
+
   useEffect(() => {
     fetchCouponQRCode(coupon.coupon_id, coupon.total);
-    if (!couponSocket.connected) {
-      console.log("reconnected");
-      couponSocket.auth = {"token": token};
-      couponSocket.connect();
+    let couponSocket: Socket = getEndpoint("coupon");
+    if (couponSocket != null && couponSocket.connected) {
+
+      couponScanSubscription(couponSocket);
+
+      couponSocket.on('qrcode_scanned_response', (data) => {
+        console.log("qrcode_scanned_response");
+        console.log(data);
+        dispatch(setMessagePopup("使用成功！", SET_SUCCESS_MESSAGE));
+        dispatch(toggleMessagePopup(true, TOGGLE_SUCCESS_POPUP));
+        navigation.goBack();
+      })
+    } else {
+      console.log("couponSocket is not connected");
     }
-    // couponSocket.auth = {"token": token, "coupon_id": coupon.coupon_id};
-    // couponSocket.connect();
   }, []);
-
-  couponSocket.on('connect', () => {
-    console.log("connected");
-  });
-
-  couponSocket.on('qrcode_scanned_response/' + coupon.coupon_id, (data) => {
-    console.log("qrcode_scanned_response");
-    console.log(data);
-    dispatch(setMessagePopup("使用成功！", SET_SUCCESS_MESSAGE));
-    dispatch(toggleMessagePopup(true, TOGGLE_SUCCESS_POPUP));
-    // couponSocket.disconnect();
-    navigation.goBack();
-  })
-
-  // disconnect socket when back button is pressed
-  // useEffect(() => {
-  //   const handleBackPress = () => {
-  //     console.log("back pressed");
-  //     couponSocket.disconnect();
-  //     return true;
-  //   };
-  //   BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-  //   return () => {
-  //     BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
-  //   };
-  // }, []);
 
   return (
     <Layout 
@@ -111,7 +110,7 @@ const CouponQRCodeScreen = ({navigation, route}) => {
       isHeading={{"isHeading": false, "userID": "", "userName": ""}}
       navigation={null}
     >
-      <QRCodeBackground goBack={() => {couponSocket.disconnect(); navigation.goBack();}}>
+      <QRCodeBackground goBack={() => {navigation.goBack();}}>
         <NativeBaseProvider>
           <Stack style={MainStyle.imageHolder}>
             <Heading

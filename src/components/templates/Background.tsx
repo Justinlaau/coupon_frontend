@@ -2,7 +2,6 @@ import React from 'react';
 import {StyleSheet, Text} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {BaseLeftSVG} from '../../assets/images/BaseLeftSVG';
-import {ProfileSVG} from '../../assets/images/ProfileSVG';
 import {BaseRightSVG} from '../../assets/images/BaseRightSVG';
 import {CatSVG} from '../../assets/images/CatSVG';
 import LeftArrow from '../../assets/images/LeftArrow';
@@ -94,7 +93,7 @@ const BackgroundStyle = StyleSheet.create({
     borderTopRightRadius: 50,
     borderTopLeftRadius: 50,
     width: '100%',
-    backgroundColor: '#EEEEEE',
+    backgroundColor: '#FFFFFE',
   },
   CatView: {
     position: 'absolute',

@@ -51,16 +51,16 @@ const LoginScreen = ({navigation}: any) => {
     }
     else {
       try {
-        const { data } = await axios.post(BASE_URL + 'user/LoginRequest', payload)
-        // const { data } = await axios.post('http://47.129.1.22:8000/user/LoginRequest', payload)
+        // const { data } = await axios.post(BASE_URL + 'user/LoginRequest', payload)
+        const { data } = await axios.post('http://13.213.59.6:8000/user/LoginRequest', payload)
         console.log("data")
         console.log(data)
         if (data.result == 0) {
           let token = data.token;
           await AsyncStorage.setItem('jwt', token);
           axios.defaults.headers.common['Authorization'] = token;
-          socket.auth = { token: token };
-          socket.connect();
+          // socket.auth = { token: token };
+          // socket.connect();
           dispatch({
             type: SET_BASE_USER,
             data: {
