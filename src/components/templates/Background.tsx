@@ -93,7 +93,7 @@ const BackgroundStyle = StyleSheet.create({
     borderTopRightRadius: 50,
     borderTopLeftRadius: 50,
     width: '100%',
-    backgroundColor: '#FFFFFE',
+    backgroundColor: '#f0f0f0',
   },
   CatView: {
     position: 'absolute',

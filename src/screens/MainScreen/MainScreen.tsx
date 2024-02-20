@@ -23,7 +23,6 @@ import BASE_S3_IMG_URL, { BASE_URL } from '../../config/config';
 import { useDispatch } from 'react-redux';
 import { toggleLoading } from '../../../Redux/Action/CommonAction';
 import type {PropsWithChildren} from 'react';
-import { socket } from '../../socket';
 import LEDBoard from './LEDBoard';
 import PageRouter from './PageRouter';
 // import Icon from 'react-native-vector-icons/FontAwesome';
