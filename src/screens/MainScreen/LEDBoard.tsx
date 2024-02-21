@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     width: "100%",
     height: "100%",
-    backgroundColor: "#EEEEEE",
+    backgroundColor: "#f0f0f0",
     position: "absolute",
     zIndex: -100,
     justifyContent: "center",
