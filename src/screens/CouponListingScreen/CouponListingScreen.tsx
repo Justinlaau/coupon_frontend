@@ -345,7 +345,7 @@ const CouponListingScreen = ({ navigation }) => {
                 </Box>
               <Box w="100%" h="86%">
                 <ScrollView
-                  
+                  nestedScrollEnabled = {true}
                 >
                   <Stack px="4%" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
                     {
@@ -383,7 +383,7 @@ const CouponListingScreen = ({ navigation }) => {
             }
             <Box w="100%" h="86%">
               <ScrollView nestedScrollEnabled={true}>
-                <Stack px="4%" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+                <Stack style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", paddingHorizontal: "4%" }}>
                   {
                     couponGroups.map((el, i) => 
                       <ActualCoupon

@@ -20,6 +20,8 @@ import {
     TOGGLE_ERROR_POPUP, 
     SET_ERROR_MESSAGE } from '../../../Redux/Action/ActionType';
 import KeyboardAvoidingWrapper from '../../components/templates/KeyboardAvoidingWrapper';
+
+
 const ForgetPasswordScreen = ({navigation} : any) => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');

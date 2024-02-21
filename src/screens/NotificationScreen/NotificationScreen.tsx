@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Dispatch,  } from 'redux';
-import { ScrollView, View, Text, TouchableOpacity, TextInput, StyleSheet, Dimensions, Button, Alert, Pressable } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, TextInput, StyleSheet, Dimensions, Button, Alert, Pressable, RefreshControl } from 'react-native';
 import { NativeBaseProvider } from 'native-base';
 import Layout from '../../components/templates/Layout';
 import { SvgXml } from 'react-native-svg';
@@ -63,6 +63,7 @@ class NotificationScreen extends Component<{}, State>  {
     if (clientNotificationSocket != null && clientNotificationSocket.connected) {
       console.log("clientNotificationSocket is connected");
       this.notificationSubscription(clientNotificationSocket);
+
       clientNotificationSocket.on('broadcast', async (data: any) => {
         console.log("clientNotification broadcast data");
         console.log(data);
@@ -71,13 +72,13 @@ class NotificationScreen extends Component<{}, State>  {
         let curOwnerNameMap: any = this.state.ownerNameMap;
         if ( data["sender_role"] == RoleConstant.OWNER) {
           if (!curOwnerNotification.hasOwnProperty(data["sender_id"])) {
-            curOwnerNotification[data["sender_id"]] = [];
+            curOwnerNotification[data["sender_id"]] = {};
             const ownerNameRes = await axios.post(BASE_URL + 'business/baseGetOwnerNameByIdsRequest', {"owner_ids": [data["sender_id"]]});
             if (ownerNameRes.data.result == 0) {
               curOwnerNameMap[data["sender_id"]] = ownerNameRes.data.data[0].owner_name;
             }
           }
-          curOwnerNotification[data["sender_id"]].push({
+          curOwnerNotification[data["sender_id"]] = {
             "body": data["body"],
             "createDate": data["create_date"],
             "messageId": data["message_id"],
@@ -89,13 +90,24 @@ class NotificationScreen extends Component<{}, State>  {
             "shortMessage": data["short_message"],
             "title": data["title"],
             "updateDate": data["update_date"]
-          });
+          };
         } else if (data["sender_role"] == RoleConstant.ADMIN) {
-          if (!curSystemNotification.hasOwnProperty(data["sender_id"])) curSystemNotification[data["sender_id"]] = [];
-          curSystemNotification[data["sender_id"]].push(data);
+          const curSendDate = new Date(curSystemNotification.sendDate);
+          const newSendDate = new Date(data.send_date);
+          if (newSendDate > curSendDate) curSystemNotification = data;
         }
         this.setState({systemNotification: curSystemNotification, ownerNotification: curOwnerNotification, ownerNameMap: curOwnerNameMap});
       });
+    } else {
+      console.log("clientNotificationSocket is not connected");
+    }
+  }
+
+  async pageRefresh() {
+    var clientNotificationSocket: Socket = getEndpoint("clientNotificationSystemInapp");
+    if (clientNotificationSocket != null && clientNotificationSocket.connected) {
+      console.log("clientNotificationSocket is connected");
+      this.notificationSubscription(clientNotificationSocket);
     } else {
       console.log("clientNotificationSocket is not connected");
     }
@@ -142,11 +154,20 @@ class NotificationScreen extends Component<{}, State>  {
         };
 
         if (item["sender_role"] == RoleConstant.OWNER) {
-          if (!curOwnerNotification.hasOwnProperty(item["sender_id"])) curOwnerNotification[item["sender_id"]] = [];
-          curOwnerNotification[item["sender_id"]].push(pushMessage);
+          if (!curOwnerNotification.hasOwnProperty(item["sender_id"])) curOwnerNotification[item["sender_id"]] = pushMessage;
+          else {
+            const curSendDate = new Date(curOwnerNotification[item["sender_id"]].sendDate);
+            const newSendDate = new Date(pushMessage.sendDate);
+            if (newSendDate > curSendDate) curOwnerNotification[item["sender_id"]] = pushMessage;
+          }
         } else if (item["sender_role"] == RoleConstant.ADMIN) {
-          if (!curSystemNotification.hasOwnProperty(item["sender_id"])) curSystemNotification[item["sender_id"]] = [];
-          curSystemNotification[item["sender_id"]].push(pushMessage);
+          if (curSystemNotification == null) curSystemNotification = pushMessage;
+          else {
+            const curSendDate = new Date(curSystemNotification.sendDate);
+            const newSendDate = new Date(pushMessage.sendDate);
+            if (newSendDate > curSendDate) curSystemNotification = pushMessage;
+          }
+          
         }
       }
 
@@ -198,7 +219,14 @@ class NotificationScreen extends Component<{}, State>  {
       </View>
       <Background main={false} contentHeight="87%" tabBarSpace={true} overflow={true}>
         <View style={{ height: "100%" }}>
-          <ScrollView>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={() => { this.pageRefresh() }}
+              />
+            }
+          >
             <View style={{ display: "flex", flexDirection: "row", height: 120 }}>
               <View style={{flex:1}}></View>
               <Center style={{flex: 6}}>
@@ -222,27 +250,30 @@ class NotificationScreen extends Component<{}, State>  {
               <View style={{flex:1}}></View>
             </View>
             <View>
-              <NotificationRow 
-                icon={messageSVG}
-                iconType="svg"
-                sender="訊息通知"
-                senderId="coupongoAdmin"
-                senderRole="admin"
-                shortMessage="活動通知: 龍年釣好運！吉祥年釣吉祥魚"
-                time="2024-02-19 22:30:00"
-                toSenderPage={() => navigation.navigate("NotificationSender", {sender: "訊息通知", senderId: "coupongoAdmin", senderRole: "admin"})}
-              />
+              {
+                <NotificationRow 
+                  icon={messageSVG}
+                  iconType="svg"
+                  sender="訊息通知"
+                  senderId="coupongoAdmin"
+                  senderRole="admin"
+                  shortMessage={systemNotification.shortMessage || "暫無訊息"}
+                  time={systemNotification.sendDate || ""}
+                  toSenderPage={() => navigation.navigate("NotificationSender", {sender: "訊息通知", senderId: "coupongoAdmin", senderRole: "admin"})}
+                />
+              }
               {
                 Object.keys(ownerNotification).map((key: string) => (
-                  <NotificationRow 
+                  <NotificationRow
+                    key={key}
                     icon={messageSVG}
                     iconType="svg"
                     sender={this.state.ownerNameMap[key]}
                     senderId={key}
                     senderRole="owner"
-                    shortMessage={ownerNotification[key][ownerNotification[key].length-1].shortMessage}
-                    time={ownerNotification[key][ownerNotification[key].length-1].sendDate}
-                    toSenderPage={() => navigation.navigate("NotificationSender", {sender: this.state.ownerNameMap[key], senderId: key, senderRole: "owner"})}
+                    shortMessage={ownerNotification[key].shortMessage}
+                    time={ownerNotification[key].sendDate}
+                    toSenderPage={() => navigation.navigate("NotificationSender", {sender: this.state.ownerNameMap[key], senderId: key, senderRole: RoleConstant.OWNER})}
                   />
                 ))
               }

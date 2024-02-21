@@ -178,23 +178,27 @@ const ActualCoupon = (props: ActualCouponType) =>{
                                 fontSize: 20,
                                 fontWeight: 'bold',
                                 color: 'white'}} 
-                                numberOfLines={1}>
+                                numberOfLines={1} 
+                                adjustsFontSizeToFit={true}
+                            >
                                 {props.title}
                             </Text>
                             <Text style={{
                                 fontSize: 13,
                                 fontWeight: 'bold',
                                 color: 'white'}}
-                                numberOfLines={1}>
+                                numberOfLines={1} 
+                                adjustsFontSizeToFit={true}
+                            >
                                 {chineseConverter(props.value)}
                             </Text >
-                            <Text style={{fontSize: 40, color: 'white'}} numberOfLines={1}><Text style={{fontSize: 35}}>$</Text>{props.value}</Text>
+                            <Text style={{fontSize: 40, color: 'white'}} numberOfLines={1} adjustsFontSizeToFit={true}><Text style={{fontSize: 35}}>$</Text>{props.value}</Text>
                         </View>
                     </View>
                     { props.rollAnimated? 
                         <TouchableOpacity style={[styles.basedAbs, {zIndex: 7}]} onPress={left? onClickToRight: onClickToLeft} activeOpacity={1}>
                             <Animated.View style={[styles.layeredWords, { width: animatedWidth }]}>
-                                <Text numberOfLines={2}>
+                                <Text numberOfLines={2} adjustsFontSizeToFit={true}>
                                     五人同行才可以享有半價優惠。
                                     所有權力均由本店保留。
                                 </Text>
@@ -276,11 +280,11 @@ const styles = StyleSheet.create({
     },
     frontContainer:{
         height: "100%",
-        width: "100%",
+        width: "90%",
         display: "flex",
         marginLeft: "7%",
         justifyContent: "center",
-        alignContent: "center"
+        alignContent: "center",
     },
     shadow: {
         shadowColor: '#000000',

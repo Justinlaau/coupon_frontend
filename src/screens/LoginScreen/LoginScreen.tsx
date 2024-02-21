@@ -38,7 +38,6 @@ const LoginScreen = ({navigation}: any) => {
 
 
   const handleLogin = async () => {
-    // Perform login logic here
     setLoading(true);
     const payload = {
       "username": username,
@@ -47,9 +46,7 @@ const LoginScreen = ({navigation}: any) => {
     if (username.trim() === '' || password.trim() === '') {
       dispatch(setMessagePopup("請輸入用戶名與密碼", SET_ERROR_MESSAGE));
       dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
-      // Alert.alert('Please enter username and password.');
-    }
-    else {
+    } else {
       try {
         // const { data } = await axios.post(BASE_URL + 'user/LoginRequest', payload)
         const { data } = await axios.post('http://13.213.59.6:8000/user/LoginRequest', payload)
@@ -59,8 +56,6 @@ const LoginScreen = ({navigation}: any) => {
           let token = data.token;
           await AsyncStorage.setItem('jwt', token);
           axios.defaults.headers.common['Authorization'] = token;
-          // socket.auth = { token: token };
-          // socket.connect();
           dispatch({
             type: SET_BASE_USER,
             data: {
@@ -74,13 +69,11 @@ const LoginScreen = ({navigation}: any) => {
           dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
           // Alert.alert("Username or password is wrong");
         }
-        // console.log(response)
       } catch (e) {
         console.log("error")
         console.log(e)
         dispatch(setMessagePopup("用戶名或密碼錯碼", SET_ERROR_MESSAGE));
         dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
-        // Alert.alert("Username or password is wrong");
       }
     }
     setLoading(false);
