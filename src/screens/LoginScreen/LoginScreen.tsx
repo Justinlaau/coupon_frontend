@@ -148,7 +148,7 @@ const LoginScreen = ({navigation}: any) => {
                   width={1}
                   orientation="horizontal"
                   />
-                <Text>  沒有帳戶?  </Text>
+                <Text style={{color: "grey"}}>  沒有帳戶?  </Text>
                 <Divider
                   style={{ width: "30%" }}
                   color="gray"

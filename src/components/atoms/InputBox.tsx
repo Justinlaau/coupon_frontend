@@ -14,7 +14,7 @@ export const InputBox = (props:any) => {
                 style={styles.input}
                 value={props.InputRes}
                 placeholder={props.text}
-                placeholderTextColor={props.textColor}
+                placeholderTextColor={props.textColor? props.textColor : "grey"}
                 onChangeText={props.Input}
                 secureTextEntry={props.HideText}
             />

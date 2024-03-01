@@ -177,7 +177,7 @@ const MainScreen = ({navigation}: any) => {
                 <View style={{display: "flex", justifyContent: "center", alignContent: "center", height: "100%", marginRight: "3%"}}>
                   <SvgXml height="50%" xml={MagnifierSVG} />
                 </View>
-                <View style={{height: "100%", display: "flex", justifyContent: "center", width: "85%"}}>
+                <View style={{height: "100%", display: "flex", justifyContent: "center", width: "85%", overflow: "hidden"}}>
                   <TextInput style={{height: "300%", fontSize: 20, width: "100%",
                                 textAlignVertical: "center", color: 'black'}} placeholder="" placeholderTextColor="rgba(0, 0, 0, 0)"
                                 onFocus={handleFocus}

@@ -39,7 +39,7 @@ const WalletBackground = (props) => {
                 style={{ width: '15%'}}
                 onPress={()=>{ navigation.navigate("Main")}}>
 
-                  <BackIcon 
+                  {/* <BackIcon 
                       name="chevron-left"
                       style={{
                           color: "#FFF",
@@ -48,7 +48,7 @@ const WalletBackground = (props) => {
                           top: "5%",
                       }}
                       size={25}>             
-                    </BackIcon>
+                    </BackIcon> */}
                 </TouchableOpacity>
             <Heading
                 w="100%"

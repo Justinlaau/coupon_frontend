@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Layout from "../../components/templates/Layout";
 import Background from "../../components/templates/Background";
 import { useDispatch } from "react-redux";
@@ -14,9 +14,7 @@ const MarginTop = "5%"
 const UserProfileScreen = ({navigation}: any) => {
     const dispatch = useDispatch();
     const nicknameInputRef = useRef(null);
-    const focusTextInput = () => {
-        nicknameInputRef.current.focus();
-    };
+    const [nickName, setNickName] = useState("");
 
     // Need API for change nickname 
 
@@ -41,6 +39,7 @@ const UserProfileScreen = ({navigation}: any) => {
             "電話": data["user"]["phone"],
             "用戶名": data["user"]["username"]
         })
+            setNickName(data["user"]["nickname"]);
         } catch (error) {
           console.log("error")
           console.log(error)
@@ -49,6 +48,42 @@ const UserProfileScreen = ({navigation}: any) => {
         }
     }
 
+    const handleNickName = (text: string) => {
+        setNickName(text);
+    }
+
+    const updateNickName = async () => {
+        try{
+
+            let {data} = await axios.post(BASE_URL + "user/update-nickname", {
+                "newNickName": nickName,
+                "userName": userInfo["用戶名"]
+            })
+            
+            console.log(data)
+            Alert.alert(
+                'Alert Title',
+                'Alert Message',
+            [
+              {
+                text: '你已成功更新匿稱！',
+                style: 'cancel',
+              },
+              {
+                text: 'OK',
+                onPress: () => navigation.navigate('Main'), 
+              },
+            ],
+            { cancelable: false }
+          );
+
+        }catch (error) {
+            console.log("error")
+            console.log(error)
+        } finally {
+            dispatch(toggleLoading(false));
+        }
+    }
     useEffect(() => {
         fetchGetUserInfo();
     }, []);
@@ -67,9 +102,9 @@ const UserProfileScreen = ({navigation}: any) => {
                                 </Text>
                             </View>
                             
-                            <View style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                            <TouchableOpacity style={{display: "flex", justifyContent: "center", alignItems: "center"}} onPress={()=>navigation.navigate("Login")}>
                                 <SvgXml width={75} height={75}  xml={ProfileSVG} />
-                            </View>
+                            </TouchableOpacity>
                             
                             <View style={{width: "100%", height: "10%"}}>
                                 <Text style={[styles.mediumFonts, styles.black, styles.boldWords]}>
@@ -98,7 +133,8 @@ const UserProfileScreen = ({navigation}: any) => {
                                         {marginLeft: "5%", textAlignVertical: "center", height: "100%",
                                         margin: 0, padding: 0}]}
                                         ref={nicknameInputRef}
-                                        placeholder={userInfo["匿稱"]}>
+                                        placeholder={userInfo["匿稱"]}
+                                        onChangeText={handleNickName}>
                                         {userInfo["匿稱"]}
                                     </TextInput>
                                 </View>
@@ -151,7 +187,7 @@ const UserProfileScreen = ({navigation}: any) => {
 
                             <View style={[{marginTop: MarginTop, width: "100%", height: "5%"}, styles.center]}>
 
-                                <TouchableOpacity style={{width: "20%", height: "100%"}}>
+                                <TouchableOpacity style={{width: "20%", height: "100%"}} onPress={() => updateNickName()}>
                                     <View style={[{height: "100%", width: "100%", borderRadius: 7, backgroundColor: "#E9D14D",
                                         borderColor: "orange", borderWidth: 1},
                                         styles.center]}>
