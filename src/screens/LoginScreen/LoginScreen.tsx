@@ -63,7 +63,7 @@ const LoginScreen = ({navigation}: any) => {
               username: username
             }
           })
-          navigation.navigate('Main');
+          navigation.navigate('LoginAnimation');
         } else {  
           dispatch(setMessagePopup("用戶名或密碼錯碼", SET_ERROR_MESSAGE));
           dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));

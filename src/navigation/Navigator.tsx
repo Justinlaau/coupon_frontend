@@ -27,6 +27,7 @@ import UserProfileScreen from '../screens/UserProfileScreen/UserProfileScreen';
 import NotificationSender from '../screens/NotificationScreen/NotificationSender';
 
 // import BlogPostScreen from '../screens/BlogsScreen/BlogPostScreen';
+import LoginAnimation from '../components/templates/LoginAnimation';
 
 const Stack = createNativeStackNavigator();
 
@@ -93,6 +94,9 @@ const MyStack = () => {
 
         {/* Categorized Screens */}
         <Stack.Screen name="CategorizedScreen" component={CategorizedScreen} />
+
+        {/* Login Animation */}
+        <Stack.Screen name="LoginAnimation" component={LoginAnimation} />
 
       </Stack.Navigator>
     </NavigationContainer>
