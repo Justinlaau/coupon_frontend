@@ -25,6 +25,7 @@ import NotificationScreen from '../screens/NotificationScreen/NotificationScreen
 import CategorizedScreen from '../screens/CategorizedScreens/CategorizedScreen';
 import UserProfileScreen from '../screens/UserProfileScreen/UserProfileScreen';
 import NotificationSender from '../screens/NotificationScreen/NotificationSender';
+import { BusinessInformationFormScreen } from '../screens/BusinessInformationFormScreen/InformationScreen';
 
 // import BlogPostScreen from '../screens/BlogsScreen/BlogPostScreen';
 
@@ -70,7 +71,7 @@ const MyStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName = "Login"
+        initialRouteName = "BusinessInformationScreen"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Wallet" component={WalletScreen} />
@@ -93,6 +94,9 @@ const MyStack = () => {
 
         {/* Categorized Screens */}
         <Stack.Screen name="CategorizedScreen" component={CategorizedScreen} />
+
+        {/* owner information */ }
+        <Stack.Screen name="BusinessInformationScreen" component={BusinessInformationFormScreen} />
 
       </Stack.Navigator>
     </NavigationContainer>

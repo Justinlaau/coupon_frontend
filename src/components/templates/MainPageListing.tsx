@@ -32,7 +32,7 @@ import { Alert } from 'react-native';
 import BASE_S3_IMG_URL, { BASE_URL } from '../../config/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type MainPageListingProps = PropsWithChildren<{style: ViewStyle, couponGroups: any, infoPopup: boolean, toggleInfo: any, setInfoMessage: any}>;
+type MainPageListingProps = PropsWithChildren<{style: ViewStyle, couponGroups: any, infoPopup: boolean, toggleInfo: any, setInfoMessage: any, navigation: any}>;
 
 const MainPageListing: React.FC<MainPageListingProps> = (props) => {
   const dispatch = useDispatch();
@@ -70,7 +70,9 @@ const MainPageListing: React.FC<MainPageListingProps> = (props) => {
           props.couponGroups.map((el, i) => 
             <Box w="50%" py="3" key={i}>
               <CouponCard useYellowAdd={true} marb="0" imgSource={BASE_S3_IMG_URL + el["image"]} imgAlt={el["title"]} merchantName={el["owner_name"]} couponDetail={el["title"]} 
-                          addFunc={() => addFunc(el["coupon_group_id"], el["expire_date"])}/>
+                addFunc={() => addFunc(el["coupon_group_id"], el["expire_date"])}
+                navigation={props.navigation}            
+              />
             </Box>
           )
         }
