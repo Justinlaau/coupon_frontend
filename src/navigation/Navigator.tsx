@@ -43,7 +43,7 @@ const MyStack = () => {
       if (logonToken != null) {
         // fetch user info
         axios.defaults.headers.common['Authorization'] = logonToken;
-        const request_response = await axios.post(BASE_URL + "userr/UserGetUserInfo");
+        const request_response = await axios.post(BASE_URL + "user/UserGetUserInfo");
         let username = "";
         if (request_response.data["result"] == 0) {
           username = request_response.data["user"]["username"]
