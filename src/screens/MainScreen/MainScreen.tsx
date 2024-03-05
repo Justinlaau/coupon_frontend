@@ -7,8 +7,8 @@ import {
   ScrollView,
   RefreshControl,
   ViewStyle,
-  Animated,
 } from 'react-native';
+import Animated, {  useSharedValue, useAnimatedStyle, withDecay, withTiming } from 'react-native-reanimated';
 import Background from '../../components/templates/Background';
 import Layout from '../../components/templates/Layout';
 import {MagnifierSVG} from '../../assets/images/MagnifierSVG';
@@ -33,7 +33,7 @@ const MainScreen = ({navigation}: any) => {
   const dispatch = useDispatch();
   const [couponGroups, setCouponGroups] = useState([]);
   const [infoPopup, setInfoPopup] = useState(false);
-  const [message, setMessage] = useState("成功！！！");
+  const [message, setMessage] = useState("成功");
   // const [test, setTest] = useState(false);
   const [userInfo, setUserInfo] = useState("訪客");
   const [notificationInfo, setNotificationInfo] = useState([""]);
@@ -46,10 +46,6 @@ const MainScreen = ({navigation}: any) => {
   const handleContentSizeChange = (contentHeight: number) => {
     setScrollViewHeight(contentHeight);
   };
-  
-  // const fetchUserInfo = async () => {
-  //   setUserInfo("丹");
-  // }
 
   const handleFocus = () => {
     setIsFocused(true);
@@ -96,8 +92,6 @@ const MainScreen = ({navigation}: any) => {
     try {
       dispatch(toggleLoading(true));
       let {data} = await axios.get(BASE_URL + "user/UserGetUserInfo");
-      // console.log("data")
-      // console.log(data)
       setUserInfo(data["user"]["nickname"] || "")
     } catch (error) {
       console.log("error")
@@ -124,32 +118,21 @@ const MainScreen = ({navigation}: any) => {
   
   type FadeInViewProps = PropsWithChildren<{style: ViewStyle}>
   const FadeInView: React.FC<FadeInViewProps> = (props) => {
-    const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
-    // const fadeInfoPopup = useSelector((state: any) => state.commonReducer.data.infoPopup);
+    const fadeAnim = useSharedValue(0);
+    const fadeAnimStyle = useAnimatedStyle(() => ({
+      opacity: fadeAnim.value,
+    }))
     
     useEffect(() => {
-      if (!infoPopup) return;
-      fadeAnim.setValue(1);
-      
-      Animated.timing(fadeAnim,
-        {
-          toValue: 0,
-          duration: 1000,
-          useNativeDriver: true,
-        }
-        ).start();
-        
-        setTimeout(() => {
-          toggleInfo(false);
-        }, 100)
-      }, [infoPopup])
-      
+      fadeAnim.value = 1;
+      fadeAnim.value = withTiming(0, {duration: 1000});
+    }, [infoPopup])
+
       return (
         <Animated.View                 // Special animatable View
-        style={{
-          ...props.style,
-          opacity: fadeAnim,         // Bind opacity to animated value
-        }}
+        style={[{
+          ...props.style       // Bind opacity to animated value
+        }, fadeAnimStyle]}
         >
         {props.children}
       </Animated.View>
@@ -163,10 +146,9 @@ const MainScreen = ({navigation}: any) => {
     navigation={navigation}
   >
     <Background main={true} contentHeight="76.5%" tabBarSpace={true}>
-
         <NativeBaseProvider>
-          <FadeInView style={{ position: "absolute", top: "-30%", left: "40%", backgroundColor: "#4BB543", borderRadius: 50 }}>
-            <Text style={{paddingHorizontal: "3%", paddingVertical: "1%", color: "white"}}>{ message }</Text>
+          <FadeInView style={{ position: "absolute", top: 10, left: "40%", width: "20%", backgroundColor: "#4BB543", borderRadius: 50, zIndex: 1000, alignItems: "center" }}>
+            <Text numberOfLines={1} ellipsizeMode='tail' style={{paddingHorizontal: "3%", paddingVertical: "1%", color: "white"}}>{ message }</Text>
           </FadeInView>
           <View style={{height: "100%", width: "100%", paddingLeft: "3%", paddingRight: "3%"}}>
             {/* Title */}
@@ -219,11 +201,12 @@ const MainScreen = ({navigation}: any) => {
                 height={0.35 * scrollViewHeight}
               />
               <MainPageListing 
-              style={{}}
-              infoPopup = {infoPopup}
-              toggleInfo= {toggleInfo}
-              setInfoMessage = {setInfoMessage}
-              couponGroups={couponGroups}
+                style={{}}
+                infoPopup = {infoPopup}
+                toggleInfo= {toggleInfo}
+                setInfoMessage = {setInfoMessage}
+                couponGroups={couponGroups}
+                navigation={navigation}
               />
             </ScrollView>
           </View>

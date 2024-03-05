@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Pressable} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import AddSVG from '../../assets/images/AddSVG';
 import AddYellowSVG from '../../assets/images/AddYellowSVG';
@@ -28,13 +28,15 @@ const CouponCard = (props) => {
   return (
     <NativeBaseProvider>
       <Box w="97%" h="220" mb={props.marb} borderRadius={5} bg="white" mx="1.5%" style={{shadowOffset:  {width: 5, height: 5}, shadowColor: "#000", shadowOpacity: 0.8, shadowRadius: 5, elevation: 10}}>
-        <Box>
-          <AspectRatio w="100%" bg="white" ratio={16/14} borderRadius={5}>
-            <Image source={{
-              uri: props.imgSource,
-            }} alt={props.imgAlt} borderRadius={5} w="100%" h="100%" />
-          </AspectRatio>
-        </Box>
+        <Pressable onPress={() => { props.navigation.navigate("BusinessInformationScreen") }}>
+          <Box>
+            <AspectRatio w="100%" bg="white" ratio={16/14} borderRadius={5}>
+              <Image source={{
+                uri: props.imgSource,
+              }} alt={props.imgAlt} borderRadius={5} w="100%" h="100%" />
+            </AspectRatio>
+          </Box>
+        </Pressable>
         <Stack direction="column" px="4%" py="4%" bg="white" borderBottomRadius={5} h="32.5%">
           <Text fontSize="9" color="#A9A8A8">{props.merchantName}</Text>
           <Stack direction="row" alignItems="center" alignContent="center">
