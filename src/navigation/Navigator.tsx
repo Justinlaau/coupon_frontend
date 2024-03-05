@@ -28,6 +28,7 @@ import NotificationSender from '../screens/NotificationScreen/NotificationSender
 import { BusinessInformationFormScreen } from '../screens/BusinessInformationFormScreen/InformationScreen';
 
 // import BlogPostScreen from '../screens/BlogsScreen/BlogPostScreen';
+import LoginAnimation from '../components/templates/LoginAnimation';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,7 +44,7 @@ const MyStack = () => {
       if (logonToken != null) {
         // fetch user info
         axios.defaults.headers.common['Authorization'] = logonToken;
-        const request_response = await axios.post(BASE_URL + "userr/UserGetUserInfo");
+        const request_response = await axios.post(BASE_URL + "user/UserGetUserInfo");
         let username = "";
         if (request_response.data["result"] == 0) {
           username = request_response.data["user"]["username"]
@@ -97,6 +98,8 @@ const MyStack = () => {
 
         {/* owner information */ }
         <Stack.Screen name="BusinessInformationScreen" component={BusinessInformationFormScreen} />
+        {/* Login Animation */}
+        <Stack.Screen name="LoginAnimation" component={LoginAnimation} />
 
       </Stack.Navigator>
     </NavigationContainer>

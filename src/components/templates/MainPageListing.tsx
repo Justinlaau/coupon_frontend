@@ -60,6 +60,10 @@ const MainPageListing: React.FC<MainPageListingProps> = (props) => {
     }
   }
 
+  // props.couponGroups.map((el, i)=>{
+  //   console.log(BASE_S3_IMG_URL + el["image"]);
+  // });
+
   return (
     <NativeBaseProvider>
       {/* <VStack style={{ display: "flex", flexDirection: "row", flexWrap: "wrap"}}>

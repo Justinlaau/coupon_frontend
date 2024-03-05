@@ -63,7 +63,7 @@ const LoginScreen = ({navigation}: any) => {
               username: username
             }
           })
-          navigation.navigate('Main');
+          navigation.navigate('LoginAnimation');
         } else {  
           dispatch(setMessagePopup("用戶名或密碼錯碼", SET_ERROR_MESSAGE));
           dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
@@ -148,7 +148,7 @@ const LoginScreen = ({navigation}: any) => {
                   width={1}
                   orientation="horizontal"
                   />
-                <Text>  沒有帳戶?  </Text>
+                <Text style={{color: "grey"}}>  沒有帳戶?  </Text>
                 <Divider
                   style={{ width: "30%" }}
                   color="gray"
