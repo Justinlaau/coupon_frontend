@@ -12,12 +12,11 @@ import axios from 'axios';
 import { background } from 'native-base/lib/typescript/theme/styled-system';
 import { color } from '@rneui/base';
 
-import KeyboardAvoidingWrapper from '../../components/templates/KeyboardAvoidingWrapper';
 
 import {BASE_URL} from '../../config/config';
 import { useDispatch } from 'react-redux';
 import { toggleLoading } from '../../../Redux/Action/CommonAction';
-
+import KeyboardAvoidingWrapper from '../../components/templates/KeyboardAvoidingWrapper';
 
 const RegisterScreen = ({ navigation }) => {
     const dispatch = useDispatch()
@@ -51,14 +50,16 @@ const RegisterScreen = ({ navigation }) => {
                 "email": email
             };
             if(email == ''){
-                Alert.alert('Please enter email');
+                Alert.alert('請輸入電郵');
             }
             console.log(email)
             let { data } = await axios.post(BASE_URL + 'user/UserRegistrationVerificationCode', payload)
+            Alert.alert('驗證碼已發送')
             if ( data == null || data.result != 0) console.log("failed")
             else console.log("success")
         } catch(e) {
-             console.log(e)
+            Alert.alert('該郵箱已經存在');
+            console.log(e)
         } finally {
             dispatch(toggleLoading(false))
         }
@@ -76,10 +77,10 @@ const RegisterScreen = ({ navigation }) => {
         console.log("payload")
         console.log(payload)
         if(password == ''){
-            Alert.alert('please enter password');
+            Alert.alert('請輸入密碼');
         }
         if(username == ''){
-            Alert.alert('please enter username');
+            Alert.alert('請輸入用戶名');
         }
         let {data} = await axios.post(BASE_URL + 'user/RegistrationRequest', payload)
         console.log(data);
@@ -97,7 +98,7 @@ const RegisterScreen = ({ navigation }) => {
                 <View style={RegisterStyle.InputGroups}>
 
                     <View style={{width:"100%"}}>
-                        <InputBox text="username"
+                        <InputBox text="用戶名"
                             borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
                             Input={handleUsernameChange}
                             InputRes={username}
@@ -110,7 +111,7 @@ const RegisterScreen = ({ navigation }) => {
 
                     <View style={{ height: "10%" }}></View>
                     <View style={{width:"100%"}}>
-                        <InputBox text="password"
+                        <InputBox text="密碼"
                             borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
                             Input={handlePasswordChange}
                             InputRes={password}
@@ -123,7 +124,7 @@ const RegisterScreen = ({ navigation }) => {
 
                     <View style={{ height: "10%" }} ></View>
                     <View style={{width:"100%"}}>
-                        <InputBox text="comfirm password"
+                        <InputBox text="確認密碼"
                             borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
                             Input={handleComfirmPWChange}
                             InputRes={comfirm_pw}
@@ -135,7 +136,7 @@ const RegisterScreen = ({ navigation }) => {
                     </View>
                     <View style={{ height: "10%" }}></View>
                     <View style={{width:"100%"}}>
-                        <InputBox text="email"
+                        <InputBox text="電郵"
                             borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
                             Input={handleEmailChange}
                             InputRes={email}
@@ -149,7 +150,7 @@ const RegisterScreen = ({ navigation }) => {
 
                     <View style={{ height: "20%", width: "100%" ,  flexDirection: 'row'}}>
                         <View style={{height:"100%", width:"70%"}}>
-                            <InputBox text="verification code" 
+                            <InputBox text="驗證碼" 
                                 Input={ handlVerificationcodeChange}
                                 InputRes={verification_code}
                                 borderStyle={{ color: "white", borderRadius: 10, backgroundColor: "white" }}
@@ -159,7 +160,7 @@ const RegisterScreen = ({ navigation }) => {
                         <View style={{height:"100%", width: "10%" }}></View>
 
                         <View style={{height:"100%", width:"20%", justifyContent: "center"}}>
-                            <ButtonBox text="get"
+                            <ButtonBox text="獲取"
                                 borderStyle={{ borderRadius: 10 }}
                                 color="black"
                                 textStyle={{ color: "gray"} } action={sendEmailCode} />
@@ -167,7 +168,7 @@ const RegisterScreen = ({ navigation }) => {
                     </View>
 
                     <View style={RegisterStyle.ButtonContainer}>
-                        <ButtonBox text="Submit"
+                        <ButtonBox text="提交"
                             borderStyle={{ borderRadius: 10 }}
                             color="#DC2B37"
                             textStyle={{ color: "white" }} action={submitHandle} />

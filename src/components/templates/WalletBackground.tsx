@@ -39,7 +39,7 @@ const WalletBackground = (props) => {
                 style={{ width: '15%'}}
                 onPress={()=>{ navigation.navigate("Main")}}>
 
-                  <BackIcon 
+                  {/* <BackIcon 
                       name="chevron-left"
                       style={{
                           color: "#FFF",
@@ -48,7 +48,7 @@ const WalletBackground = (props) => {
                           top: "5%",
                       }}
                       size={25}>             
-                    </BackIcon>
+                    </BackIcon> */}
                 </TouchableOpacity>
             <Heading
                 w="100%"
@@ -57,7 +57,7 @@ const WalletBackground = (props) => {
                 textAlign={'center'}
                 color="light.50"
                 fontSize={20}>
-                Q Wallet
+                {props.heading}
             </Heading>
             <SvgXml width="100%" height="8%"  xml={LittleCatSVG} style={BackgroundStyle.LittleCatView} />
           </View>

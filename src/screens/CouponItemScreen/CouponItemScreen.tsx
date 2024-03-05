@@ -28,7 +28,7 @@ import {
   Text,
   Button,
 } from 'native-base';
-import { BASE_URL, BASE_S3_IMG_URL } from '../../config/config';
+import BASE_S3_IMG_URL, { BASE_URL } from '../../config/config';
 import {SvgXml} from 'react-native-svg';
 import AddressSVG from '../../assets/images/AddressSVG';
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -60,7 +60,7 @@ const CouponItemScreen = ({navigation, route}) => {
   
 
   return (
-    <Layout showTabBar={false}>
+    <Layout showTabBar={false} isHeading={false}>
       <Background main={true} contentHeight="76%" tabBarSpace={false} showGoBack={true} goBack={() => navigation.goBack()}>
         <NativeBaseProvider>
           <Stack space={4} alignItems="center" h="100%">
@@ -109,11 +109,24 @@ const CouponItemScreen = ({navigation, route}) => {
               <Box h="5%" />
               <Text fontSize="2xl" fontWeight="600" style={{color: "#db3d3d"}}>憑QR Code即可使用</Text>
               <Text fontWeight="600">{coupon.owner_name} {coupon.title}</Text>
-              <ActualCoupon
-                  companyName={coupon.owner_name} 
-                  value={coupon.value} 
-                  image={{uri: BASE_S3_IMG_URL + coupon.image}}
-              />
+              <View style={{width: "90%"}}>
+                <ActualCoupon
+                    title={coupon.title}
+                    companyName={coupon.owner_name} 
+                    value={coupon.value} 
+                    image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                    couponCategory={coupon.coupon_category}
+                    rollAnimated={true}
+                    rightBar={false}
+                    availablePercent={0}
+                    addFunc={null}
+                    />
+              </View>
+              <View style={{display: "flex", justifyContent:"center", alignItems: "center", marginBottom: "3%"}}>
+                <Text>
+                  請按Coupon查看條款與細則
+                </Text>
+              </View>
               <Stack h="12%">
                 <TouchableOpacity onPress={() => navigation.navigate('CouponQRCode', {coupon: coupon})}>
                 <Box w="80%" h="100%" style={{backgroundColor: "#d63838", borderRadius: 20, alignItems: "center", justifyContent: "center", marginLeft: "auto", marginRight: "auto"}}>

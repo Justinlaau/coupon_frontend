@@ -1,8 +1,7 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {BaseLeftSVG} from '../../assets/images/BaseLeftSVG';
-import {ProfileSVG} from '../../assets/images/ProfileSVG';
 import {BaseRightSVG} from '../../assets/images/BaseRightSVG';
 import {CatSVG} from '../../assets/images/CatSVG';
 import LeftArrow from '../../assets/images/LeftArrow';
@@ -50,20 +49,19 @@ const Background = ( props ) => {
               </>
             ) : null
           }
-          <View h={props.contentHeight} style={BackgroundStyle.whiteView} bottom={props.tabBarSpace ? "8%" : "0%"}>
+          <View h={props.contentHeight} style={[BackgroundStyle.whiteView, props.overflow? {overflow: 'hidden'}: {}]} bottom={props.tabBarSpace ? "8%" : "0%"}>
           { props.main ? (
               <>
                 <Heading
                   w="100%"
                   style={BackgroundStyle.Heading}
-                  size="xl"
                   textAlign={'center'}
                   color="light.50"
                 >
                   COUPON GO!
                 </Heading>
                 <View style={BackgroundStyle.CatView}>
-                  <SvgXml height="100%" xml={CatSVG} />
+                  <SvgXml height="80%" xml={CatSVG} />
                 </View>
               </>
             ) : null        
@@ -87,19 +85,20 @@ const BackgroundStyle = StyleSheet.create({
   },
   Heading: {
     position: 'absolute',
-    top: '-25%',
+    top: '-19%',
+    fontSize: 27
   },
   whiteView: {
     position: 'absolute',
     borderTopRightRadius: 50,
     borderTopLeftRadius: 50,
     width: '100%',
-    backgroundColor: '#FBFBFC',
+    backgroundColor: '#f0f0f0',
   },
   CatView: {
     position: 'absolute',
     zIndex: 7,
-    top: '-19%',
+    top: '-15%',
     left: '50%',
     transform: [{ translateX: -105}],
     height: '20%'
@@ -107,12 +106,12 @@ const BackgroundStyle = StyleSheet.create({
   BaseLeftSVG: {
     position: 'absolute',
     left: '-5%',
-    top: '10%',
+    top: '5%',
     width: '30%',
   },
   BaseRightSVG: {
     position: 'absolute',
-    top: '1%',
+    top: '-4%',
     right: '0%',
     width: '66%',
     resizeMode: 'contain',

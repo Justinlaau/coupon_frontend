@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/LoginScreen/LoginScreen';
 import MainScreen from '../screens/MainScreen/MainScreen';
-import forgetPasswordScreen from '../screens/forgetPasswordScreen/forgetPasswordScreen';
+import ForgetPasswordScreen from '../screens/forgetPasswordScreen/ForgetPasswordScreen';
 
 import {NavigationContainer} from '@react-navigation/native';
 import CouponListingScreen from '../screens/CouponListingScreen/CouponListingScreen';
@@ -18,6 +18,16 @@ import axios from 'axios';
 import { BASE_URL } from '../config/config';
 import MapScreen from '../screens/MapScreen/MapScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen/ResetPasswordScreen';
+import StackPage from '../screens/StackPage/StackPage';
+import { BlogsScreen } from '../screens/BlogsScreen/BlogsScreen';
+import NotificationScreen from '../screens/NotificationScreen/NotificationScreen';
+{/* Categorized Screens */}
+import CategorizedScreen from '../screens/CategorizedScreens/CategorizedScreen';
+import UserProfileScreen from '../screens/UserProfileScreen/UserProfileScreen';
+import NotificationSender from '../screens/NotificationScreen/NotificationSender';
+
+// import BlogPostScreen from '../screens/BlogsScreen/BlogPostScreen';
+import LoginAnimation from '../components/templates/LoginAnimation';
 
 const Stack = createNativeStackNavigator();
 
@@ -61,18 +71,33 @@ const MyStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName = "Mainuser"
+        initialRouteName = "Login"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Wallet" component={WalletScreen} />
         <Stack.Screen name="Main" component={MainScreen} />
         <Stack.Screen name="CouponListing" component={CouponListingScreen} />
-        <Stack.Screen name="forgetPassword" component={forgetPasswordScreen} />
+        <Stack.Screen name="forgetPassword" component={ForgetPasswordScreen} />
         <Stack.Screen name="Register" component={RegisterScreen}/>
         <Stack.Screen name="CouponItem" component={CouponItemScreen} />
         <Stack.Screen name="CouponQRCode" component={CouponQRCodeScreen} />
         <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         <Stack.Screen name="Map" component={MapScreen} />
+        <Stack.Screen name="StackPage" component={StackPage} />
+        <Stack.Screen name="UserProfile" component={UserProfileScreen} />
+        <Stack.Screen name="Blogs" component = {BlogsScreen} /> 
+        {/* <Stack.Screen name="BlogPost" component={BlogPostScreen} /> */}
+        
+        {/* Notification Screen */}
+        <Stack.Screen name="Notification" component={NotificationScreen} />
+        <Stack.Screen name="NotificationSender" component={NotificationSender} />
+
+        {/* Categorized Screens */}
+        <Stack.Screen name="CategorizedScreen" component={CategorizedScreen} />
+
+        {/* Login Animation */}
+        <Stack.Screen name="LoginAnimation" component={LoginAnimation} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

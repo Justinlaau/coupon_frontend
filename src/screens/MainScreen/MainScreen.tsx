@@ -1,49 +1,104 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   TextInput,
   StyleSheet,
-  Pressable
+  Pressable,
+  ScrollView,
+  RefreshControl,
+  ViewStyle,
+  Animated,
 } from 'react-native';
 import Background from '../../components/templates/Background';
 import Layout from '../../components/templates/Layout';
-import {ProfileSVG} from '../../assets/images/ProfileSVG';
 import {MagnifierSVG} from '../../assets/images/MagnifierSVG';
-import MainPageMenu from '../../components/templates/MainPageMenu';
 import MainPageListing from '../../components/templates/MainPageListing';
 import {
   NativeBaseProvider,
-  VStack,
-  Center,
-  Stack,
-  Box,
-  Icon,
-  Input,
-  ScrollView,
-  Container,
   Text,
-  Button,
 } from 'native-base';
 import {SvgXml} from 'react-native-svg';
 import axios from 'axios';
-import { BASE_S3_IMG_URL, BASE_URL } from '../../config/config';
-import { use } from 'i18next';
+import BASE_S3_IMG_URL, { BASE_URL } from '../../config/config';
 import { useDispatch } from 'react-redux';
 import { toggleLoading } from '../../../Redux/Action/CommonAction';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import type {PropsWithChildren} from 'react';
+import LEDBoard from './LEDBoard';
+import PageRouter from './PageRouter';
 // import Icon from 'react-native-vector-icons/FontAwesome';
+
+const LED_FONT_SIZE = 24; 
 
 const MainScreen = ({navigation}: any) => {
   const dispatch = useDispatch();
-  const [couponGroups, setCouponGroups] = useState([])
+  const [couponGroups, setCouponGroups] = useState([]);
+  const [infoPopup, setInfoPopup] = useState(false);
+  const [message, setMessage] = useState("成功！！！");
+  // const [test, setTest] = useState(false);
+  const [userInfo, setUserInfo] = useState("訪客");
+  const [notificationInfo, setNotificationInfo] = useState([""]);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const [scrollViewHeight, setScrollViewHeight] = useState(0);
 
+  const [isFocused, setIsFocused] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+
+  const handleContentSizeChange = (contentHeight: number) => {
+    setScrollViewHeight(contentHeight);
+  };
+  
+  // const fetchUserInfo = async () => {
+  //   setUserInfo("丹");
+  // }
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    if (!handleCheckText()) setIsFocused(false);
+  };
+
+  const handleChangeText = (text: string) => {
+    setInputValue(text);
+  };
+
+  const handleCheckText = () => {
+    if (inputValue.length > 0) {
+      return true;
+    }
+    return false;
+  };
+  
+  const fetchNotificationInfo = async () => {
+    setNotificationInfo([
+      "歡迎使用Coupon Go!",
+      "Coupon X 即將過期!"
+    ])
+  }
+  
   const fetchCouponGroups = async () => {
     try {
       dispatch(toggleLoading(true));
       let {data} = await axios.post(BASE_URL + "coupon/getAllCouponGroupsAPI")
-      console.log("data")
-      console.log(data)
+      // console.log("data")
+      // console.log(data)
       setCouponGroups(data)
+    } catch (error) {
+      console.log("error")
+      console.log(error)
+    } finally {
+      dispatch(toggleLoading(false));
+    }
+  }
+  
+  const fetchGetUserInfo = async () => {
+    try {
+      dispatch(toggleLoading(true));
+      let {data} = await axios.get(BASE_URL + "user/UserGetUserInfo");
+      // console.log("data")
+      // console.log(data)
+      setUserInfo(data["user"]["nickname"] || "")
     } catch (error) {
       console.log("error")
       console.log(error)
@@ -53,71 +108,129 @@ const MainScreen = ({navigation}: any) => {
   }
 
   useEffect(() => {
-    fetchCouponGroups()
-  }, [])
+    fetchGetUserInfo();
+    fetchNotificationInfo();
+    fetchCouponGroups();
+  }, []);
+
+  const toggleInfo = (show: boolean) => {
+    setInfoPopup(show)
+  };
+
+  const setInfoMessage = (message: string) => {
+    setMessage(message)
+  };
+
+  
+  type FadeInViewProps = PropsWithChildren<{style: ViewStyle}>
+  const FadeInView: React.FC<FadeInViewProps> = (props) => {
+    const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
+    // const fadeInfoPopup = useSelector((state: any) => state.commonReducer.data.infoPopup);
+    
+    useEffect(() => {
+      if (!infoPopup) return;
+      fadeAnim.setValue(1);
+      
+      Animated.timing(fadeAnim,
+        {
+          toValue: 0,
+          duration: 1000,
+          useNativeDriver: true,
+        }
+        ).start();
+        
+        setTimeout(() => {
+          toggleInfo(false);
+        }, 100)
+      }, [infoPopup])
+      
+      return (
+        <Animated.View                 // Special animatable View
+        style={{
+          ...props.style,
+          opacity: fadeAnim,         // Bind opacity to animated value
+        }}
+        >
+        {props.children}
+      </Animated.View>
+    );
+  }
 
   return (
-    <Layout showTabBar={true}>
-      <Background main={true} contentHeight="68%" tabBarSpace={true}>
+  <Layout 
+    showTabBar={true} 
+    isHeading={{"isHeading": true, "userName": userInfo}}
+    navigation={navigation}
+  >
+    <Background main={true} contentHeight="76.5%" tabBarSpace={true}>
+
         <NativeBaseProvider>
-          <Stack space={4} alignItems="center" h="100%">
-            <Stack
-              direction="row"
-              h="15%"
-              w="100%"
-              style={MainStyle.header}>
-              <Box
-                style={{flex: 1, justifyContent: 'center', paddingLeft: '7%'}}
-                w="70%"
-                height="100%"
-                _text={{fontSize: '30', fontWeight: '900', textAlign: 'left'}}>
-                揾 Coupon !
-              </Box>
-              <Pressable style={{ height:"100%", width:"25%" }}  onPress={async () => { await AsyncStorage.removeItem("jwt"); axios.defaults.headers.common['Authorization']=""; navigation.navigate("Login") }}>
-                <Center height="100%" width="100%">
-                    <SvgXml width="45%" xml={ProfileSVG} />
-                </Center>
-              </Pressable>
-            </Stack>
-              <ScrollView h="100" w="100%" px="6" py="5">
-                <Stack h="50" w="99%" direction="row" mb="9%" mr="auto" ml="auto" style={{alignItems: "center", borderRadius: 10, shadowOffset: {width: 1, height: 1}, backgroundColor: "white", shadowColor: "#000", shadowOpacity: 0.8, shadowRadius: 10, elevation: 6}}>
-                  <Center height="100%" width="15%">
-                    <SvgXml height="40%" xml={MagnifierSVG} />
-                  </Center>
-                  <Box w="85%">
-                    <TextInput placeholder="search coupon ?" />
-                  </Box>
-                </Stack>
-                <Box h="75" mb="9"><MainPageMenu/></Box>
-                <View style={{ borderBottomColor: 'grey', borderBottomWidth: StyleSheet.hairlineWidth,}}/>
-                <Box h="30" mt="2">
-                  <Stack direction="row">
-                    <Text fontWeight="bold" fontSize="15" w="84%">Popuplar Coupon</Text>
-                    <Text fontWeight="light" color="grey" fontSize="15" onPress={() => navigation.navigate("CouponListing")}>View All</Text>
-                  </Stack>
-                </Box>
-                <Box><MainPageListing couponGroups={couponGroups}/></Box>
-              </ScrollView>
-          </Stack>
+          <FadeInView style={{ position: "absolute", top: "-30%", left: "40%", backgroundColor: "#4BB543", borderRadius: 50 }}>
+            <Text style={{paddingHorizontal: "3%", paddingVertical: "1%", color: "white"}}>{ message }</Text>
+          </FadeInView>
+          <View style={{height: "100%", width: "100%", paddingLeft: "3%", paddingRight: "3%"}}>
+            {/* Title */}
+            <View style={{height: "6.5%", width: "100%", justifyContent: "center", alignItems: "center", marginTop: "2.5%"}}>
+              <View style={{height: "100%", marginBottom: "1.5%", display: "flex", justifyContent: "flex-start", flexDirection: "row",
+                borderWidth: 4.5, borderColor: "#DC2B37", borderRadius: 150, width: "95%"
+              }}>
+                <View style={{display: "flex", justifyContent: "center", alignContent: "center", height: "100%", marginRight: "3%"}}>
+                  <SvgXml height="50%" xml={MagnifierSVG} />
+                </View>
+                <View style={{height: "100%", display: "flex", justifyContent: "center", width: "85%", overflow: "hidden"}}>
+                  <TextInput style={{height: "300%", fontSize: 20, width: "100%",
+                                textAlignVertical: "center", color: 'black'}} placeholder="" placeholderTextColor="rgba(0, 0, 0, 0)"
+                                onFocus={handleFocus}
+                                onBlur={handleBlur}
+                                value={inputValue}
+                                onChangeText={handleChangeText}
+                                />
+                  <LEDBoard 
+                    texts={notificationInfo}
+                    LEDFontSize={LED_FONT_SIZE}
+                    navigation={navigation}
+                    isFocused={isFocused}
+                    />
+                </View>
+              </View>
+            </View>
+
+            {/* Line */}
+            {/* <View style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+              <View style={{width: "100%", backgroundColor: "black", height: 1.5, marginBottom: "1%"}}/>
+            </View> */}
+
+            {/* LED Board */}
+            {/* <View style={{height: "5%", backgroundColor: "white"}}>
+              <LEDBoard 
+                texts={notificationInfo}
+                LEDFontSize={LED_FONT_SIZE}
+                navigation={navigation}
+              />
+            </View> */}
+
+            {/* Bottom */}
+            <ScrollView contentContainerStyle={{flexGrow: 1}}
+              ref={scrollViewRef}
+              onContentSizeChange={handleContentSizeChange}
+            >
+              <PageRouter
+                navigation={navigation}
+                height={0.35 * scrollViewHeight}
+              />
+              <MainPageListing 
+              style={{}}
+              infoPopup = {infoPopup}
+              toggleInfo= {toggleInfo}
+              setInfoMessage = {setInfoMessage}
+              couponGroups={couponGroups}
+              />
+            </ScrollView>
+          </View>
         </NativeBaseProvider>
       </Background>
     </Layout>
   );
 };
-
-const MainStyle = StyleSheet.create({
-  test: {
-    backgroundColor: 'blue',
-    height: '100%',
-    width: '100%',
-  },
-  header: {
-    borderTopRightRadius: 50,
-    borderTopLeftRadius: 50,
-  },
-  content: {
-    // overflow: 'scroll',
-  },
-});
 
 export default MainScreen;

@@ -138,8 +138,10 @@ const ListingMainPageDropDownMenu = (props) => {
       {
         props.selectedMenu === 1 ? (
           <Box minH="90" maxH="470" pb="3%" w="100%" bg="white" position="absolute" shadow={2} top={0} borderBottomRadius="50" zIndex="1000">
-            <ScrollView>
-              <Pressable w="100%" h="60" onPress={() => props.showSubMenu(0, 0)} alignItems="center">
+            <ScrollView 
+              nestedScrollEnabled = {true}
+            >
+              <Pressable w="100%" h="60" onPress={() => {props.showSubMenu(0, 0); props.setSelectedAddressCategory(0); props.showDropDownMenu(0);}} alignItems="center">
                 <Box w="85%" h="100%" display="flex" justifyContent="center" borderBottomWidth={0.2} borderBottomColor="grey"><Text>不限</Text></Box>
               </Pressable>
               <Pressable w="100%" h="60" onPress={() => {props.showSubMenu(0, 1); console.log("asds")}} alignItems="center">

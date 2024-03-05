@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { 
     View, 
-    TextInput,
     StyleSheet,
     Text,
-    SafeAreaView, 
     ScrollView, 
+    TouchableOpacity,
+    RefreshControl,
     Alert,
-    TouchableOpacity
 } from 'react-native';
 import Layout from '../../components/templates/Layout';
 import {SvgXml} from 'react-native-svg';
@@ -17,13 +16,13 @@ import WalletBackground from '../../components/templates/WalletBackground';
 import ActualCoupon from '../../components/atoms/ActualCoupon';
 import CouponListingScreen from '../CouponListingScreen/CouponListingScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BASE_URL, BASE_S3_IMG_URL } from '../../config/config';
+import BASE_S3_IMG_URL, { BASE_URL } from '../../config/config';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleLoading, setCallback, setMessagePopup, toggleMessagePopup } from '../../../Redux/Action/CommonAction';
 import { SET_SUCCESS_CALLBACK, SET_ERROR_MESSAGE, TOGGLE_ERROR_POPUP } from '../../../Redux/Action/ActionType';
 import { ErrorCode } from '../../common/ErrorCode';
 
-const WalletScreen = ({navigation: { navigate }}: any) => {
+const WalletScreen = ({navigation: navigation}: any) => {
     const dispatch = useDispatch();
     const [buttonState, setButtonState] = useState(1);
     const [couponList, setCouponList] = useState([]);
@@ -43,10 +42,14 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
             // dispatch(setMessagePopup("Please login to continue.", SET_ERROR_MESSAGE));
             // dispatch(toggleMessagePopup(true, TOGGLE_ERROR_POPUP));
             // return;
+
+            console.log("data")
+            console.log(data)
             if (data.result == 0 && data.result == ErrorCode.INVALID_USER) {
                 // dispatch(setCallback(() => navigate("Login"), SET_SUCCESS_CALLBACK));
-                navigate("Login");
+                navigation.navigate("Login");
             }
+            console.log(data.couponList);
             setCouponList(data.couponList);
         } catch (error) {
             console.log("fetchWallet error");
@@ -55,14 +58,24 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
             dispatch(toggleLoading(false));
         }
     }
-
+    const noAuthUse = async () =>{
+        if(!await AsyncStorage.getItem("jwt")){
+            Alert.alert("錢包功能需要登陸使用");
+            navigation.navigate("Login");
+        };
+    }
     useEffect(() => {
+        noAuthUse();
         fetchWallet();
     }, []);
 
     return(
-    <Layout showTabBar={true}>
-        <WalletBackground main={true} contentHeight="82%" tabBarSpace={true} >
+    <Layout 
+        showTabBar={true}
+        isHeading={{"isHeading": false, "userID": "", "userName": ""}}
+        navigation={null}
+    >
+        <WalletBackground main={true} contentHeight="82%" tabBarSpace={true} heading="Q Wallet">
             <View style={{ flexDirection: 'row', justifyContent: "space-between"}}>  
                 <View style={{ width:"35%", marginTop: "5%" , marginLeft: "10%"}}>
                     <TouchableOpacity onPress={()=>pressHandler(1)}
@@ -77,7 +90,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                     }} >
                     <Text style={{
                         color: buttonState == 1 ? "#FFF" : "#DC2B37",
-                        fontWeight: 'bold'}}>Reserved Coupon
+                        fontWeight: 'bold'}}> 未使用的優惠卷
                     </Text>
                     </TouchableOpacity>
                 </View>
@@ -96,7 +109,7 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                         
                     <Text style={{
                         color: buttonState == 2 ? "#FFF" : "#DC2B37",
-                        fontWeight: 'bold'}}>Used Coupon
+                        fontWeight: 'bold'}}>已使用的優惠卷
                     </Text>
                     </TouchableOpacity>
                 </View>
@@ -113,37 +126,58 @@ const WalletScreen = ({navigation: { navigate }}: any) => {
                 <TouchableOpacity  style={{flex: 1, marginLeft: "55%", marginTop: 1}}>
                     <SvgXml width="100%" height="20" xml={DateIconSVG} />
                 </TouchableOpacity>
-                <Text style={{marginRight: "5%"}}>Arrange with Date</Text>
+                <Text style={{marginRight: "5%"}}> 按日期排序 </Text>
             </View>
 
-            <ScrollView style={{height: "80%"}}>
+            <ScrollView style={{height: "80%"}}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={false}
+                        onRefresh={() => fetchWallet()}
+                            />
+                        }
+                    >                
+                    <View style={{width: "92%", marginLeft: "4%"}}>
 
                 {
-                    couponList.map((coupon: any, index) => {
+                    !couponList? navigation.navigate("Login") : couponList.map((coupon: any, index) => {
                         if (coupon.used < coupon.total && buttonState == 1) {
                             return (
-                                <TouchableOpacity key={coupon.coupon_id} onPress={() => navigate("CouponItem", {coupon: coupon})}>
-                                <ActualCoupon
-                                    companyName={coupon.owner_name} 
-                                    value={coupon.value} 
-                                    image={{uri: BASE_S3_IMG_URL + coupon.image}}
-                                />
-                                </TouchableOpacity>
+                                    <TouchableOpacity key={coupon.coupon_id} onPress={() => navigation.navigate("CouponItem", {coupon: coupon})}>
+                                    <ActualCoupon
+                                        title={coupon.title}
+                                        companyName={coupon.owner_name} 
+                                        value={coupon.value} 
+                                        image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                                        couponCategory={coupon.coupon_category}
+                                        rollAnimated={false}
+                                        rightBar={false}
+                                        availablePercent={0}
+                                        addFunc={() => {}}
+                                        />
+                                    </TouchableOpacity>
                             )
                         } else if (coupon.used >= coupon.total && buttonState == 2) {
                             return (
                                 <ActualCoupon
-                                    key={coupon.coupon_id}
-                                    companyName={coupon.owner_name} 
-                                    value={coupon.value} 
-                                    image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                                title={coupon.title}
+                                key={coupon.coupon_id}
+                                companyName={coupon.owner_name} 
+                                value={coupon.value} 
+                                image={{uri: BASE_S3_IMG_URL + coupon.image}}
+                                couponCategory={coupon.coupon_category}
+                                rollAnimated={false}
+                                rightBar={false}
+                                availablePercent={0}
+                                addFunc={() => {}}
                                 />
-                            )
-                        } else {
-                            return null;
-                        }
-                    })
-                }
+                                )
+                            } else {
+                                return null;
+                            }
+                        })
+                    }
+                </View>
             </ScrollView>
         </WalletBackground>
     </Layout>       
@@ -160,3 +194,7 @@ const styles = StyleSheet.create({
     }
 
 })
+WalletScreen.navigationOptions = {
+    swipeEnabled: false,
+    headerLeft: null,
+  };
