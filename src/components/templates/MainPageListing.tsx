@@ -1,6 +1,6 @@
 import React, {PropsWithChildren, useState} from 'react';
 import axios from 'axios';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, FlatList } from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import CouponCard from '../atoms/CouponCard';
 import PopularSVG from '../../assets/images/PopularSVG';
@@ -41,20 +41,17 @@ const MainPageListing: React.FC<MainPageListingProps> = (props) => {
     if(!await AsyncStorage.getItem("jwt")){
       Alert.alert("登入后才可使用COUPONGO優惠服務");
     }else{
-      if (props.infoPopup) {
-        props.toggleInfo(false);
-        return;
-      }
+
       props.setInfoMessage("操作中");
       props.toggleInfo(true);
-      // console.log("adding coupon");
       let {data} = await axios.post(BASE_URL + "coupon/addCoupon", {
         "coupon_group_id": couponGroupId,
         "total": 1
       })
+      // console.log("adding coupon");
   
       if ( data["result"] == 0 ) {
-        props.setInfoMessage("成功！！！");
+        props.setInfoMessage("成功");
         props.toggleInfo(true);
       } else {
         dispatch(setMessagePopup("你只可以添加同一優惠卷最多5張！", SET_ERROR_MESSAGE));
@@ -65,7 +62,7 @@ const MainPageListing: React.FC<MainPageListingProps> = (props) => {
 
   return (
     <NativeBaseProvider>
-      <VStack style={{ display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
+      {/* <VStack style={{ display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
         {
           props.couponGroups.map((el, i) => 
             <Box w="50%" py="3" key={i}>
@@ -76,7 +73,26 @@ const MainPageListing: React.FC<MainPageListingProps> = (props) => {
             </Box>
           )
         }
-      </VStack>
+      </VStack> */}
+      <FlatList
+          data={props.couponGroups}
+          numColumns={2}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+              <Box w="50%" py="3">
+                  <CouponCard 
+                      useYellowAdd={true} 
+                      marb="0" 
+                      imgSource={BASE_S3_IMG_URL + item["image"]} 
+                      imgAlt={item["title"]} 
+                      merchantName={item["owner_name"]} 
+                      couponDetail={item["title"]} 
+                      addFunc={() => addFunc(item["coupon_group_id"], item["expire_date"])}
+                      navigation={props.navigation}            
+                  />
+              </Box>
+          )}
+      />
     </NativeBaseProvider>
   );
 };
