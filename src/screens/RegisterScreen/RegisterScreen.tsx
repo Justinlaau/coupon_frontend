@@ -54,6 +54,7 @@ const RegisterScreen = ({ navigation }) => {
             }
             console.log(email)
             let { data } = await axios.post(BASE_URL + 'user/UserRegistrationVerificationCode', payload)
+            Alert.alert('驗證碼已發送')
             if ( data == null || data.result != 0) console.log("failed")
             else console.log("success")
         } catch(e) {
