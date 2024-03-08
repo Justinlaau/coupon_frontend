@@ -104,7 +104,7 @@ const MainScreen = ({navigation}: any) => {
   useEffect(() => {
     fetchGetUserInfo();
     fetchNotificationInfo();
-    fetchCouponGroups();
+    // fetchCouponGroups();
   }, []);
 
   const toggleInfo = (show: boolean) => {
@@ -124,6 +124,8 @@ const MainScreen = ({navigation}: any) => {
     }))
     
     useEffect(() => {
+      if (!infoPopup) return;
+
       fadeAnim.value = 1;
       fadeAnim.value = withTiming(0, {duration: 1000});
     }, [infoPopup])
@@ -205,7 +207,7 @@ const MainScreen = ({navigation}: any) => {
                 infoPopup = {infoPopup}
                 toggleInfo= {toggleInfo}
                 setInfoMessage = {setInfoMessage}
-                couponGroups={couponGroups}
+                // couponGroups={couponGroups}
                 navigation={navigation}
               />
             </ScrollView>
