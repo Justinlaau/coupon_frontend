@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: -100,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "flex-start"
   },
   background: {
     flex: 1,
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     alignItems: 'flex-start',
     height: "100%",
     position: "absolute"

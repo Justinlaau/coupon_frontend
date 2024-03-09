@@ -7,6 +7,7 @@ import {
   ScrollView,
   RefreshControl,
   ViewStyle,
+  Dimensions
 } from 'react-native';
 import Animated, {  useSharedValue, useAnimatedStyle, withDecay, withTiming } from 'react-native-reanimated';
 import Background from '../../components/templates/Background';
@@ -25,9 +26,11 @@ import { toggleLoading } from '../../../Redux/Action/CommonAction';
 import type {PropsWithChildren} from 'react';
 import LEDBoard from './LEDBoard';
 import PageRouter from './PageRouter';
+import SearchContext from './SearchContent';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 const LED_FONT_SIZE = 24; 
+const screenWidth = Dimensions.get("window").width;
 
 const MainScreen = ({navigation}: any) => {
   const dispatch = useDispatch();
@@ -154,14 +157,13 @@ const MainScreen = ({navigation}: any) => {
             {/* Title */}
             <View style={{height: "6.5%", width: "100%", justifyContent: "center", alignItems: "center", marginTop: "2.5%"}}>
               <View style={{height: "100%", marginBottom: "1.5%", display: "flex", justifyContent: "flex-start", flexDirection: "row",
-                borderWidth: 4.5, borderColor: "#DC2B37", borderRadius: 150, width: "95%"
+                borderWidth: 4.5, borderColor: "#DC2B37", borderRadius: 150, width: "95%", overflow: "hidden"
               }}>
                 <View style={{display: "flex", justifyContent: "center", alignContent: "center", height: "100%", marginRight: "3%"}}>
                   <SvgXml height="50%" xml={MagnifierSVG} />
                 </View>
-                <View style={{height: "100%", display: "flex", justifyContent: "center", width: "85%", overflow: "hidden"}}>
-                  <TextInput style={{height: "300%", fontSize: 20, width: "100%",
-                                textAlignVertical: "center", color: 'black'}} placeholder="" placeholderTextColor="rgba(0, 0, 0, 0)"
+                <View style={{height: "100%", display: "flex", justifyContent: "center", width: "100%"}}>
+                  <TextInput style={{height: "300%", fontSize: 20, width: screenWidth, textAlignVertical: "center", color: 'black'}} placeholder="" placeholderTextColor="rgba(0, 0, 0, 0)"
                                 onFocus={handleFocus}
                                 onBlur={handleBlur}
                                 value={inputValue}
@@ -176,6 +178,7 @@ const MainScreen = ({navigation}: any) => {
                 </View>
               </View>
             </View>
+            
 
             {/* Line */}
             {/* <View style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -196,6 +199,10 @@ const MainScreen = ({navigation}: any) => {
               ref={scrollViewRef}
               onContentSizeChange={handleContentSizeChange}
             >
+              {isFocused? <SearchContext 
+                navigation={navigation}
+                shop={["TEST"]}
+                coupon={[]}/>: <></>}
               <PageRouter
                 navigation={navigation}
                 height={0.35 * scrollViewHeight}
