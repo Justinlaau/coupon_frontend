@@ -46,6 +46,8 @@ const MainScreen = ({navigation}: any) => {
   const [isFocused, setIsFocused] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
+  const [shops, setShops] = useState([]);
+
   const handleContentSizeChange = (contentHeight: number) => {
     setScrollViewHeight(contentHeight);
   };
@@ -58,8 +60,13 @@ const MainScreen = ({navigation}: any) => {
     if (!handleCheckText()) setIsFocused(false);
   };
 
-  const handleChangeText = (text: string) => {
+  const handleChangeText = async (text: string) => {
     setInputValue(text);
+    let {data} = await axios.post("https://t7aqglxrrf.execute-api.ap-southeast-1.amazonaws.com/dev/external-es-owner", {
+      "keyword": text
+    })
+    setShops(data["body"]);
+    console.log(data["body"]);
   };
 
   const handleCheckText = () => {
@@ -195,7 +202,7 @@ const MainScreen = ({navigation}: any) => {
             </View> */}
             {isFocused? <SearchContext 
               navigation={navigation}
-              shop={["旺記冰室", "旺旺"]}
+              shop={shops}
               coupon={["旺旺優惠卷"]}/>: <></>}
 
             {/* Bottom */}

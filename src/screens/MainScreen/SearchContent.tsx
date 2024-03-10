@@ -1,9 +1,10 @@
-import { position } from 'native-base/lib/typescript/theme/styled-system';
 import React, {useState, useEffect, useRef} from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Dimensions, Image } from 'react-native';
 
 interface ShopType{
-    shopName: string
+    owner_id: string,
+    owner_image: string,
+    owner_name: string
 }
 
 interface CouponType{
@@ -21,7 +22,7 @@ const screenHeight = Dimensions.get("window").height;
 const SearchContext = (props : SearchContextType) => {
     return (
 
-        <View style={{position:"absolute", width: "120%", height: screenHeight, zIndex: 300, backgroundColor: "#f0f0f0", overflow: "hidden", top: "8%"}}>
+        <View style={{position:"absolute", width: "120%", height: screenHeight, zIndex: 300, backgroundColor: "#f0f0f0", overflow: "hidden", top: "7.5%"}}>
             {props.shop.length === 0? <></>: 
                 <>
                     <View style={{height: "5%", justifyContent: "center"}}>
@@ -30,13 +31,13 @@ const SearchContext = (props : SearchContextType) => {
                     {props.shop.map((item, index) => (
                         <>
                         <TouchableOpacity style={styles.itms} onPress={() => (props.navigation.navigate("BusinessInformationScreen"))}>
-                            <Image source={require("../../assets/images/icon.png")}
+                            <Image source={{uri: item.owner_image}}
                                 style={{
                                     width: "10%",
                                     height: "50%"
                                 }}
                                 />
-                            <Text style={styles.font}>{item}</Text>
+                            <Text style={styles.font}>{item.owner_name}</Text>
                         </TouchableOpacity>
                         <View style={styles.line}/>
                         </>
