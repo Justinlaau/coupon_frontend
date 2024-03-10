@@ -17,6 +17,7 @@ import leftArrowBlack from '../../assets/images/ICON/leftArrowBlackSVG';
 import heartLoveSVG from '../../assets/images/ICON/heartLoveSVG';
 import Carousel from './Carousel';
 import { BASE_URL } from '../../config/config';
+import { NavigationProp } from '@react-navigation/native';
 
 
 const testSources = ["https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_965/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/ugpha4iy2ki8kfxbcrlj/KlookExclusive:WMHotelHongKong,VignetteCollectionStaycationPackage.webp",
@@ -31,7 +32,11 @@ const testSources = ["https://res.klook.com/images/fl_lossy.progressive,q_65/c_f
 const testDescriptions = ["尊享房 花園", "尊享房間 花園-浴室", "尊享房 陽台", "尊享房 陽台-浴室", "開放式套房 海景 陽台", "無邊際泳池", "健身中心", "Café@WM 海鮮盛宴自助午餐 - 冰鎮海鮮", "Café@WM 海鮮盛宴自助午餐 - 和牛越南河粉"]
 
 
-export const BusinessInformationFormScreen = (navigate: any) => {
+interface BusinessInformationFormType{
+    navigation: any
+}
+
+export const BusinessInformationFormScreen = (props: BusinessInformationFormType) => {
     const dispatch = useDispatch();
 
     const screenHeight = Dimensions.get('window').height;
@@ -126,7 +131,7 @@ export const BusinessInformationFormScreen = (navigate: any) => {
             <Layout 
                 showTabBar={true}
                 isHeading={{ "isHeading": false }}
-                navigation={navigate}
+                navigation={props.navigation.navigate}
             >
                 <View style={{ position: "relative", height: "100%" }}>
                     {/* menu */}
@@ -137,7 +142,7 @@ export const BusinessInformationFormScreen = (navigate: any) => {
                         <View style={{ display: "flex", flexDirection: "row", alignItems: "center", paddingHorizontal: 30, marginTop: 20 }}>
                             <Pressable
                                 style={{ marginRight: "auto" }}
-                                onPress={() => { console.log("handle goBack") }}
+                                onPress={() => { props.navigation.goBack()}}
                             >
                                 <Animated.View style={[
                                     { width: 40, height: 40, backgroundColor: "#F9FAFB", justifyContent: "center", alignItems: "center", borderRadius: 50 },

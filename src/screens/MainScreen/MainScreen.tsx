@@ -193,16 +193,17 @@ const MainScreen = ({navigation}: any) => {
                 navigation={navigation}
               />
             </View> */}
+            {isFocused? <SearchContext 
+              navigation={navigation}
+              shop={["旺記冰室", "旺旺"]}
+              coupon={["旺旺優惠卷"]}/>: <></>}
 
             {/* Bottom */}
             <ScrollView contentContainerStyle={{flexGrow: 1}}
               ref={scrollViewRef}
               onContentSizeChange={handleContentSizeChange}
+              scrollEnabled={isFocused? false: true}
             >
-              {isFocused? <SearchContext 
-                navigation={navigation}
-                shop={["TEST"]}
-                coupon={[]}/>: <></>}
               <PageRouter
                 navigation={navigation}
                 height={0.35 * scrollViewHeight}

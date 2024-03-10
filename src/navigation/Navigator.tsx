@@ -98,6 +98,7 @@ const MyStack = () => {
 
         {/* owner information */ }
         <Stack.Screen name="BusinessInformationScreen" component={BusinessInformationFormScreen} />
+        
         {/* Login Animation */}
         <Stack.Screen name="LoginAnimation" component={LoginAnimation} />
 
